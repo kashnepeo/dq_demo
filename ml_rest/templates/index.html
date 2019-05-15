@@ -1,0 +1,42 @@
+<html>
+
+<head>
+    <title>SVHN Model as a Flask API</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename = 'style.css') }}">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+
+<body>
+<h1>Flask And Google House Number Predictor</h1>
+<div class="agile-its">
+    <h2>Flask with ML Web Service</h2>
+    <div class="w3layouts">
+        <div class="photos-upload-view">
+
+            <form id="upload" action="/predict" method="POST" enctype="multipart/form-data">
+                <div class="upload-btn-wrapper">
+                    <button class="btn">이미지 업로드</button>
+                    <input type="file" value="Upload" name="image">
+                </div>
+                <input type="submit" value="예측 결과">
+                {% if ml_label %}
+                    <span class="result_lable">
+                        {{ ml_label }}
+                    </span>
+                {% endif %}
+            </form>
+            <form id="retrain" action="/retrain" method="POST">
+                <input type="submit" value="모델 재학습">
+                {% if md_label %}
+                    <span class="result_lable">
+                        {{ md_label }}
+                    </span>
+                {% endif %}
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+
+</html>
