@@ -1,11 +1,11 @@
 import flask
-from flask import Flask, request, render_template
+from flask import Flask, request, render_template, make_response
 from sklearn.externals import joblib
 import numpy as np
 from scipy import misc
 from ml.model import export_model
 from flask_restful import Resource, Api
-
+import json
 
 app = Flask(__name__)
 api = Api(app)
@@ -55,6 +55,29 @@ def make_model():
         return render_template('index.html', md_label='모델 재생성 완료')
 
 
+# 감성분석
+class SentAn(Resource):
+    def get(self, word):
+        with open('data/senti_word.json', encoding='utf-8', mode='r') as f:
+            data = json.load(f)
+
+        search_cnt = 0
+        return_list = []
+        for i in data:
+            if word in (i['word'], i['word_root']):
+                return_dict = {}
+                return_dict['word'] = i['word']
+                return_dict['word_root'] = i['word_root']
+                return_dict['polarity'] = i['polarity']
+                return_list.append(return_dict)
+                search_cnt += 1
+
+        if search_cnt == 0:
+            return [{'result': False}]
+
+        return make_response(json.dumps(return_list, ensure_ascii=False))
+
+
 # 데이터 모델 재학습(RestApi)
 class RestMl(Resource):
     def get(self):
@@ -64,10 +87,12 @@ class RestMl(Resource):
 
 # Rest 등록
 api.add_resource(RestMl, '/retrainModel')
+api.add_resource(SentAn, '/sentimental/<string:word>')
 
 if __name__ == '__main__':
     # 모델 로드
     # ml/model.py 선 실행 후 생성
     model = joblib.load('./model/model.pkl')
+
     # Flask 서비스 스타트
     app.run(host='0.0.0.0', port=8000, debug=True)
