@@ -65,14 +65,14 @@ class SentAn(Resource):
         return_list = []
         for i in data:
             if word in (i['word'], i['word_root']):
-                return_dict = {}
+                return_dict = dict()
                 return_dict['word'] = i['word']
                 return_dict['word_root'] = i['word_root']
                 return_dict['polarity'] = i['polarity']
                 return_list.append(return_dict)
                 search_cnt += 1
 
-        if search_cnt == 0:
+        if not search_cnt:
             return [{'result': False}]
 
         return make_response(json.dumps(return_list, ensure_ascii=False))
