@@ -3,7 +3,7 @@
   "sys_version": 1.0,
   "algorithm": {
     "classifier": {
-      "adaboost": "AdaBoostClass",
+      "bagging": "BaggingClass",
       "bernoulinb": "BernouliNBClass"
     },
     "regression": {

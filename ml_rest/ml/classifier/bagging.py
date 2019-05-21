@@ -3,7 +3,7 @@ import time
 import os
 import warnings
 from sklearn.model_selection import train_test_split
-from sklearn.ensemble import RandomForestClassifier
+from sklearn.ensemble import BaggingClassifier
 from sklearn.metrics import accuracy_score
 from sklearn.model_selection import KFold
 from sklearn.model_selection import cross_val_score
@@ -11,16 +11,16 @@ from sklearn.metrics import classification_report
 from sklearn.externals import joblib
 
 
-class AdaBoostClass:
+class BaggingClass:
     """
-    Name      : AdaBoostClassifier
+    Name      : BaggingClassfier
     Attribute : None
     Method    : predict, predict_by_cv, save_model
     """
 
     def __init__(self):
         # 알고리즘 이름
-        self._name = 'adaboost'
+        self._name = 'bagging'
         # 기본 경로
         self._f_path = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), os.pardir))
         
@@ -39,7 +39,7 @@ class AdaBoostClass:
                                                                                     shuffle=True,
                                                                                     random_state=42)
         # 모델 선언
-        self._model = RandomForestClassifier()
+        self._model = BaggingClassifier()
 
         # 모델 학습
         self._model.fit(self._x_train, self._y_train)
@@ -81,7 +81,7 @@ class AdaBoostClass:
         else:
             # 기존 모델 대체
             if os.path.isfile(self._f_path + f'/model/{self._name}.pkl'):
-                os.rename(self._f_path + f'/model/{self._name}.pkl', self._f_path + f'/model/{str(self._name) + str(time.time())}.pkl')
+                os.rename(self._f_path + f'/model/s{elf._name}.pkl', self._f_path + f'/model/{str(self._name) + str(time.time())}.pkl')
             joblib.dump(self._model, self._f_path + f'/model/{self._name}.pkl')
 
     def __del__(self):
@@ -90,7 +90,7 @@ class AdaBoostClass:
 
 if __name__ == "__main__":
     # 클래스 선언
-    classifier = AdaBoostClass()
+    classifier = BaggingClassfier()
 
     # 분류 실행
     classifier.predict()
@@ -102,4 +102,4 @@ if __name__ == "__main__":
     classifier.save_model()
 
     # 모델 갱신
-    # classifier.save_model(renew=True)
+    classifier.save_model(renew=True)

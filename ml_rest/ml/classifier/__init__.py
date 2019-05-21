@@ -1,1 +1,1 @@
-__all__ = ['adaboost', 'bernoulinb']
+__all__ = ['bagging', 'bernoulinb']
