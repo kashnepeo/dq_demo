@@ -5,7 +5,8 @@
     "classifier": {
       "bagging": "BaggingClass",
       "bernoulinb": "BernouliNBClass",
-      "randomforest": "RandomForestClass"
+      "randomforest": "RandomForestClass",
+      "decisiontree": "DecisionTreeClass"
     },
     "regression": {
     }
