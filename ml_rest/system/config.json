@@ -1,0 +1,12 @@
+{
+  "sys_info": "nhn-diquest",
+  "sys_version": 1.0,
+  "algorithm": {
+    "classifier": {
+      "adaboost": "AdaBoostClass",
+      "bernoulinb": "BernouliNBClass"
+    },
+    "regression": {
+    }
+  }
+}
