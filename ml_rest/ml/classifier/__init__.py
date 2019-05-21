@@ -1,1 +1,1 @@
-__all__ = ['bagging', 'bernoulinb','randomforest']
+__all__ = ['bagging', 'bernoulinb','randomforest','decisiontree','extratrees']
