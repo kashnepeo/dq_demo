@@ -7,6 +7,7 @@
       "bernoulinb": "BernouliNBClass",
       "randomforest": "RandomForestClass",
       "decisiontree": "DecisionTreeClass",
+      "extratrees": "ExtraTreesClass",
       "extratree": "ExtraTreeClass"
     },
     "regression": {
