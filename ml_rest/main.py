@@ -1,9 +1,10 @@
-from flask import Flask
+from flask import Flask, jsonify
 from flask_restful import Resource, Api
 import os.path
 from ml.classifier import *
 import os
 import json
+import time
 
 # 환경 정보 로드
 with open('./system/config.json') as j:
@@ -30,11 +31,10 @@ class ClassifierHandler(Resource):
 
         # 분류 객체 생성(Str -> Class)
         cls = eval(element + '.' + app.config['algorithm']['classifier'][element])()
-        # 스코어
-        score = cls.predict()
-        # Cross Validation 스코어
-        cv_score = cls.predict_by_cv()
 
+        # 응답 데이터
+        data = dict(success=True, score=cls.predict(), req_time=time.time())
+        print(data)
         # 모델 Payload 확인
         if os.path.isfile(f'./ml/model/{element}.pkl'):
             print(f'{element} Model Exist,')
@@ -42,6 +42,15 @@ class ClassifierHandler(Resource):
             print(f'{element} Model Not Exist,')
             # 최초 모델 생성
             cls.save_model()
+
+        # 응답 헤더
+        response_data = app.response_class(
+            response=json.dumps(data),
+            status=200,
+            mimetype='application/json'
+        )
+
+        return response_data
 
 
 # Regression
