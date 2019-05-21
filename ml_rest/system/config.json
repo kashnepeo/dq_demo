@@ -6,7 +6,8 @@
       "bagging": "BaggingClass",
       "bernoulinb": "BernouliNBClass",
       "randomforest": "RandomForestClass",
-      "decisiontree": "DecisionTreeClass"
+      "decisiontree": "DecisionTreeClass",
+      "extratrees": "ExtraTreesClass"
     },
     "regression": {
     }
