@@ -8,7 +8,9 @@
       "randomforest": "RandomForestClass",
       "decisiontree": "DecisionTreeClass",
       "extratrees": "ExtraTreesClass",
-      "extratree": "ExtraTreeClass"
+      "extratree": "ExtraTreeClass",
+      "gaussiannb": "GaussianNB",
+      "gaussianprocess": "GaussianProcessClassifier"
     },
     "regression": {
     }
