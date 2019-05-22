@@ -1,10 +1,12 @@
-from flask import Flask, jsonify
-from flask_restful import Resource, Api
-import os.path
-from ml.classifier import *
-import os
 import json
+import os
+import os.path
 import time
+
+import flask
+from flask import Flask
+from flask_restful import Resource, Api
+from ml.classifier import *
 
 # 환경 정보 로드
 with open('./system/config.json') as j:
@@ -18,6 +20,13 @@ app.config.update(config)
 
 # 서버 인스턴스
 api = Api(app)
+
+
+# 메인 페이지 라우팅
+@app.route("/")
+@app.route("/index")
+def index():
+    return flask.render_template('rest_test.html')
 
 
 # Classifier
