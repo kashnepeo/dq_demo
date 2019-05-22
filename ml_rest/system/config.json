@@ -12,7 +12,8 @@
       "gaussiannb": "GaussianNB",
       "gaussianprocess": "GaussianProcessClass",
       "svc": "SvcClass",
-      "mlp": "MlpClass"
+      "mlp": "MlpClass",
+      "sgd": "SgdClass"
     },
     "regression": {
     }
