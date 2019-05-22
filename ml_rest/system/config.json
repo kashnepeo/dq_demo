@@ -15,7 +15,9 @@
       "mlp": "MlpClass",
       "kneighbors": "KNeighborsClass",
       "linearsvc": "LinearSVCClass",
-      "logisticregression": "LogisticRegressionClass"
+      "logisticregression": "LogisticRegressionClass",
+      "nusvc": "NuSVCClass",
+      "perceptron": "PerceptronClass"
     },
     "regression": {
     }
