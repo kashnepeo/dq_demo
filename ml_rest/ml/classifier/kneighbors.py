@@ -81,7 +81,7 @@ class KNeighborsClass:
         else:
             # 기존 모델 대체
             if os.path.isfile(self._f_path + f'/model/{self._name}.pkl'):
-                os.rename(self._f_path + f'/model/s{elf._name}.pkl', self._f_path + f'/model/{str(self._name) + str(time.time())}.pkl')
+                os.rename(self._f_path + f'/model/{self._name}.pkl', self._f_path + f'/model/{str(self._name) + str(time.time())}.pkl')
             joblib.dump(self._model, self._f_path + f'/model/{self._name}.pkl')
 
     def __del__(self):

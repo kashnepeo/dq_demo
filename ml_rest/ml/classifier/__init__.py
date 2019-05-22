@@ -1,1 +1,1 @@
-__all__ = ['bagging', 'bernoulinb','randomforest','decisiontree','extratrees','extratree','gaussiannb','gaussianprocess','svc','mlp','kneighbors','linearsvc']
+__all__ = ['bagging', 'bernoulinb', 'randomforest', 'decisiontree', 'extratrees', 'extratree', 'gaussiannb', 'gaussianprocess', 'svc', 'mlp', 'kneighbors', 'linearsvc', 'logisticregression']

@@ -14,7 +14,8 @@
       "svc": "SvcClass",
       "mlp": "MlpClass",
       "kneighbors": "KNeighborsClass",
-      "linearsvc": "LinearSVCClass"
+      "linearsvc": "LinearSVCClass",
+      "logisticregression": "LogisticRegressionClass"
     },
     "regression": {
     }

@@ -3,7 +3,7 @@ import time
 import os
 import warnings
 from sklearn.model_selection import train_test_split
-from sklearn.svm import LinearSVC
+from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import accuracy_score
 from sklearn.model_selection import KFold
 from sklearn.model_selection import cross_val_score
@@ -11,19 +11,19 @@ from sklearn.metrics import classification_report
 from sklearn.externals import joblib
 
 
-class LinearSVCClass:
+class LogisticRegressionClass:
     """
-    Name      : LinearSVC
+    Name      : LogisticRegression
     Attribute : None
     Method    : predict, predict_by_cv, save_model
     """
 
     def __init__(self):
         # 알고리즘 이름
-        self._name = 'linearsvc'
+        self._name = 'logisticregression'
         # 기본 경로
         self._f_path = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), os.pardir))
-        
+
         # 경고 메시지 삭제
         warnings.filterwarnings('ignore')
 
@@ -39,7 +39,7 @@ class LinearSVCClass:
                                                                                     shuffle=True,
                                                                                     random_state=42)
         # 모델 선언
-        self._model = LinearSVC()
+        self._model = LogisticRegression()
 
         # 모델 학습
         self._model.fit(self._x_train, self._y_train)
@@ -90,7 +90,7 @@ class LinearSVCClass:
 
 if __name__ == "__main__":
     # 클래스 선언
-    classifier = LinearSVCClass()
+    classifier = LogisticRegressionClass()
 
     # 분류 실행
     classifier.predict()
