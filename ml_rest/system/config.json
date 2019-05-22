@@ -11,7 +11,8 @@
       "extratree": "ExtraTreeClass",
       "gaussiannb": "GaussianNB",
       "gaussianprocess": "GaussianProcessClass",
-      "svc": "SvcClass"
+      "svc": "SvcClass",
+      "mlp": "MlpClass"
     },
     "regression": {
     }
