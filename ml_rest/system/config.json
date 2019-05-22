@@ -13,7 +13,8 @@
       "gaussianprocess": "GaussianProcessClass",
       "svc": "SvcClass",
       "mlp": "MlpClass",
-      "kneighbors": "KNeighborsClass"
+      "kneighbors": "KNeighborsClass",
+      "linearsvc": "LinearSVCClass"
     },
     "regression": {
     }
