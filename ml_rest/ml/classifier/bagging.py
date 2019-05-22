@@ -90,7 +90,7 @@ class BaggingClass:
 
 if __name__ == "__main__":
     # 클래스 선언
-    classifier = BaggingClassfier()
+    classifier = BaggingClass()
 
     # 분류 실행
     classifier.predict()

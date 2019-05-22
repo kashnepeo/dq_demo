@@ -8,3 +8,4 @@ virtualenv
 pillow
 bson
 pandas
+matplotlib
