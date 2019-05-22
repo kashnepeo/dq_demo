@@ -42,7 +42,7 @@ class ClassifierHandler(Resource):
         cls = eval(element + '.' + app.config['algorithm']['classifier'][element])()
 
         # 응답 데이터
-        data = dict(success=True, score=cls.predict(), req_time=time.time())
+        data = dict(success=True, score=cls.predict(), cv_score=list(cls.predict_by_cv()), req_time=time.time())
         print(data)
         # 모델 Payload 확인
         if os.path.isfile(f'./ml/model/{element}.pkl'):
