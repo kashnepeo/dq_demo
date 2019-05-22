@@ -22,7 +22,8 @@
     "regression": {
       "ard": "ARDClass",
       "bagging": "BaggingClass",
-      "linear": "LinearClass"
+      "linear": "LinearClass",
+      "svr": "SvrClass"
     }
   }
 }

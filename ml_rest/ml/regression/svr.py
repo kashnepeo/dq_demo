@@ -5,20 +5,20 @@ import warnings
 import matplotlib.pyplot as plt
 import pandas as pd
 from sklearn.externals import joblib
-from sklearn.linear_model import ARDRegression
+from sklearn.svm import SVR
 from sklearn.metrics import r2_score
 
 
-class ArdClass:
+class SvrClass:
     """
-    Name      : ARDRegression
+    Name      : SVR
     Attribute : None
     Method    : predict, predict_by_cv, save_model
     """
 
     def __init__(self):
         # 알고리즘 이름
-        self._name = 'ard'
+        self._name = 'svr'
 
         # 기본 경로
         self._f_path = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), os.pardir))
@@ -39,7 +39,7 @@ class ArdClass:
         self._x_test, self._y_test = self.preprocessing(data[self._y])
 
         # 모델 선언
-        self._model = ARDRegression(normalize=True)
+        self._model = SVR()
 
         # 모델 학습
         self._model.fit(self._x_train, self._y_train)
@@ -132,7 +132,7 @@ class ArdClass:
 
 if __name__ == "__main__":
     # 클래스 선언
-    classifier = ARDClass()
+    classifier = SvrClass()
 
     # 분류 실행
     classifier.predict()
