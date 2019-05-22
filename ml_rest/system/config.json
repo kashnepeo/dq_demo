@@ -20,6 +20,9 @@
       "perceptron": "PerceptronClass"
     },
     "regression": {
+      "ard": "ARDClass",
+      "bagging": "BaggingClass",
+      "linear": "LinearClass"
     }
   }
 }
