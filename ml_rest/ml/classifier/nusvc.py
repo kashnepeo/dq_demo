@@ -39,7 +39,7 @@ class NuSVCClass:
                                                                                     shuffle=True,
                                                                                     random_state=42)
         # 모델 선언
-        self._model = NuSVC()
+        self._model = NuSVC(kernel='linear', nu=0.001, cache_size=200)
 
         # 모델 학습
         self._model.fit(self._x_train, self._y_train)
