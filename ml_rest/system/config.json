@@ -10,7 +10,7 @@
       "extratrees": "ExtraTreesClass",
       "extratree": "ExtraTreeClass",
       "gaussiannb": "GaussianNB",
-      "gaussianprocess": "GaussianProcessClassifier"
+      "gaussianprocess": "GaussianProcessClass"
     },
     "regression": {
     }
