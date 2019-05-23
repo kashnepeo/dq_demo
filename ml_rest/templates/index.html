@@ -26,8 +26,6 @@
             background: #fafafa;
         }
     </style>
-    <!-- <script src="./swagger-ui-bundle.js"> </script>
-    <script src="./swagger-ui-standalone-preset.js"> </script> -->
     <script src='{{ url_for('static', filename = 'jquery.min.js') }}' type='text/javascript'></script>
 </head>
 
@@ -256,6 +254,21 @@
         $(".get_execute").click(function() {
             console.log("get execute 클릭", $(this));
             console.log("param: ", $(".get_select").val());
+            $.ajax({
+                url : '/regression/decisiontree',
+                type : 'get',
+                contentType:"application/json",
+                dataType: "json",
+                data : {
+                    "model" : $(".get_select").val()
+                },
+                success: function(result) {
+                    console.log("success: ", result);
+                },
+                error: function(e) {
+                    console.log("error: ", e);
+                }
+            })
         })
 
         // post
@@ -272,6 +285,22 @@
         $(".post_execute").click(function() {
             console.log("post execute 클릭", $(this));
             console.log("param: ", $(".post_select").val());
+
+            $.ajax({
+                url : '/regression/decisiontree',
+                type : 'get',
+                contentType:"application/json",
+                dataType: "json",
+                data : {
+                    "model" : $(".post_select").val()
+                },
+                success: function(result) {
+                    console.log("success: ", result);
+                },
+                error: function(e) {
+                    console.log("error: ", e);
+                }
+            })
         })
 
 
