@@ -5,20 +5,20 @@ import warnings
 import matplotlib.pyplot as plt
 import pandas as pd
 from sklearn.externals import joblib
-from sklearn.cross_decomposition import CCA
+from sklearn.ensemble import ExtraTreesRegressor
 from sklearn.metrics import r2_score
 
 
-class CcaClass:
+class ExtraTreesClass:
     """
-    Name      : CCA
+    Name      : ExtraTreesRegressor
     Attribute : None
     Method    : predict, predict_by_cv, save_model
     """
 
     def __init__(self):
         # 알고리즘 이름
-        self._name = 'cca'
+        self._name = 'extratrees'
 
         # 기본 경로
         self._f_path = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), os.pardir))
@@ -39,7 +39,7 @@ class CcaClass:
         self._x_test, self._y_test = self.preprocessing(data[self._y])
 
         # 모델 선언
-        self._model = CCA()
+        self._model = ExtraTreesRegressor()
 
         # 모델 학습
         self._model.fit(self._x_train, self._y_train)
@@ -82,6 +82,10 @@ class CcaClass:
             print(f'intercept = {self._model.intercept_}')
 
         print(f'Score = {score}')
+
+        print('-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0')
+        print('*' * 30)
+        print(y_pred)
 
         # 이미지 저장 여부
         if save_img:
@@ -132,7 +136,7 @@ class CcaClass:
 
 if __name__ == "__main__":
     # 클래스 선언
-    classifier = CcaClass()
+    classifier = ExtraTreesClass()
 
     # 분류 실행
     classifier.predict()

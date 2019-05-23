@@ -9,7 +9,7 @@ from sklearn.linear_model import ARDRegression
 from sklearn.metrics import r2_score
 
 
-class ArdClass:
+class ARDClass:
     """
     Name      : ARDRegression
     Attribute : None

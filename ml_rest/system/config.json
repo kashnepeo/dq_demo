@@ -17,7 +17,9 @@
       "linearsvc": "LinearSVCClass",
       "logisticregression": "LogisticRegressionClass",
       "nusvc": "NuSVCClass",
-      "perceptron": "PerceptronClass"
+      "perceptron": "PerceptronClass",
+      "sgd": "SgdClass",
+      "gradientboosting": "GradientBoostingClass"
     },
     "regression": {
       "ard": "ARDClass",
@@ -25,7 +27,12 @@
       "linear": "LinearClass",
       "svr": "SvrClass",
       "decisiontree": "DecisionTreeClass",
-      "cca": "CcaClass"
+      "cca": "CcaClass",
+      "extratree": "ExtraTreeClass",
+      "extratrees": "ExtraTreesClass",
+      "gaussianprocess": "GaussianProcessClass",
+      "gradientboosting": "GradientBoostingClass",
+      "kernelridge": "KernelRidgeClass"
     }
   }
 }

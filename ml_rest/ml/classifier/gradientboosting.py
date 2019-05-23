@@ -93,10 +93,10 @@ if __name__ == "__main__":
     classifier = GradientBoostingClass()
 
     # 분류 실행
-    classifier.predict()
+    # classifier.predict()
 
     # 분류 실행(Cross Validation)
-    # classifier.predict_by_cv()
+    classifier.predict_by_cv()
 
     # 모델 신규
     classifier.save_model()

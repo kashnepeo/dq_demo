@@ -41,9 +41,12 @@ class ClassifierHandler(Resource):
 
         # 분류 객체 생성(Str -> Class)
         cls = eval(element + '.' + app.config['algorithm']['classifier'][element])()
+        print(cls)
+        print(cls.predict_by_cv())
 
         # 응답 데이터
-        data = dict(name=element, category='classifier', success=True, score=cls.predict(), cv_score=list(cls.predict_by_cv()), req_time=time.time())
+        data = dict(name=element, category='classifier', success=True, score=cls.predict(),
+                    cv_score=list(cls.predict_by_cv()), req_time=time.time())
 
         # 모델 Payload 확인
         if os.path.isfile(f'./ml/model/{element}.pkl'):
@@ -73,10 +76,11 @@ class RegressionHandler(Resource):
         # ****
 
         # 분류 객체 생성(Str -> Class)
-        cls = eval(element + '.' + app.config['algorithm']['regression'][element])()
+        cls = eval(element + '_rg.' + app.config['algorithm']['regression'][element])()
 
         # 응답 데이터
-        data = dict(name=element, category='regression', success=True, pre_data=cls.predict()[0], score=cls.predict()[1], cv_score=cls.predict_by_cv(),
+        data = dict(name=element, category='regression', success=True, pre_data=cls.predict()[0],
+                    score=cls.predict()[1], cv_score=cls.predict_by_cv(),
                     req_time=time.time())
 
         # 모델 Payload 확인
