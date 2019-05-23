@@ -24,7 +24,8 @@
       "bagging": "BaggingClass",
       "linear": "LinearClass",
       "svr": "SvrClass",
-      "decisiontree": "DecisionTreeClass"
+      "decisiontree": "DecisionTreeClass",
+      "cca": "CcaClass"
     }
   }
 }

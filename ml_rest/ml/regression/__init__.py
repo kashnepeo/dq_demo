@@ -1,1 +1,1 @@
-__all__ = ['ard', 'bagging', 'linear', 'svr', 'decisiontree']
+__all__ = ['ard', 'bagging', 'linear', 'svr', 'decisiontree', 'cca']
