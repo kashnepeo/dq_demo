@@ -23,7 +23,8 @@
       "ard": "ARDClass",
       "bagging": "BaggingClass",
       "linear": "LinearClass",
-      "svr": "SvrClass"
+      "svr": "SvrClass",
+      "decisiontree": "DecisionTreeClass"
     }
   }
 }
