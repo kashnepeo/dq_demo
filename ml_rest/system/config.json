@@ -32,7 +32,11 @@
       "extratrees": "ExtraTreesClass",
       "gaussianprocess": "GaussianProcessClass",
       "gradientboosting": "GradientBoostingClass",
-      "kernelridge": "KernelRidgeClass"
+      "kernelridge": "KernelRidgeClass",
+      "lars": "LarsClass",
+      "larscv": "LarsCvClass",
+      "lasso": "LassoClass",
+      "lassocv": "LassoCvClass"
     }
   }
 }
