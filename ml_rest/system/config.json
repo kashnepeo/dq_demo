@@ -36,7 +36,15 @@
       "lars": "LarsClass",
       "larscv": "LarsCvClass",
       "lasso": "LassoClass",
-      "lassocv": "LassoCvClass"
+      "lassocv": "LassoCvClass",
+      "linearsvr": "LinearSvrClass",
+      "mlp": "MlpClass",
+      "nusvr": "NuSvrClass",
+      "ransac": "RansacClass",
+      "randomforest": "RandomForestClass",
+      "ridge": "RidgeClass",
+      "ridgecv": "RidgeCvClass",
+      "sgd": "SgdClass"
     }
   }
 }

@@ -3,7 +3,7 @@ import time
 import os
 import warnings
 from sklearn.model_selection import train_test_split
-from sklearn.ensemble import BaggingClassifier
+from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score
 from sklearn.model_selection import KFold
 from sklearn.model_selection import cross_val_score
@@ -39,7 +39,7 @@ class RandomForestClass:
                                                                                     shuffle=True,
                                                                                     random_state=42)
         # 모델 선언
-        self._model = BaggingClassifier()
+        self._model = RandomForestClassifier()
 
         # 모델 학습
         self._model.fit(self._x_train, self._y_train)
