@@ -9,7 +9,7 @@
       "decisiontree": "DecisionTreeClass",
       "extratrees": "ExtraTreesClass",
       "extratree": "ExtraTreeClass",
-      "gaussiannb": "GaussianNB",
+      "gaussiannb": "GaussianNBClass",
       "gaussianprocess": "GaussianProcessClass",
       "svc": "SvcClass",
       "mlp": "MlpClass",
