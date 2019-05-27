@@ -29,6 +29,8 @@
     <script src='{{ url_for('static', filename = 'jquery.min.js') }}' type='text/javascript'></script>
     <script src='{{ url_for('static', filename = 'vue.min.js') }}' type='text/javascript'></script>
     <script src='{{ url_for('static', filename = 'axios.min.js') }}' type='text/javascript'></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.1.6/Chart.bundle.min.js"></script>
+
 </head>
 
 <body>
@@ -250,13 +252,13 @@
                                                                     <h4>Curl</h4>
                                                                     <div class="copy-paste">
                                                                 <textarea readonly="" class="curl"
-                                                                          style="white-space: normal;">curl -X POST "https://httpbin.org/post" -H "accept: application/json"</textarea>
+                                                                          style="white-space: normal;"></textarea>
                                                                     </div>
                                                                 </div>
                                                                 <div>
                                                                     <h4>Request URL</h4>
                                                                     <div class="request-url">
-                                                                        <pre>https://httpbin.org/post</pre>
+                                                                        <pre></pre>
                                                                     </div>
                                                                 </div>
                                                                 <h4>Server response</h4>
@@ -278,24 +280,24 @@
                                                                             <div>
                                                                                 <h5>Algorithm Name</h5>
                                                                                 <div class="highlight-code">
-                                                                                    <pre class=" microlight"><span style="color: #555;">"test Response body"</span></pre>
+                                                                                    <pre class=" microlight"><span style="color: #555;"></span></pre>
                                                                                 </div>
                                                                             </div>
                                                                             <div>
                                                                                 <h5>Category</h5>
-                                                                                <pre><span class="headerline">test Response headers</span></pre>
+                                                                                <pre><span class="headerline"></span></pre>
                                                                             </div>
                                                                             <div>
                                                                                 <h5>Score</h5>
-                                                                                <pre><span class="headerline">test Response headers</span></pre>
+                                                                                <pre><span class="headerline"></span></pre>
                                                                             </div>
                                                                             <div>
                                                                                 <h5>Cross Validation Score</h5>
-                                                                                <pre><span class="headerline">test Response headers</span></pre>
+                                                                                <pre><span class="headerline"></span></pre>
                                                                             </div>
                                                                             <div>
                                                                                 <h5>Regression Result</h5>
-                                                                                <pre><span class="headerline">test Response headers</span></pre>
+                                                                                <pre><span class="headerline"><canvas id="myChart" width="600" height="400"></canvas></span></pre>
                                                                             </div>
                                                                             <div>
                                                                                 <h5>Data Response Succeed</h5>
@@ -412,7 +414,7 @@
                     let pre_data = response.data.pre_data
                     let req_time = response.data.req_time
                     let score = response.data.score
-
+                    console.log(response);
                     $("#regression_ready .microlight").text(name);
                     $("#regression_ready .headerline").each(function (index, item) {
                         if (index == 0) {
@@ -422,15 +424,61 @@
                         } else if (index == 2) {
                             $(item).text(cv_score);
                         } else if (index == 3) {
-                            $(item).text(pre_data);
+                            regression_chart(pre_data);
                         } else if (index == 4) {
                             $(item).text("True");
                         }
                     });
+                    $("#regression_ready textarea").text('curl -X POST "https://localhost:8000/regression/'+$(".regression_sb").val()+' -H "accept: application/json"');
+                    $("#regression_ready .request-url pre").text('https://localhost:8000/regression/'+$(".regression_sb").val());
                 });
             }
         }
     });
+
+    function regression_chart(pre_data) {
+        console.log(pre_data);
+
+        let label_list = new Array();
+        for (var i = 0; i < pre_data.length; i++) {
+            if(i%50==0) {
+                label_list.push(i);
+            } else {
+                label_list.push('');
+            }
+        }
+        var ctx = $("#myChart");
+        var myChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: label_list,
+                fillColor: "FFFFFF",
+                strokeColor: "rgba(220,220,220,1)",
+                pointColor: "rgba(220,220,220,1)",
+                pointStrokeColor: "#fff",
+                pointHighlightFill: "#fff",
+                pointHighlightStroke: "rgba(220,220,220,1)",
+                datasets: [{
+                    label: '2018 Temperature Prediction',
+                    data: pre_data,
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                legend: {
+                    display: false
+                },
+                scales: {
+
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                }
+            }
+        });
+    }
 </script>
 
 </body>
