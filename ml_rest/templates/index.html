@@ -27,6 +27,8 @@
         }
     </style>
     <script src='{{ url_for('static', filename = 'jquery.min.js') }}' type='text/javascript'></script>
+    <script src='{{ url_for('static', filename = 'vue.min.js') }}' type='text/javascript'></script>
+    <script src='{{ url_for('static', filename = 'axios.min.js') }}' type='text/javascript'></script>
 </head>
 
 <body>
@@ -44,8 +46,7 @@
                                 </small>
                             </h2>
                         </hgroup>
-                        <div>
-                        </div>
+                    </div>
                 </section>
             </div>
             <div class="wrapper">
@@ -66,280 +67,272 @@
                             </h4>
                             <div style="height: auto; border: none; margin: 0px; padding: 0px;">
                                 <div class="opblock opblock-delete is-open" id="operations-HTTP Methods-delete_delete">
-                                    <div class="opblock-summary opblock-summary-delete get_opblock"><span
-                                            class="opblock-summary-method">Classifier</span><span
-                                            class="opblock-summary-path"><a class="nostyle"
-                                                                            href="#/operations/HTTP Methods/delete_delete"><span>/classifier/{algorithm}</span></a>
-                                            </span>
+                                    <div class="opblock-summary opblock-summary-delete get_opblock">
+                                        <span class="opblock-summary-method">Classifier</span>
+                                        <span class="opblock-summary-path"><a class="nostyle" href="#/operations/HTTP Methods/delete_delete"><span>/classifier/{algorithm}</span></a></span>
                                         <div class="opblock-summary-description">The request's GET parameters.</div>
                                     </div>
-                                    <div class="get_opblock-body"
-                                         style="height: auto; border: none; margin: 0px; padding: 0px;">
-                                        <div class="opblock-body"
-                                        ">
-                                        <div class="responses-wrapper">
-                                            <div class="opblock-section-header">
-                                                <h4>Responses</h4>
-                                                <label><span>Response content type</span>
-                                                    <div class="content-type-wrapper execute-content-type">
-                                                        <select class="content-type classifier_sb">
-                                                            <option value="bagging">BaggingClassfier</option>
-                                                            <option value="bernoulinb">BernouliNB</option>
-                                                            <option value="decisiontree">DecisionTreeClassifier</option>
-                                                            <option value="extratree">ExtraTreeClassifier</option>
-                                                            <option value="extratrees">ExtraTreesClassifier</option>
-                                                            <option value="gaussiannb">GaussianNB</option>
-                                                            <option value="gaussianprocess">
-                                                                GaussianProcessClassifier(Only Model)
-                                                            </option>
-                                                            <option value="gradientboosting">
-                                                                GradientBoostingClassifier
-                                                            </option>
-                                                            <option value="kneighbors">KNeighborsClassifier</option>
-                                                            <option value="linearsvc">LinearSVC</option>
-                                                            <option value="logisticregression">LogisticRegression
-                                                            </option>
-                                                            <option value="mlp">MLPClassfier</option>
-                                                            <option value="nusvc">NuSVC</option>
-                                                            <option value="perceptron">Perceptron</option>
-                                                            <option value="randomforest">RandomForestClassfier</option>
-                                                            <option value="sgd">SGDClassfier</option>
-                                                            <option value="svc">SVC</option>
-                                                        </select>
-                                                        <button class="btn try-out__btn classifier_execute">Execute</button>
-                                                    </div>
-                                                </label>
-                                            </div>
-                                            <div class="responses-inner">
-                                                <div>
+                                    <div class="get_opblock-body" style="height: auto; border: none; margin: 0px; padding: 0px;">
+                                        <div class="opblock-body">
+                                            <div class="responses-wrapper">
+                                                <div class="opblock-section-header">
+                                                    <h4>Responses</h4>
+                                                    <label><span>Response content type</span>
+                                                        <div class="content-type-wrapper execute-content-type">
+                                                            <select class="content-type classifier_sb">
+                                                                <option value="bagging">BaggingClassfier</option>
+                                                                <option value="bernoulinb">BernouliNB</option>
+                                                                <option value="decisiontree">DecisionTreeClassifier</option>
+                                                                <option value="extratree">ExtraTreeClassifier</option>
+                                                                <option value="extratrees">ExtraTreesClassifier</option>
+                                                                <option value="gaussiannb">GaussianNB</option>
+                                                                <option value="gaussianprocess">
+                                                                    GaussianProcessClassifier(Only Model)
+                                                                </option>
+                                                                <option value="gradientboosting">
+                                                                    GradientBoostingClassifier
+                                                                </option>
+                                                                <option value="kneighbors">KNeighborsClassifier</option>
+                                                                <option value="linearsvc">LinearSVC</option>
+                                                                <option value="logisticregression">LogisticRegression
+                                                                </option>
+                                                                <option value="mlp">MLPClassfier</option>
+                                                                <option value="nusvc">NuSVC</option>
+                                                                <option value="perceptron">Perceptron</option>
+                                                                <option value="randomforest">RandomForestClassfier</option>
+                                                                <option value="sgd">SGDClassfier</option>
+                                                                <option value="svc">SVC</option>
+                                                            </select>
+                                                            <button class="btn try-out__btn classifier_execute">Execute</button>
+                                                        </div>
+                                                    </label>
+                                                </div>
+                                                <div class="responses-inner">
                                                     <div>
                                                         <div>
-                                                            <h4>Curl</h4>
-                                                            <div class="copy-paste">
-                                                                <textarea readonly="" class="curl"
-                                                                          style="white-space: normal;">curl -X GET "https://httpbin.org/get" -H "accept: application/json"</textarea>
-                                                            </div>
-                                                        </div>
-                                                        <div>
-                                                            <h4>Request URL</h4>
-                                                            <div class="request-url">
-                                                                <pre>https://httpbin.org/get</pre>
-                                                            </div>
-                                                        </div>
-                                                        <h4>Server response</h4>
-                                                        <table class="responses-table">
-                                                            <thead>
-                                                            <tr class="responses-header">
-                                                                <td class="col col_header response-col_status">Status Code</td>
-                                                                <td class="col col_header response-col_description">
-                                                                    Details
-                                                                </td>
-                                                            </tr>
-                                                            </thead>
-                                                            <tbody>
-                                                            <tr class="response">
-                                                                <td class="col response-col_status">
-                                                                    200
-                                                                </td>
-                                                                <td class="col response-col_description">
-                                                                    <div>
-                                                                        <h5>Algorithm Name</h5>
-                                                                        <div class="highlight-code">
-                                                                            <pre class=" microlight"><span
-                                                                                    style="color: #555;">"test Response body"</span></pre>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div>
-                                                                        <h5>Category</h5>
-                                                                        <pre><span class="headerline">test Response headers</span></pre>
-                                                                    </div>
-                                                                    <div>
-                                                                        <h5>Score</h5>
-                                                                        <pre><span class="headerline">test Response headers</span></pre>
-                                                                    </div>
-                                                                    <div>
-                                                                        <h5>Cross Validation Score</h5>
-                                                                        <pre><span class="headerline">test Response headers</span></pre>
-                                                                    </div>
-                                                                     <div>
-                                                                        <h5>Data Response Succeed</h5>
-                                                                        <pre><span class="headerline">True</span></pre>
-                                                                    </div>
-                                                                </td>
-                                                            </tr>
-                                                            </tbody>
-                                                        </table>
-                                                    </div>
-                                                    <h4>Responses</h4></div>
-                                                <table class="responses-table">
-                                                    <thead>
-                                                    <tr class="responses-header">
-                                                        <td class="col col_header response-col_status">Status Code</td>
-                                                        <td class="col col_header response-col_description">
-                                                            Request Date
-                                                        </td>
-
-                                                    </tr>
-                                                    </thead>
-
-                                                    <tbody>
-                                                    <tr class="response response_current">
-                                                        <td class="col response-col_status">200</td>
-                                                        <td class="col response-col_description">
-                                                            <div class="response-col_description__inner">
-                                                                <div class="markdown">
-                                                                    <p>2019.05.19 22:34:21</p>
+                                                            <div>
+                                                                <h4>Curl</h4>
+                                                                <div class="copy-paste">
+                                                                    <textarea readonly="" class="curl" style="white-space: normal;">curl -X GET "https://httpbin.org/get" -H "accept: application/json"</textarea>
                                                                 </div>
                                                             </div>
-                                                            <div class="response-content-type">
+                                                            <div>
+                                                                <h4>Request URL</h4>
+                                                                <div class="request-url">
+                                                                    <pre>https://httpbin.org/get</pre>
+                                                                </div>
                                                             </div>
-                                                        </td>
-                                                    </tr>
-                                                    </tbody>
-                                                </table>
+                                                            <h4>Server response</h4>
+                                                            <table class="responses-table">
+                                                                <thead>
+                                                                <tr class="responses-header">
+                                                                    <td class="col col_header response-col_status">Status Code</td>
+                                                                    <td class="col col_header response-col_description">
+                                                                        Details
+                                                                    </td>
+                                                                </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                <tr class="response">
+                                                                    <td class="col response-col_status">
+                                                                        200
+                                                                    </td>
+                                                                    <td class="col response-col_description">
+                                                                        <div>
+                                                                            <h5>Algorithm Name</h5>
+                                                                            <div class="highlight-code">
+                                                                            <pre class=" microlight"><span
+                                                                                    style="color: #555;">"test Response body"</span></pre>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div>
+                                                                            <h5>Category</h5>
+                                                                            <pre><span class="headerline">test Response headers</span></pre>
+                                                                        </div>
+                                                                        <div>
+                                                                            <h5>Score</h5>
+                                                                            <pre><span class="headerline">test Response headers</span></pre>
+                                                                        </div>
+                                                                        <div>
+                                                                            <h5>Cross Validation Score</h5>
+                                                                            <pre><span class="headerline">test Response headers</span></pre>
+                                                                        </div>
+                                                                        <div>
+                                                                            <h5>Data Response Succeed</h5>
+                                                                            <pre><span class="headerline">True</span></pre>
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                        <h4>Responses</h4>
+                                                    </div>
+                                                    <table class="responses-table">
+                                                        <thead>
+                                                        <tr class="responses-header">
+                                                            <td class="col col_header response-col_status">Status Code</td>
+                                                            <td class="col col_header response-col_description">
+                                                                Request Date
+                                                            </td>
+
+                                                        </tr>
+                                                        </thead>
+
+                                                        <tbody>
+                                                        <tr class="response response_current">
+                                                            <td class="col response-col_status">200</td>
+                                                            <td class="col response-col_description">
+                                                                <div class="response-col_description__inner">
+                                                                    <div class="markdown">
+                                                                        <p>2019.05.19 22:34:21</p>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="response-content-type">
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
 
-
-                            <div class="opblock opblock-get is-open" id="operations-HTTP Methods-get_get">
-                                <div class="opblock-summary opblock-summary-get post_opblock"><span
-                                        class="opblock-summary-method">Regression</span><span
-                                        class="opblock-summary-path"><a class="nostyle"
-                                                                        href="#/operations/HTTP Methods/get_get"><span>/regression/{algorithm}</span></a>
-                                            </span>
-                                    <div class="opblock-summary-description">The request’s GET parameters.</div>
-                                </div>
-                                <div class="post_opblock-body"
-                                     style="height: auto; border: none; margin: 0px; padding: 0px;">
-                                    <div class="opblock-body">
-                                        <div class="responses-wrapper">
-                                            <div class="opblock-section-header">
-                                                <h4>Responses</h4>
-                                                <label><span>Response content type</span>
-                                                    <div class="content-type-wrapper execute-content-type">
-                                                        <select class="content-type regression_sb">
-                                                            <option value="ard">ARDRegression(Only Model)</option>
-                                                            <option value="bagging">BaggingRegressor</option>
-                                                            <option value="cca">CCA</option>
-                                                            <option value="decisiontree">DecisionTreeRegressor</option>
-                                                            <option value="extratree">ExtraTreeRegressor</option>
-                                                            <option value="extratrees">ExtraTreesRegressor</option>
-                                                            <option value="gaussianprocess">GaussianProcessRegssor</option>
-                                                            <option value="gradientboosting">GradientBoostingRegssor</option>
-                                                            <option value="kernelridge">KernelRidge</option>
-                                                            <option value="lars">Lars</option>
-                                                            <option value="larscv">LarsCV</option>
-                                                            <option value="lasso">Lasso</option>
-                                                            <option value="lassocv">LassoCV</option>
-                                                            <option value="linear">LinearRegression</option>
-                                                            <option value="linearsvr">LinearSVR</option>
-                                                            <option value="mlp">MLPRegressor</option>
-                                                            <option value="nusvr">NuSVR</option>
-                                                            <option value="ransac">RANSACRegressor</option>
-                                                            <option value="randomforest">RandomForestRegressor</option>
-                                                            <option value="ridge">Ridge</option>
-                                                            <option value="ridgecv">RidgeCV</option>
-                                                            <option value="sgd">SGDRegressor</option>
-                                                            <option value="svr">SVR</option>
-                                                        </select>
-                                                        <button class="btn execute opblock-control__btn regression_execute">
-                                                            Execute
-                                                        </button>
+                                <div id="regression_ready">
+                                    <div class="opblock opblock-get is-open" id="operations-HTTP Methods-get_get">
+                                        <div class="opblock-summary opblock-summary-get post_opblock">
+                                            <span class="opblock-summary-method">Regression</span>
+                                            <span class="opblock-summary-path"><a class="nostyle" href="#/operations/HTTP Methods/get_get"><span>/regression/{algorithm}</span></a></span>
+                                            <div class="opblock-summary-description">The request’s GET parameters.</div>
+                                        </div>
+                                        <div class="post_opblock-body" style="height: auto; border: none; margin: 0px; padding: 0px;">
+                                            <div class="opblock-body">
+                                                <div class="responses-wrapper">
+                                                    <div class="opblock-section-header">
+                                                        <h4>Responses</h4>
+                                                        <label><span>Response content type</span>
+                                                            <div class="content-type-wrapper execute-content-type">
+                                                                <select class="content-type regression_sb">
+                                                                    <option value="ard">ARDRegression(Only Model)</option>
+                                                                    <option value="bagging">BaggingRegressor</option>
+                                                                    <option value="cca">CCA</option>
+                                                                    <option value="decisiontree">DecisionTreeRegressor</option>
+                                                                    <option value="extratree">ExtraTreeRegressor</option>
+                                                                    <option value="extratrees">ExtraTreesRegressor</option>
+                                                                    <option value="gaussianprocess">GaussianProcessRegssor</option>
+                                                                    <option value="gradientboosting">GradientBoostingRegssor</option>
+                                                                    <option value="kernelridge">KernelRidge</option>
+                                                                    <option value="lars">Lars</option>
+                                                                    <option value="larscv">LarsCV</option>
+                                                                    <option value="lasso">Lasso</option>
+                                                                    <option value="lassocv">LassoCV</option>
+                                                                    <option value="linear">LinearRegression</option>
+                                                                    <option value="linearsvr">LinearSVR</option>
+                                                                    <option value="mlp">MLPRegressor</option>
+                                                                    <option value="nusvr">NuSVR</option>
+                                                                    <option value="ransac">RANSACRegressor</option>
+                                                                    <option value="randomforest">RandomForestRegressor</option>
+                                                                    <option value="ridge">Ridge</option>
+                                                                    <option value="ridgecv">RidgeCV</option>
+                                                                    <option value="sgd">SGDRegressor</option>
+                                                                    <option value="svr">SVR</option>
+                                                                </select>
+                                                                <button class="btn execute opblock-control__btn regression_execute" v-on:click="regression_analyze"> Execute</button>
+                                                            </div>
+                                                        </label>
                                                     </div>
-                                                </label>
-                                            </div>
-                                            <div class="responses-inner">
-                                                <div>
-                                                    <div>
+                                                    <div class="responses-inner">
                                                         <div>
-                                                            <h4>Curl</h4>
-                                                            <div class="copy-paste">
+                                                            <div>
+                                                                <div>
+                                                                    <h4>Curl</h4>
+                                                                    <div class="copy-paste">
                                                                 <textarea readonly="" class="curl"
                                                                           style="white-space: normal;">curl -X POST "https://httpbin.org/post" -H "accept: application/json"</textarea>
+                                                                    </div>
+                                                                </div>
+                                                                <div>
+                                                                    <h4>Request URL</h4>
+                                                                    <div class="request-url">
+                                                                        <pre>https://httpbin.org/post</pre>
+                                                                    </div>
+                                                                </div>
+                                                                <h4>Server response</h4>
+                                                                <table class="responses-table">
+                                                                    <thead>
+                                                                    <tr class="responses-header">
+                                                                        <td class="col col_header response-col_status">Status Code</td>
+                                                                        <td class="col col_header response-col_description">
+                                                                            Details
+                                                                        </td>
+                                                                    </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                    <tr class="response">
+                                                                        <td class="col response-col_status">
+                                                                            200
+                                                                        </td>
+                                                                        <td class="col response-col_description">
+                                                                            <div>
+                                                                                <h5>Algorithm Name</h5>
+                                                                                <div class="highlight-code">
+                                                                                    <pre class=" microlight"><span style="color: #555;">"test Response body"</span></pre>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div>
+                                                                                <h5>Category</h5>
+                                                                                <pre><span class="headerline">test Response headers</span></pre>
+                                                                            </div>
+                                                                            <div>
+                                                                                <h5>Score</h5>
+                                                                                <pre><span class="headerline">test Response headers</span></pre>
+                                                                            </div>
+                                                                            <div>
+                                                                                <h5>Cross Validation Score</h5>
+                                                                                <pre><span class="headerline">test Response headers</span></pre>
+                                                                            </div>
+                                                                            <div>
+                                                                                <h5>Regression Result</h5>
+                                                                                <pre><span class="headerline">test Response headers</span></pre>
+                                                                            </div>
+                                                                            <div>
+                                                                                <h5>Data Response Succeed</h5>
+                                                                                <pre><span class="headerline">True</span></pre>
+                                                                            </div>
+                                                                        </td>
+                                                                    </tr>
+                                                                    </tbody>
+                                                                </table>
                                                             </div>
-                                                        </div>
-                                                        <div>
-                                                            <h4>Request URL</h4>
-                                                            <div class="request-url">
-                                                                <pre>https://httpbin.org/post</pre>
-                                                            </div>
-                                                        </div>
-                                                        <h4>Server response</h4>
+                                                            <h4>Responses</h4></div>
                                                         <table class="responses-table">
                                                             <thead>
                                                             <tr class="responses-header">
                                                                 <td class="col col_header response-col_status">Status Code</td>
                                                                 <td class="col col_header response-col_description">
-                                                                    Details
+                                                                    Request Date
                                                                 </td>
                                                             </tr>
                                                             </thead>
                                                             <tbody>
-                                                            <tr class="response">
-                                                                <td class="col response-col_status">
-                                                                    200
-                                                                </td>
+                                                            <tr class="response response_current">
+                                                                <td class="col response-col_status">200</td>
                                                                 <td class="col response-col_description">
-                                                                    <div>
-                                                                        <h5>Algorithm Name</h5>
-                                                                        <div class="highlight-code">
-                                                                            <pre class=" microlight"><span
-                                                                                    style="color: #555;">"test Response body"</span></pre>
+                                                                    <div class="response-col_description__inner">
+                                                                        <div class="markdown">
+                                                                            <p>2019.05.19 22:34:21</p>
                                                                         </div>
                                                                     </div>
-                                                                    <div>
-                                                                        <h5>Category</h5>
-                                                                        <pre><span class="headerline">test Response headers</span></pre>
-                                                                    </div>
-                                                                    <div>
-                                                                        <h5>Score</h5>
-                                                                        <pre><span class="headerline">test Response headers</span></pre>
-                                                                    </div>
-                                                                    <div>
-                                                                        <h5>Cross Validation Score</h5>
-                                                                        <pre><span class="headerline">test Response headers</span></pre>
-                                                                    </div>
-                                                                    <div>
-                                                                        <h5>Regression Result</h5>
-                                                                        <pre><span class="headerline">test Response headers</span></pre>
-                                                                    </div>
-                                                                     <div>
-                                                                        <h5>Data Response Succeed</h5>
-                                                                        <pre><span class="headerline">True</span></pre>
+                                                                    <div class="response-content-type">
                                                                     </div>
                                                                 </td>
                                                             </tr>
                                                             </tbody>
                                                         </table>
                                                     </div>
-                                                    <h4>Responses</h4></div>
-                                                <table class="responses-table">
-                                                    <thead>
-                                                    <tr class="responses-header">
-                                                        <td class="col col_header response-col_status">Status Code</td>
-                                                        <td class="col col_header response-col_description">
-                                                            Request Date
-                                                        </td>
-                                                    </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                    <tr class="response response_current">
-                                                        <td class="col response-col_status">200</td>
-                                                        <td class="col response-col_description">
-                                                            <div class="response-col_description__inner">
-                                                                <div class="markdown">
-                                                                    <p>2019.05.19 22:34:21</p>
-                                                                </div>
-                                                            </div>
-                                                            <div class="response-content-type">
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                    </tbody>
-                                                </table>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -347,11 +340,10 @@
                             </div>
                         </div>
                     </div>
+                </section>
             </div>
-            </section>
         </div>
     </div>
-</div>
 </div>
 
 <script>
@@ -391,21 +383,54 @@
             $(".post_opblock-body").css("display", "block");
         }
     });
-
-    $(".regression_execute").click(function () {
-        $.ajax({
-            url: '/regression/' + $(".regression_sb").val(),
-            type: 'get',
-            contentType: "application/json",
-            dataType: "json",
-            success: function (result) {
-                console.log("success: ", result);
-            },
-            error: function (e) {
-                console.log("error: ", e);
-            }
+    /*
+        $(".regression_execute").click(function () {
+            $.ajax({
+                url: '/regression/' + $(".regression_sb").val(),
+                type: 'get',
+                contentType: "application/json",
+                dataType: "json",
+                success: function (result) {
+                    console.log("success: ", result);
+                },
+                error: function (e) {
+                    console.log("error: ", e);
+                }
+            })
         })
-    })
+    */
+    let regression_execute = new Vue({
+        el: '#regression_ready'
+        , data: {
+            result_set: []
+        }, methods: {
+            regression_analyze: function () {
+                axios.get('/regression/' + $(".regression_sb").val()).then(response => {
+                    let category = response.data.category
+                    let cv_score = response.data.cv_score
+                    let name = response.data.name
+                    let pre_data = response.data.pre_data
+                    let req_time = response.data.req_time
+                    let score = response.data.score
+
+                    $("#regression_ready .microlight").text(name);
+                    $("#regression_ready .headerline").each(function (index, item) {
+                        if (index == 0) {
+                            $(item).text(category);
+                        } else if (index == 1) {
+                            $(item).text(score);
+                        } else if (index == 2) {
+                            $(item).text(cv_score);
+                        } else if (index == 3) {
+                            $(item).text(pre_data);
+                        } else if (index == 4) {
+                            $(item).text("True");
+                        }
+                    });
+                });
+            }
+        }
+    });
 </script>
 
 </body>
