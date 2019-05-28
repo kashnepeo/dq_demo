@@ -135,10 +135,10 @@ if __name__ == "__main__":
     classifier = NuSvrClass()
 
     # 분류 실행
-    classifier.predict()
+    # classifier.predict()
 
     # 분류 실행(이미지 생성& 차트 확인)
-    # classifier.predict(save_img=True, show_chart=True)
+    classifier.predict(save_img=True, show_chart=True)
 
     # 분류 실행(Cross Validation)
     # classifier.predict_by_cv()

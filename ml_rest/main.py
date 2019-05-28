@@ -38,11 +38,6 @@ def abort_function():
 class ClassifierHandler(Resource):
     def get(self, element):
 
-        # 예외 처리(403, 404)
-        # 공통 함수로 처리
-        # 어재현
-        # ****
-
         # 분류 객체 생성(Str -> Class)
         try:
             cls = eval(element + '.' + app.config['algorithm']['classifier'][element])()
@@ -74,11 +69,6 @@ class ClassifierHandler(Resource):
 # Regression
 class RegressionHandler(Resource):
     def get(self, element):
-
-        # 예외 처리(403, 404)
-        # 공통 함수로 처리
-        # 어재현
-        # ****
 
         # 분류 객체 생성(Str -> Class)
         try:
