@@ -325,7 +325,6 @@
                                                             <td class="col response-col_description">
                                                                 <div class="response-col_description__inner">
                                                                     <div class="markdown">
-                                                                        <p>2019.05.19 22:34:21</p>
                                                                     </div>
                                                                 </div>
                                                                 <div class="response-content-type">
@@ -443,6 +442,7 @@
                             $(item).text("True");
                         }
                     });
+                    $("#regression_ready .markdown").html("<p>"+Common.Date.getReq_time(req_time, ".")+"</p>");
                     $("#regression_ready textarea").text('curl -X POST "https://localhost:8000/regression/' + $(".regression_sb").val() + ' -H "accept: application/json"');
                     $("#regression_ready .request-url pre").text('https://localhost:8000/regression/' + $(".regression_sb").val());
 
