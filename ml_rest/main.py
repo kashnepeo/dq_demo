@@ -5,7 +5,7 @@ import time
 
 import flask
 from flask import Flask
-from flask_restful import Resource, Api
+from flask_restful import Resource, Api, abort
 from ml.classifier import *
 from ml.regression import *
 
@@ -30,6 +30,10 @@ def index():
     return flask.render_template('index.html')
 
 
+def abort_function():
+    abort(404)
+
+
 # Classifier
 class ClassifierHandler(Resource):
     def get(self, element):
@@ -40,9 +44,10 @@ class ClassifierHandler(Resource):
         # ****
 
         # 분류 객체 생성(Str -> Class)
-        cls = eval(element + '.' + app.config['algorithm']['classifier'][element])()
-        print(cls)
-        print(cls.predict_by_cv())
+        try:
+            cls = eval(element + '.' + app.config['algorithm']['classifier'][element])()
+        except KeyError:
+            abort_function()
 
         # 응답 데이터
         data = dict(name=element, category='classifier', success=True, score=cls.predict(),
@@ -76,7 +81,10 @@ class RegressionHandler(Resource):
         # ****
 
         # 분류 객체 생성(Str -> Class)
-        cls = eval(element + '_rg.' + app.config['algorithm']['regression'][element])()
+        try:
+            cls = eval(element + '_rg.' + app.config['algorithm']['regression'][element])()
+        except KeyError:
+            abort_function()
 
         # 응답 데이터
         data = dict(name=element, category='regression', success=True, pre_data=cls.predict()[0],
