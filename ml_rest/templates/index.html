@@ -380,8 +380,8 @@
             contentType: "application/json",
             dataType: "json",
             success: function (result, textStauts, jqXHR) {
-                $(".classifier_curl").html('curl -X ' + this.type + ' "' + this.url + '" -H "accept: ' + this.contentType + '"'); // Curl
-                $(".classifier_req_url").html(this.url); // Request URL
+                $(".classifier_curl").html('curl -X ' + this.type + ' "' + "https://localhost:8000/" + this.url + '" -H "accept: ' + this.contentType + '"'); // Curl
+                $(".classifier_req_url").html("https://localhost:8000/" + this.url); // Request URL
                 $(".class_fier_name").html(result.name); // Algorithm Name
                 $(".class_fier_category").html(result.category); // Category
                 $(".class_fier_score").html(result.score); // Score
