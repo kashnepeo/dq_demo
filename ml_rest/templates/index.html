@@ -117,7 +117,7 @@
                                                             <div>
                                                                 <h4>Curl</h4>
                                                                 <div class="copy-paste">
-{#                                                                    <textarea readonly="" class="curl" style="white-space: normal;">curl -X GET "https://httpbin.org/get" -H "accept: application/json"</textarea>#}
+                                                                    {#                                                                    <textarea readonly="" class="curl" style="white-space: normal;">curl -X GET "https://httpbin.org/get" -H "accept: application/json"</textarea>#}
                                                                     <textarea readonly="" class="curl classifier_curl" style="white-space: normal;"></textarea>
                                                                 </div>
                                                             </div>
@@ -276,7 +276,6 @@
                                                                 <tbody>
                                                                 <tr class="response">
                                                                     <td class="col response-col_status">
-                                                                        200
                                                                     </td>
                                                                     <td class="col response-col_description">
                                                                         <div>
@@ -303,7 +302,7 @@
                                                                         </div>
                                                                         <div>
                                                                             <h5>Data Response Succeed</h5>
-                                                                            <pre><span class="headerline">True</span></pre>
+                                                                            <pre><span class="headerline"></span></pre>
                                                                         </div>
                                                                     </td>
                                                                 </tr>
@@ -322,7 +321,7 @@
                                                         </thead>
                                                         <tbody>
                                                         <tr class="response response_current">
-                                                            <td class="col response-col_status">200</td>
+                                                            <td class="col response-col_status"></td>
                                                             <td class="col response-col_description">
                                                                 <div class="response-col_description__inner">
                                                                     <div class="markdown">
@@ -370,7 +369,7 @@
         $(".class_fier_score").empty(); // Score
         $(".class_fier_cv_score").empty(); // cv_score
         $(".class_fier_succeed").empty();  // Data Response Succeed
-        for(var i=0; i<$(".class_fier_status_code").length; i++) { // Status Code
+        for (var i = 0; i < $(".class_fier_status_code").length; i++) { // Status Code
             $(".class_fier_status_code")[i].innerText = "";
         }
         $(".class_fier_req_time").empty(); // Request Date
@@ -386,11 +385,11 @@
                 $(".class_fier_name").html(result.name); // Algorithm Name
                 $(".class_fier_category").html(result.category); // Category
                 $(".class_fier_score").html(result.score); // Score
-                for(var i=0; i<result.cv_score.length; i++) { // cv_score
+                for (var i = 0; i < result.cv_score.length; i++) { // cv_score
                     $(".class_fier_cv_score").append(result.cv_score[i] + "<br>");
                 }
                 $(".class_fier_succeed").html(result.success); // Data Response Succeed
-                for(var i=0; i<$(".class_fier_status_code").length; i++) { // Status Code
+                for (var i = 0; i < $(".class_fier_status_code").length; i++) { // Status Code
                     $(".class_fier_status_code")[i].innerText = jqXHR.status;
                 }
                 $(".class_fier_req_time").html(Common.Date.getReq_time(result.req_time, ".")); // Request Date
@@ -443,10 +442,10 @@
                             $(item).text("True");
                         }
                     });
-                    $("#regression_ready .markdown").html("<p>"+Common.Date.getReq_time(req_time, ".")+"</p>");
-                    $("#regression_ready textarea").text('curl -X POST "https://localhost:8000/regression/' + $(".regression_sb").val() + ' -H "accept: application/json"');
-                    $("#regression_ready .request-url pre").text('https://localhost:8000/regression/' + $(".regression_sb").val());
-
+                    $("#regression_ready .markdown").html("<p>" + Common.Date.getReq_time(req_time, ".") + "</p>");
+                    $("#regression_ready textarea").text('curl -X POST "' + response.request.responseURL + ' -H "accept: application/json"');
+                    $("#regression_ready .request-url pre").text(response.request.responseURL);
+                    $("#regression_ready .response .response-col_status").html("<b>" + response.request.status + "</b>");
                 });
             }
         }
