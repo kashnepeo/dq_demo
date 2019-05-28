@@ -404,8 +404,8 @@
     })
 
     // post
-    {#$('.post_opblock').parent().removeClass("is-open");#}
-    {#$(".post_opblock-body").css("display", "none");#}
+    $('.post_opblock').parent().removeClass("is-open");
+    $(".post_opblock-body").css("display", "none");
     $(".post_opblock").click(function () {
         if ($('.post_opblock').parent().hasClass("is-open")) {
             $('.post_opblock').parent().removeClass("is-open");
