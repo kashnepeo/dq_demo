@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <title>NHN Diquest. ML/DL REST API Tester</title>
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700|Source+Code+Pro:300,600|Titillium+Web:400,600,700"
+    <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,700|Source+Code+Pro:300,600|Titillium+Web:400,600,700"
           rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename = 'swagger-ui.css') }}">
     <link rel="icon" type="image/png" href="" sizes="64x64 32x32 16x16"/>
@@ -31,7 +31,7 @@
     <script src='{{ url_for('static', filename = 'common.js') }}' type='text/javascript'></script>
     <script src='{{ url_for('static', filename = 'vue.min.js') }}' type='text/javascript'></script>
     <script src='{{ url_for('static', filename = 'axios.min.js') }}' type='text/javascript'></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.1.6/Chart.bundle.min.js"></script>
+    <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.1.6/Chart.bundle.min.js"></script>
 
 </head>
 
@@ -118,7 +118,7 @@
                                                             <div>
                                                                 <h4>Curl</h4>
                                                                 <div class="copy-paste">
-                                                                    {#                                                                    <textarea readonly="" class="curl" style="white-space: normal;">curl -X GET "https://httpbin.org/get" -H "accept: application/json"</textarea>#}
+                                                                    {#                                                                    <textarea readonly="" class="curl" style="white-space: normal;">curl -X GET "http://httpbin.org/get" -H "accept: application/json"</textarea>#}
                                                                     <textarea readonly="" class="curl classifier_curl" style="white-space: normal;"></textarea>
                                                                 </div>
                                                             </div>
@@ -382,8 +382,8 @@
             contentType: "application/json",
             dataType: "json",
             success: function (result, textStauts, jqXHR) {
-                $(".classifier_curl").html('curl -X ' + this.type + ' "' + "https://localhost:8000" + this.url + '" -H "accept: ' + this.contentType + '"'); // Curl
-                $(".classifier_req_url").html("https://localhost:8000" + this.url); // Request URL
+                $(".classifier_curl").html('curl -X ' + this.type + ' "' + "http://localhost:8000" + this.url + '" -H "accept: ' + this.contentType + '"'); // Curl
+                $(".classifier_req_url").html("http://localhost:8000" + this.url); // Request URL
                 $(".class_fier_name").html(result.name); // Algorithm Name
                 $(".class_fier_category").html(result.category); // Category
                 $(".class_fier_score").html(result.score); // Score
