@@ -4,10 +4,10 @@ import warnings
 
 import matplotlib.pyplot as plt
 import pandas as pd
-from sklearn.externals import joblib
 from sklearn.ensemble import BaggingRegressor
+from sklearn.externals import joblib
 from sklearn.metrics import r2_score
-
+from sklearn.model_selection import GridSearchCV
 
 class BaggingClass:
     """
@@ -43,6 +43,9 @@ class BaggingClass:
 
         # 모델 학습
         self._model.fit(self._x_train, self._y_train)
+
+        # 그리드 서치 모델
+        self._g_model = None
 
     # 데이터 전처리
     def preprocessing(self, data):
@@ -95,6 +98,38 @@ class BaggingClass:
         # Regression 알고리즘은 실 프로젝트 상황에 맞게 Cross Validation 구현
         return False
 
+    #  GridSearchCV 예측
+    def predict_by_gs(self):
+        # 그리드 서치 Params
+        param_grid = {
+            # 모형 개수
+            'n_estimators': [5, 10, 15],
+            # 데이터 중복 여부
+            'bootstrap': [True, False],
+            # 차원 중복 여부
+            'bootstrap_features': [True, False],
+            # 독립 변수 차원 비율
+            'max_samples': [0.6, 0.8, 1.0]
+        }
+
+        # 그리드 서치 초기화
+        self._g_model = GridSearchCV(BaggingRegressor(), param_grid=param_grid)
+
+        # 그리드 서치 학습
+        self._g_model.fit(self._x_train, self._y_train)
+
+        # 파라미터 모두 출력
+        print(self._g_model.param_grid)
+        # 베스트 스코어
+        print(self._g_model.best_score_)
+        # 베스트 파라미터
+        print(self._g_model.best_params_)
+        # 전체 결과 출력
+        print(self._g_model.cv_results_)
+
+        return dict(gs_all_params=self._g_model.param_grid, gs_best_score=self._g_model.best_score_,
+                    gs_best_param=self._g_model.best_params_)
+
     # 모델 저장 및 갱신
     def save_model(self, renew=False):
         # 모델 저장
@@ -135,10 +170,10 @@ if __name__ == "__main__":
     classifier = BaggingClass()
 
     # 분류 실행
-    # classifier.predict()
+    classifier.predict()
 
     # 분류 실행(이미지 생성& 차트 확인)
-    classifier.predict(save_img=True, show_chart=True)
+    # classifier.predict(save_img=True, show_chart=True)
 
     # 분류 실행(Cross Validation)
     # classifier.predict_by_cv()
@@ -148,3 +183,6 @@ if __name__ == "__main__":
 
     # 모델 갱신
     # classifier.save_model(renew=True)
+
+    # 그리드 서치 실행
+    # classifier.predict_by_gs()

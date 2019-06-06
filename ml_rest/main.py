@@ -79,6 +79,7 @@ class RegressionHandler(Resource):
         # 응답 데이터
         data = dict(name=element, category='regression', success=True, pre_data=cls.predict()[0],
                     score=cls.predict()[1], cv_score=cls.predict_by_cv(),
+                    gs_score=cls.predict_by_gs(),
                     req_time=time.time())
 
         # 모델 Payload 확인

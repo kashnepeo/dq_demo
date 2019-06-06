@@ -95,6 +95,10 @@ class NuSvrClass:
         # Regression 알고리즘은 실 프로젝트 상황에 맞게 Cross Validation 구현
         return False
 
+    #  GridSearchCV 예측
+    def predict_by_gs(self):
+        pass
+
     # 모델 저장 및 갱신
     def save_model(self, renew=False):
         # 모델 저장
@@ -148,3 +152,6 @@ if __name__ == "__main__":
 
     # 모델 갱신
     # classifier.save_model(renew=True)
+
+    # 그리드 서치 실행
+    # classifier.predict_by_gs()

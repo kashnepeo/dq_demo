@@ -1,14 +1,15 @@
-import pandas as pd
-import time
 import os
+import time
 import warnings
-from sklearn.model_selection import train_test_split
+
+import pandas as pd
 from sklearn.ensemble import GradientBoostingClassifier
+from sklearn.externals import joblib
 from sklearn.metrics import accuracy_score
+from sklearn.metrics import classification_report
 from sklearn.model_selection import KFold
 from sklearn.model_selection import cross_val_score
-from sklearn.metrics import classification_report
-from sklearn.externals import joblib
+from sklearn.model_selection import train_test_split
 
 
 class GradientBoostingClass:
@@ -85,7 +86,8 @@ class GradientBoostingClass:
         else:
             # 기존 모델 대체
             if os.path.isfile(self._f_path + f'/model/{self._name}.pkl'):
-                os.rename(self._f_path + f'/model/{self._name}.pkl', self._f_path + f'/model/{str(self._name) + str(time.time())}.pkl')
+                os.rename(self._f_path + f'/model/{self._name}.pkl',
+                          self._f_path + f'/model/{str(self._name) + str(time.time())}.pkl')
             joblib.dump(self._model, self._f_path + f'/model/{self._name}.pkl')
 
     def __del__(self):
@@ -107,3 +109,6 @@ if __name__ == "__main__":
 
     # 모델 갱신
     # classifier.save_model(renew=True)
+
+    # 그리드 서치 실행
+    # classifier.predict_by_gs()

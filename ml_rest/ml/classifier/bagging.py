@@ -145,5 +145,6 @@ if __name__ == "__main__":
 
     # 모델 갱신
     # classifier.save_model(renew=True)
-
+    
+    # 그리드 서치 실행
     # classifier.predict_by_gs()
