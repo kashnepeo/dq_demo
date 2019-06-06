@@ -72,6 +72,10 @@ class LogisticRegressionClass:
         else:
             raise Exception('Not Support CrossValidation')
 
+    #  GridSearchCV 예측
+    def predict_by_gs(self):
+        pass
+
     # 모델 저장 및 갱신
     def save_model(self, renew=False):
         # 모델 저장
