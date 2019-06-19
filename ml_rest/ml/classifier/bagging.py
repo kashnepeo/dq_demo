@@ -35,7 +35,7 @@ class BaggingClass:
         # 학습 및 레이블(정답) 데이터 분리
         self._x = data.drop("quality", axis=1)
         self._y = data["quality"]
-
+        print('test')
         # 학습 데이터 및 테스트 데이터 분리
         self._x_train, self._x_test, self._y_train, self._y_test = train_test_split(self._x, self._y, test_size=0.2,
                                                                                     shuffle=True,
