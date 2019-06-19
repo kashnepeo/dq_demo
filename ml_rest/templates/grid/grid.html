@@ -1,0 +1,147 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename = 'grid/css/smoothness/jquery-ui-1.8.16.custom.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename = 'grid/slick.grid.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename = 'grid/examples.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename = 'grid/plugins/slick.headerbuttons.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename = 'grid/controls/slick.columnpicker.css') }}">
+    <style>
+        .icon-filter-highlight-off,
+        .icon-filter-highlight-on {
+            background-image: url({{ url_for('static', filename = 'grid/images/bullet_blue.png') }})
+        }
+
+        .icon-filter-highlight-off {
+            opacity: 0.2;
+        }
+
+        .icon-value-highlight-off,
+        .icon-value-highlight-on {
+            background-image: url({{ url_for('static', filename = 'grid/images/bullet_star.png') }})
+        }
+
+        .icon-value-highlight-off {
+            opacity: 0.2;
+        }
+
+
+        .negative-highlight {
+            background: red;
+        }
+
+        .slick-cell-checkboxsel {
+            background: #f0f0f0;
+            border-right-color: silver;
+            border-right-style: solid;
+        }
+    </style>
+</head>
+<body>
+<div style="position:relative">
+    <div style="width:100%;">
+        <span id="totalCount">count : </span>
+        <div id="myGrid" style="width:auto;height:500px;"></div>
+    </div>
+</div>
+<script src='{{ url_for('static', filename = 'grid/lib/firebugx.js') }}' type='text/javascript'></script>
+<script src='{{ url_for('static', filename = 'grid/lib/jquery-1.7.min.js') }}' type='text/javascript'></script>
+<script src='{{ url_for('static', filename = 'grid/lib/jquery-ui-1.8.16.custom.min.js') }}' type='text/javascript'></script>
+<script src='{{ url_for('static', filename = 'grid/lib/jquery.event.drag-2.2.js') }}' type='text/javascript'></script>
+<script src='{{ url_for('static', filename = 'grid/slick.core.js') }}' type='text/javascript'></script>
+<script src='{{ url_for('static', filename = 'grid/slick.grid.js') }}' type='text/javascript'></script>
+<script src='{{ url_for('static', filename = 'grid/plugins/slick.headerbuttons.js') }}' type='text/javascript'></script>
+<script src='{{ url_for('static', filename = 'grid/plugins/slick.checkboxselectcolumn.js') }}' type='text/javascript'></script>
+<script src='{{ url_for('static', filename = 'grid/plugins/slick.autotooltips.js') }}' type='text/javascript'></script>
+<script src='{{ url_for('static', filename = 'grid/plugins/slick.cellrangedecorator.js') }}' type='text/javascript'></script>
+<script src='{{ url_for('static', filename = 'grid/plugins/slick.cellrangeselector.js') }}' type='text/javascript'></script>
+<script src='{{ url_for('static', filename = 'grid/plugins/slick.cellcopymanager.js') }}' type='text/javascript'></script>
+<script src='{{ url_for('static', filename = 'grid/plugins/slick.cellselectionmodel.js') }}' type='text/javascript'></script>
+<script src='{{ url_for('static', filename = 'grid/plugins/slick.rowselectionmodel.js') }}' type='text/javascript'></script>
+<script src='{{ url_for('static', filename = 'grid/controls/slick.columnpicker.js') }}' type='text/javascript'></script>
+<script src='{{ url_for('static', filename = 'grid/slick.formatters.js') }}' type='text/javascript'></script>
+<script src='{{ url_for('static', filename = 'grid/slick.editors.js') }}' type='text/javascript'></script>
+<script>
+    var grid;
+    var options = {
+        enableCellNavigation: true,
+        editable: true,
+        asyncEditorLoading: false,
+        autoEdit: false ,
+        forceFitColumns: true
+    };
+
+    var columns = [];
+    var data = {{ resultList | tojson }};
+
+    // 배열 0번째는 columns 명으로 제외
+    var columnsName = data[0];
+    data.splice(0, 1);
+
+    $("#totalCount").append(data.length)
+
+    $(function () {
+        // 열 checkbox 삽입
+        grid = new Slick.Grid("#myGrid", data, columns, options);
+        grid.setSelectionModel(new Slick.RowSelectionModel({selectActiveRow: false}));
+        for (var i = 0; i < data[0].length; i++) {
+            columns.push({
+                id: i,
+                name: columnsName[i],
+                field: i,
+                sortable: true,
+                header: {
+                    buttons: [
+                        {
+                            cssClass: "icon-filter-highlight-off",
+                            command: "toggle-filter-highlight",
+                            tooltip: "Highlight negative numbers."
+                        },
+                        {
+                            cssClass: "icon-value-highlight-off",
+                            command: "toggle-value-highlight",
+                            tooltip: "Highlight negative numbers."
+                        }
+                    ]
+                }
+            });
+        }
+
+        var headerButtonsPlugin = new Slick.Plugins.HeaderButtons();
+
+        headerButtonsPlugin.onCommand.subscribe(function (e, args) {
+            var column = args.column;
+            var button = args.button;
+            var command = args.command;
+
+            if (command == "toggle-filter-highlight") {
+                console.log($(e.target).parent("div").children("span.slick-column-name").text());
+                if (button.cssClass == "icon-filter-highlight-on") {
+                    button.cssClass = "icon-filter-highlight-off";
+                    button.tooltip = "Highlight negative numbers."
+                } else {
+                    button.cssClass = "icon-filter-highlight-on";
+                    button.tooltip = "Remove highlight."
+                }
+
+                grid.invalidate();
+            }
+
+            if (command == "toggle-value-highlight") {
+                console.log($(e.target).parent("div").children("span.slick-column-name").text());
+                if (button.cssClass == "icon-value-highlight-on") {
+                    button.cssClass = "icon-value-highlight-off";
+                    button.tooltip = "Highlight negative numbers."
+                } else {
+                    button.cssClass = "icon-value-highlight-on";
+                    button.tooltip = "Remove highlight."
+                }
+
+                grid.invalidate();
+            }
+        });
+        grid.registerPlugin(headerButtonsPlugin);
+    });
+</script>
+</body>
+</html>
