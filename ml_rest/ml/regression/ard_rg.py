@@ -25,7 +25,7 @@ class ARDClass:
 
         # 경고 메시지 삭제
         warnings.filterwarnings('ignore')
-        print(123)
+
         # 원본 데이터 로드
         data = pd.read_csv(self._f_path + "/regression/resource/regression_sample.csv", sep=",", encoding="utf-8")
 

@@ -23,7 +23,7 @@ class BernouliNBClass:
         self._name = 'bernoulinb'
         # 기본 경로
         self._f_path = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), os.pardir))
-        print("3 4 5")
+
         # 경고 메시지 삭제
         warnings.filterwarnings('ignore')
 
