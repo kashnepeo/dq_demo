@@ -22,6 +22,10 @@
         .icon-value-highlight-off {
             opacity: 0.2;
         }
+        .infoArea{
+            border: 1px solid black;
+            height: 50px;
+        }
     </style>
     <script src='{{ url_for('static', filename = 'grid/lib/firebugx.js') }}' type='text/javascript'></script>
     <script src='{{ url_for('static', filename = 'grid/lib/jquery-1.7.min.js') }}' type='text/javascript'></script>
@@ -53,16 +57,13 @@
             multiColumnSort: true
         };
 
-        var columns = [];
-        var data = {{ resultList | tojson }};
-
-        // 배열 0번째는 columns 명으로 제외
-        var columnsName = data[0];
-        data.splice(0, 1);
-
-        $("#totalCount").append(data.length)
-
         $(function () {
+            var columns = [];
+            var data = {{ resultList | tojson }};
+            // 배열 0번째는 columns 명으로 제외
+            var columnsName = data[0];
+            data.splice(0, 1);
+            $("#totalCount").append(data.length);
 
             grid = new Slick.Grid("#myGrid", data, columns, options);
             grid.setSelectionModel(new Slick.RowSelectionModel({selectActiveRow: false}));
@@ -95,30 +96,42 @@
                 var column = args.column;
                 var button = args.button;
                 var command = args.command;
+                var eventName = $(e.target).parent("div").children("span.slick-column-name").text();
+                console.log($(e.target).parent("div").children("span.slick-column-name").text());
 
                 if (command == "toggle-filter-highlight") {
-                    console.log($(e.target).parent("div").children("span.slick-column-name").text());
                     if (button.cssClass == "icon-filter-highlight-on") {
                         button.cssClass = "icon-filter-highlight-off";
                         button.tooltip = "Highlight negative numbers."
+                        var selectText = $("#selectX").text();
+                        var replaceText = eventName;
+                        $("#selectX").text(selectText.replace(replaceText," "));
+                        $("#"+eventName).remove();
                     } else {
-                        button.cssClass = "icon-filter-highlight-on";
-                        button.tooltip = "Remove highlight."
+                        if(!$("#"+eventName).length > 0 ){
+                            $("#selectX").append(eventName+"<input type=\"hidden\" id=\""+eventName+"\"/>");
+                            button.cssClass = "icon-filter-highlight-on";
+                            button.tooltip = "Remove highlight."
+                        }
                     }
-
                     grid.invalidate();
                 }
 
                 if (command == "toggle-value-highlight") {
-                    console.log($(e.target).parent("div").children("span.slick-column-name").text());
                     if (button.cssClass == "icon-value-highlight-on") {
                         button.cssClass = "icon-value-highlight-off";
                         button.tooltip = "Highlight negative numbers."
+                        var selectText = $("#selectY").text();
+                        var replaceText = eventName;
+                        $("#selectY").text(selectText.replace(replaceText," "));
+                        $("#"+eventName).remove();
                     } else {
-                        button.cssClass = "icon-value-highlight-on";
-                        button.tooltip = "Remove highlight."
+                        if(!$("#"+eventName).length > 0 ){
+                            $("#selectY").append(eventName+"<input type=\"hidden\" id=\""+eventName+"\"/>");
+                            button.cssClass = "icon-value-highlight-on";
+                            button.tooltip = "Remove highlight."
+                        }
                     }
-
                     grid.invalidate();
                 }
             });
@@ -151,8 +164,12 @@
 </head>
 <body>
 <div style="position:relative">
-    <div style="width:100%;" id="container">
+    <div class="infoArea">
         <span id="totalCount">count : </span>
+        <span id="selectX"> X: </span>
+        <span id="selectY"> Y: </span>
+    </div>
+    <div style="width:100%; margin-top:30px;" id="container">
         <div id="myGrid" style="width:auto;height:500px;"></div>
     </div>
 </div>
