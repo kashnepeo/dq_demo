@@ -1,4 +1,4 @@
-import csv, os
+import csv
 from flask import Flask, render_template, request , redirect , url_for
 from werkzeug.utils import secure_filename
 
@@ -6,7 +6,7 @@ app = Flask(__name__)
 
 @app.route('/upload')
 def render_file():
-    return render_template('upload.html')
+    return render_template('grid/upload.html')
 
 @app.route('/fileUpload' , methods = ['GET' , 'POST'])
 def upload_file():
