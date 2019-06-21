@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="ko">
+	<head>
+		<meta charset="utf-8">
+		<!--<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">-->
+		<title> TA </title>
+		<meta name="description" content="">
+		<meta name="author" content="">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<!-- Basic Styles -->
+		<link rel="stylesheet" type="text/css" media="screen" href="{{ url_for('static', filename = 'bootstrap/css/bootstrap.min.css') }}">
+
+		<!-- SmartAdmin Styles : Caution! DO NOT change the order -->
+        <link rel="stylesheet" type="text/css" media="screen" href="{{ url_for('static', filename = 'smartadmin/css/smartadmin-production-plugins.min.css') }}">
+        <link rel="stylesheet" type="text/css" media="screen" href="{{ url_for('static', filename = 'smartadmin/css/smartadmin-production.min.css') }}">
+        <link rel="stylesheet" type="text/css" media="screen" href="{{ url_for('static', filename = 'smartadmin/css/smartadmin-skins.min.css') }}">
+        <link rel="stylesheet" type="text/css" media="screen" href="{{ url_for('static', filename = 'smartadmin/css/smartadmin-rtl.min.css') }}"> <!-- SmartAdmin RTL Support  -->
+        <link rel="stylesheet" type="text/css" media="screen" href="{{ url_for('static', filename = 'smartadmin/css/demo.min.css') }}">
+
+        <link rel="stylesheet" type="text/css" media="screen" href="{{ url_for('static', filename = 'toast/chart/css/tui-chart.min.css') }}"> <!-- Toast-ui Chart v3.7.0 -->
+
+        <link rel="stylesheet" type="text/css" media="screen" href="{{ url_for('static', filename = 'common/css/common.css') }}">
+
+		<!-- Favicon -->
+        <link rel="shortcut icon" type="image/x-icon" href="{{ url_for('static', filename = 'image/favicon.ico') }}">
+        <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename = 'image/favicon.ico') }}">
+
+        <link rel="stylesheet" type="text/css" media="screen" href="{{ url_for('static', filename = 'common/font/font-awesome.min.css') }}"> <!-- Default Font -->
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename = 'common/font/font.css') }}"> <!-- Default Font -->
+
+	</head>
+	<body class="">
+
+		<header id="header">
+			<div id="logo-group">
+				<span id="logo">TA 분석 모델링</span>
+			</div>
+
+			<div class="pull-right">
+				<div id="hide-menu" class="btn-header pull-right">
+					<span> <a href="javascript:void(0);" data-action="toggleMenu" title="Collapse Menu"><i class="fa fa-reorder"></i></a> </span>
+				</div>
+
+				<form action="#" class="header-search pull-right">
+					<input id="search-fld"  type="text" name="param" placeholder="Find reports and more" data-autocomplete='[
+					"test1",
+					"test2",
+					"test3",
+					]'>
+					<button type="submit">
+						<i class="fa fa-search"></i>
+					</button>
+				</form>
+
+				<div id="fullscreen" class="btn-header transparent pull-right">
+					<span> <a href="javascript:void(0);" data-action="launchFullscreen" title="Full Screen"><i class="fa fa-arrows-alt"></i></a> </span>
+				</div>
+			</div>
+		</header>
+
+		<aside id="left-panel">
+			<div class="login-info">
+				<!-- <span>
+					<a href="javascript:void(0);" id="show-shortcut" data-action="toggleShortcut">
+						<img src="img/avatars/sunny.png" alt="me" class="online" />
+						<span>
+							john.doe
+						</span>
+						<i class="fa fa-angle-down"></i>
+					</a>
+				</span> -->
+			</div>
+
+			<nav>
+				<ul>
+					<li class="active open">
+						<a href="#"><i class="fa fa-lg fa-fw fa-cube txt-color-blue"></i> <span class="menu-item-parent">분석 모델 선택</span></a>
+						<ul style="display: block;">
+							<li class="active">
+								<a href="#" title=""><span class="menu-item-parent">신규 고객 모델링</span></a>
+							</li>
+							<li>
+								<a href="#" title=""><span class="menu-item-parent">이탈 고객 모델링</span></a>
+							</li>
+							<li class="">
+								<a href="#" title=""><span class="menu-item-parent">VOC 분석 모델링</span></a>
+							</li>
+							<li class="">
+								<a href="#" title=""><span class="menu-item-parent">고객 반응 분석 모델링</span></a>
+							</li>
+						</ul>
+					</li>
+				</ul>
+			</nav>
+
+			<div class="file-upload">
+				<div>
+					<span style="color: #fff;">파일 업로드(CSV)</span>
+				</div>
+				<div>
+					<button class="btn btn-sm btn-primary">파일 선택</button>
+					<span class="file-name" style="color: #fff;">sample.csv</span>
+				</div>
+			</div>
+
+			<span class="minifyme" data-action="minifyMenu">
+				<i class="fa fa-arrow-circle-left hit"></i>
+			</span>
+		</aside>
+
+		<div id="main" role="main">
+			<div id="ribbon">
+				<span class="ribbon-button-alignment">
+					<span id="refresh" class="btn btn-ribbon" data-action="resetWidgets" data-title="refresh"  rel="tooltip" data-placement="bottom" data-original-title="<i class='text-warning fa fa-warning'></i> Warning! This will reset all your widget settings." data-html="true">
+						<i class="fa fa-refresh"></i>
+					</span>
+				</span>
+
+				<ol class="breadcrumb">
+					<li>Home</li>
+					<li>TA 분석 모델링</li>
+				</ol>
+			</div>
+
+			<div id="ribbon" class="filter">
+				<div class="date-filter smart-form">
+					<div class="inline-group">
+						<label class="date-label-left">Date</label>
+						<label class="radio">
+							<input type="radio" name="radio-inline" checked="checked"><i></i>전일</label>
+						<label class="radio">
+							<input type="radio" name="radio-inline"><i></i>최근 1주일</label>
+						<label class="radio">
+							<input type="radio" name="radio-inline"><i></i>직접선택</label>
+						<label class="input datepicker-startdate"> <i class="icon-append fa fa-calendar"></i>
+							<input type="text" name="startdate" id="startdate" placeholder="Start Date" class="hasDatepicker">
+						</label>
+						<label class="date-label"> ─ </label>
+						<label class="input datepicker-enddate"> <i class="icon-append fa fa-calendar"></i>
+							<input type="text" name="enddate" id="finishdate" placeholder="End Date" class="hasDatepicker valid" aria-invalid="false">
+						</label>
+					</div>
+				</div>
+			</div>
+
+			<div id="ribbon" class="filter">
+				<div class="smart-form">
+					<div class="inline-group">
+						<label class="date-label-left" style="padding-top: 10px !important;">Layout</label>
+						<label><a href="#"><i class="fa fa-stop filter-layout"></i></a></label>
+						<label><a href="#"><i class="fa fa-pause filter-layout"></i></a></label>
+						<label><a href="#"><i class="fa fa-th-large filter-layout"></i></a></label>
+						<div class="div-chart">
+							<label class="data-label-chart">Chart</label>
+							<label><a href="#"><i class="fa fa-signal filter-chart"></i></a></label>
+							<label><a href="#"><i class="fa fa-signal filter-chart"></i></a></label>
+							<label><a href="#"><i class="fa fa-signal filter-chart"></i></a></label>
+							<label><a href="#"><i class="fa fa-signal filter-chart"></i></a></label>
+							<label><a href="#"><i class="fa fa-signal filter-chart"></i></a></label>
+							<label><a href="#"><i class="fa fa-signal filter-chart"></i></a></label>
+							<label><a href="#"><i class="fa fa-signal filter-chart"></i></a></label>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div id="ribbon" class="filter">
+				<div class="smart-form">
+					<div class="inline-group">
+						<label class="date-label-left" style="padding-top: 10px !important;">Algorithm</label>
+						<label class="filter-algorithm"><a href="#">Naive Bayes</a></label>
+						<label class="filter-algorithm"><a href="#">SVM</a></label>
+						<label class="filter-algorithm"><a href="#">Random Forest</a></label>
+						<label class="filter-algorithm"><a href="#">XgBoost</a></label>
+						<label class="filter-algorithm"><a href="#">DNN</a></label>
+						<div class="div-chart">
+							<label class="data-label-chart" style="padding-top: 10px !important;">Variable</label>
+							<label class="filter-Variable"><a href="#">Variable1</a></label>
+							<label class="filter-Variable"><a href="#">Variable2</a></label>
+							<label class="filter-Variable"><a href="#">Variable3</a></label>
+							<label class="filter-Variable"><a href="#">Variable4</a></label>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div id="ribbon" class="filter">
+				<div class="smart-form">
+					<div class="inline-group">
+						<label class="date-label-left" style="padding-top: 10px !important;">Filter</label>
+						<label class="filter-Filter"><a href="#">Filter1</a></label>
+						<label class="filter-Filter"><a href="#">Filter2</a></label>
+						<label class="filter-Filter"><a href="#">Filter3</a></label>
+						<label class="filter-Filter"><a href="#">Filter4</a></label>
+						<label class="filter-Filter"><a href="#">Filter5</a></label>
+						<div class="div-chart">
+							<label class="data-label-Controls" style="padding-top: 10px !important;">Controls</label>
+							<label class="filter-Controls"><a href="#">1</a></label>
+							<label class="filter-Controls"><a href="#">2</a></label>
+							<label class="filter-Controls"><a href="#">3</a></label>
+							<label class="filter-Controls"><a href="#">4</a></label>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div id="content">
+				<div class="row">
+					<div class="col-xs-12 col-sm-7 col-md-7 col-lg-4">
+						<!-- <h1 class="page-title">분석 결과</h1> -->
+					</div>
+				</div>
+
+				<section id="widget-grid" class="">
+					<div class="row">
+						<article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+							<div class="jarviswidget jarviswidget-color-blueDark" id="wid-id-1" data-widget-editbutton="false"
+							data-widget-deletebutton="false"
+							data-widget-fullscreenbutton="false">
+								<header>
+									<span class="widget-icon"> <i class="fa fa-bar-chart-o"></i> </span>
+									<h2>TA 분석 모델링 결과</h2>
+								</header>
+								<div>
+									<div class="jarviswidget-editbox">
+									</div>
+									<div class="widget-body no-padding">
+										<div id="line-chart-test" class="chart"></div>
+									</div>
+								</div>
+							</div>
+						</article>
+					</div>
+
+					<div class="row">
+						<article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+							<div class="jarviswidget jarviswidget-color-blueDark" id="wid-id-2" data-widget-editbutton="false"
+							data-widget-deletebutton="false"
+							data-widget-fullscreenbutton="false">
+								<header>
+									<span class="widget-icon"> <i class="fa fa-bar-chart-o"></i> </span>
+									<h2>TA 분석 모델링 결과</h2>
+								</header>
+								<div>
+									<div class="jarviswidget-editbox">
+									</div>
+									<div class="widget-body no-padding">
+										<div id="bar-chart-test" class="chart"></div>
+									</div>
+								</div>
+							</div>
+						</article>
+					</div>
+				</section>
+			</div>
+		</div>
+
+		<div class="page-footer">
+			<div class="row">
+				<div class="col-xs-12 col-sm-6">
+					<span class="txt-color-white">Diquest<span class="hidden-xs"> - TA 1.0</span> © 2019</span>
+				</div>
+			</div>
+		</div>
+
+        <script src="{{ url_for('static', filename = 'jquery/js/jquery.min.js') }}"></script> <!-- jquery v2.2.4 -->
+        <script src="{{ url_for('static', filename = 'jquery/js/jquery.mb.browser.min.js') }}"></script> <!-- browser msie issue fix -->
+
+        <script src="{{ url_for('static', filename = 'smartadmin/js/pace.min.js') }}" data-pace-options='{"restartOnRequestAfter": true }'></script> <!-- PACE LOADER -->
+        <script src="{{ url_for('static', filename = 'smartadmin/js/jquery-ui.min.js') }}"></script> <!-- jquery-ui v1.12.1 -->
+        <script src="{{ url_for('static', filename = 'smartadmin/js/app.config.js') }}"></script> <!-- IMPORTANT: APP CONFIG -->
+
+        <script src="{{ url_for('static', filename = 'bootstrap/js/bootstrap.min.js') }}"></script> <!-- Bootstrap v3.3.7 -->
+        <script src="{{ url_for('static', filename = 'smartadmin/js/SmartNotification.min.js') }}"></script> <!-- CUSTOM NOTIFICATION -->
+        <script src="{{ url_for('static', filename = 'smartadmin/js/jarvis.widget.min.js') }}"></script> <!-- JARVIS WIDGETS -->
+        <script src="{{ url_for('static', filename = 'smartadmin/js/select2.min.js') }}"></script> <!-- JQUERY SELECT2 INPUT -->
+        <script src="{{ url_for('static', filename = 'smartadmin/js/fastclick.min.js') }}"></script> <!-- FastClick: For mobile devices -->
+        <script src="{{ url_for('static', filename = 'smartadmin/js/demo.min.js') }}"></script> <!-- Demo purpose only -->
+        <script src="{{ url_for('static', filename = 'smartadmin/js/app.min.js') }}"></script> <!-- MAIN APP JS FILE -->
+
+        <script src="{{ url_for('static', filename = 'toast/chart/js/tui-chart-all.js') }}"></script> <!-- Toast-ui chart v3.7.0 -->
+
+		<!--[if IE 8]>
+		<h1>해당 Browser에서 지원하지 않습니다. Browser를 최신버전으로 업데이트 하세요.</h1>
+		<![endif]-->
+
+		<script>
+
+			$(document).ready(function() {
+				pageSetUp();
+
+				// line chart
+				// 차트가 담길 element
+				var line_container = document.getElementById('line-chart-test');
+				var line_width = $(line_container).width();
+				var line_height = $(line_container).height();
+
+				// 차트 data
+				var line_data = {
+				    categories: ['1월', '2월', '3월', '4월', '5월', '6월'],
+				    series: [
+				        {
+				            name: '카드',
+				            data: [100, 300, 500, 400, 200, 150]
+				        },
+				        {
+				            name: '대출',
+				            data: [80, 100, 700, 2000, 580, 324]
+				        }
+				    ]
+				};
+
+				// 차트 options
+				var line_options = {
+					theme: 'customTheme',
+				    chart: {
+				        width: line_width,
+				        height: line_height,
+				        title: '라인차트',
+				        format: '1,000'
+				    },
+				    xAxis: {
+				        title: '날짜',
+				        suffix: ' 건수'
+				    },
+				    yAxis: {
+				        title: '건수',
+				    },
+				     series: {
+				         // showLabel: true,
+				         // zoomable: true,
+				         shifting: true
+				     }
+				};
+
+				// 테마 등록
+				tui.chart.registerTheme('customTheme', {
+				  series: {
+				    colors: ['#63A69F', '#F2E1AC', '#F2836B', '#F2594B']
+				  }
+				});
+
+				var line_chart = tui.chart.lineChart(line_container, line_data, line_options);
+
+				console.log("line_chart: ", line_chart);
+
+				// 실시간 data shift (Toast 자체 error 있음..)
+				// var date = 6;
+				// chart.on('load', function() {
+
+				// 	setInterval(function() {
+				// 		date++;
+				// 		chart.addData(date + "월", [500, 200]);
+				// 	}, 1000);
+				// });
+
+
+				var bar_container = document.getElementById('bar-chart-test');
+				var bar_width = $(line_container).width();
+				var bar_height = $(line_container).height();
+
+				var bar_data = {
+				    categories: ['2015', '2016', '2017', '2018'],
+				    series: [
+				        {
+				            name: '연봉',
+				            data: [5, 3, 5, 7]
+				        },
+				        {
+				            name: '대출',
+				            data: [8, 1, 7, 2]
+				        },
+				        {
+				            name: '차량',
+				            data: [4, 4, 6, 3]
+				        },
+				        {
+				            name: '부동산',
+				            data: [6, 3, 3, 1]
+				        }
+				    ]
+				};
+				var bar_options = {
+				    chart: {
+				        width: bar_width,
+				        height: bar_height,
+				        title: '컬럼차트',
+				    },
+				    yAxis: {
+				        title: '등급',
+				    },
+				    xAxis: {
+				        title: '년'
+				    },
+				    legend: {
+				        align: 'top'
+				    }
+				};
+
+				var bar_chart = tui.chart.columnChart(bar_container, bar_data, bar_options);
+
+				console.log("bar_chart: ", bar_chart);
+			});
+
+		</script>
+
+	</body>
+</html>

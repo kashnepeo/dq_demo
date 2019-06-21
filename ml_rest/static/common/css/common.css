@@ -1,0 +1,168 @@
+#logo {
+	font-weight: bold;
+	font-size: 15px;
+	color: #fff;
+}
+
+#logo-group > span {
+	float: none;
+}
+
+#header {
+	background-color: #535566 !important;
+	background-image: none !important;
+}
+
+.file-upload {
+	padding-top: 50px;
+	padding-left: 0px;
+	padding-right: 0px;
+	text-align: center;
+	vertical-align: middle;
+}
+
+.filter {
+	background-color: #fff !important;
+	border-left: 1px solid lightgrey;
+	border-right: 1px solid lightgrey;
+	border-bottom: 1px solid lightgrey;
+}
+
+.date-label-left {
+	float: left;
+	padding-top: 8px !important;
+	padding-left: 10px !important;
+	padding-right: 20px !important;
+	font-weight: bold;
+	color: #000;
+}
+
+.date-label-right {
+	float: right;
+	padding-top: 8px !important;
+	padding-left: 10px !important;
+	padding-right: 20px !important;
+	font-weight: bold;
+	color: #000;
+}
+
+.date-label {
+	padding-top: 5px !important;
+	padding-left: 10px !important;
+	padding-right: 10px !important;
+}
+
+.radio {
+	padding-top: 5px !important;
+}
+
+.date-filter {
+	color: black !important;
+	text-decoration: none !important;
+	display: inline-block;
+	margin: 0px;
+	padding: 3px 30px 0 0;
+	/*padding: 4px 34px 11px 0 !important;*/
+	background: 0 0;
+	vertical-align: top;
+	float: right !important;
+}
+
+.smart-form .checkbox .smart-form .radio {
+	line-height: normal !important;
+}
+
+.smart-form .checkbox i, .smart-form .radio i {
+	top: 7px !important;
+}
+
+.datepicker-startdate {
+	display: inline-block !important;
+}
+
+.datepicker-enddate {
+	display: inline-block !important;
+}
+
+.filter-layout {
+    font-size: 30px !important;
+    padding-top: 6px !important;
+    padding-right: 10px !important; 
+}
+
+.filter-chart {
+	font-size: 30px !important;
+    padding-top: 5px !important;
+    padding-right: 10px !important; 
+    color: #000;
+}
+
+.div-chart {
+	float: right;
+	padding-right: 20px !important;
+}
+
+.data-label-chart {
+	font-weight: bold;
+	color: #000;
+	vertical-align: super;
+	padding-right: 20px !important;
+}
+
+.filter-algorithm {
+	font-size: 16px;
+    font-weight: bold;
+    color: #000;
+    padding-top: 7px !important;
+    padding-right: 20px !important;
+}
+
+.filter-Variable {
+	font-size: 16px;
+    font-weight: bold;
+    color: #000;
+    vertical-align: super;
+    padding-right: 20px !important;
+}
+
+.data-label-Controls {
+	font-weight: bold;
+	color: #000;
+	vertical-align: super;
+	padding-right: 20px !important;
+}
+
+.filter-Filter {
+	font-size: 16px;
+    font-weight: bold;
+    color: #000;
+    padding-top: 7px !important;
+    padding-right: 20px !important;
+}
+
+.filter-Controls {
+	font-size: 16px;
+    font-weight: bold;
+    color: #000;
+    vertical-align: super;
+    padding-right: 20px !important;
+}
+
+label a:link { 
+	color: #000; 
+	text-decoration: none;
+}
+label a:visited { 
+	color: #000; 
+	text-decoration: none;
+}
+label a:hover { 
+	color: #000; 
+	text-decoration: underline;
+}
+
+.page-title {
+	font-size: 22px;
+	font-weight: bold;
+	color: #000;
+}

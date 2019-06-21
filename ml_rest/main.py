@@ -29,6 +29,10 @@ api = Api(app)
 def index():
     return flask.render_template('index.html')
 
+@app.route("/analysis")
+def analysis():
+    return flask.render_template("analysis/analysis.html")
+
 
 def abort_function():
     abort(404)
