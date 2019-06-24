@@ -18,17 +18,19 @@ class LinearSVCClass:
     Method    : predict, predict_by_cv, save_model
     """
 
-    def __init__(self):
+    def __init__(self, filename):
         # 알고리즘 이름
         self._name = 'linearsvc'
         # 기본 경로
         self._f_path = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), os.pardir))
-        
+
         # 경고 메시지 삭제
         warnings.filterwarnings('ignore')
 
         # 원본 데이터 로드
-        data = pd.read_csv(self._f_path + "/classifier/resource/classifier_sample.csv", sep=",", encoding="utf-8")
+        # data = pd.read_csv(self._f_path + "/classifier/resource/classifier_sample.csv", sep=",", encoding="utf-8")
+        data = pd.read_csv(self._f_path + "/"+filename, sep=",", encoding="ms949")
+
 
         # 학습 및 레이블(정답) 데이터 분리
         self._x = data.drop("quality", axis=1)
@@ -50,15 +52,17 @@ class LinearSVCClass:
         y_pred = self._model.predict(self._x_test)
 
         # 리포트 출력
-        print(classification_report(self._y_test, y_pred))
+        report = classification_report(self._y_test, y_pred)
 
         score = accuracy_score(self._y_test, y_pred)
 
         # 스코어 확인
         print(f'Score = {score}')
         # 스코어 리턴
-        return score
+        return score, report
 
+    def predict_by_pc(self):
+        pass
     #  CV 예측(Cross Validation)
     def predict_by_cv(self):
         cv = KFold(n_splits=5, shuffle=True)
