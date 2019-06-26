@@ -59,40 +59,69 @@
     </div>
 </header>
 
-<aside id="left-panel">
-    <div class="login-info">
-        <!-- <span>
-            <a href="javascript:void(0);" id="show-shortcut" data-action="toggleShortcut">
-                <img src="img/avatars/sunny.png" alt="me" class="online" />
-                <span>
-                    john.doe
+<aside id="left-panel" style="background: none; background-color: #fff;">
+    <div class="login-info" style="background-color: #474544; border-width: 0.5px 0;">
+        <span>
+            <a href="javascript:void(0);">
+                <span class="login-info-name">
+                    홍길동님 환영합니다.
                 </span>
-                <i class="fa fa-angle-down"></i>
             </a>
-        </span> -->
+        </span>
     </div>
 
-    <nav>
-        <ul>
-            <li class="active open">
-                <a href="#"><i class="fa fa-lg fa-fw fa-cube txt-color-blue"></i> <span class="menu-item-parent">분석 모델 선택</span></a>
-                <ul style="display: block;">
-                    <li class="active">
-                        <a href="#" title=""><span class="menu-item-parent">신규 고객 모델링</span></a>
-                    </li>
-                    <li>
-                        <a href="#" title=""><span class="menu-item-parent">이탈 고객 모델링</span></a>
-                    </li>
-                    <li class="">
-                        <a href="#" title=""><span class="menu-item-parent">VOC 분석 모델링</span></a>
-                    </li>
-                    <li class="">
-                        <a href="#" title=""><span class="menu-item-parent">고객 반응 분석 모델링</span></a>
-                    </li>
-                </ul>
-            </li>
-        </ul>
-    </nav>
+{#    <nav>#}
+{#        <ul>#}
+{#            <li class="active open">#}
+{#                <a href="#"><i class="fa fa-lg fa-fw fa-cube txt-color-blue"></i> <span class="menu-item-parent">분석 모델 선택</span></a>#}
+{#                <ul style="display: block;">#}
+{#                    <li class="active">#}
+{#                        <a href="#" title=""><span class="menu-item-parent">신규 고객 모델링</span></a>#}
+{#                    </li>#}
+{#                    <li>#}
+{#                        <a href="#" title=""><span class="menu-item-parent">이탈 고객 모델링</span></a>#}
+{#                    </li>#}
+{#                    <li class="">#}
+{#                        <a href="#" title=""><span class="menu-item-parent">VOC 분석 모델링</span></a>#}
+{#                    </li>#}
+{#                    <li class="">#}
+{#                        <a href="#" title=""><span class="menu-item-parent">고객 반응 분석 모델링</span></a>#}
+{#                    </li>#}
+{#                </ul>#}
+{#            </li>#}
+{#        </ul>#}
+{#    </nav>#}
+
+    <div class="jarviswidget">
+        <div>
+            <div class="widget-body no-padding smart-form">
+                <div class="file-upload-div">
+                    <span class="file-upload-name">CSV 업로드</span>
+                    <a href="javascript:void(0);" class="btn btn-primary btn-xs file-upload-btn" type="file">Upload</a>
+                </div>
+                <fieldset>
+                    <section>
+                        <label class="label">Path</label>
+                        <div>
+                            <input class="form-control" type="text" name="path" id="path" disabled="disabled">
+                        </div>
+                    </section>
+                    <section>
+                        <label class="label">Train Column</label>
+                        <div>
+                            <input class="form-control" type="text" name="train" id="train" disabled="disabled">
+                        </div>
+                    </section>
+                    <section>
+                        <label class="label">Prediction Column</label>
+                        <div>
+                            <input class="form-control" type="text" name="prediction" id="prediction" disabled="disabled">
+                        </div>
+                    </section>
+                </fieldset>
+            </div>
+        </div>
+    </div>
 
     <!-- start -->
     <article class="col-sm-12 col-md-12 col-lg-12 sortable-grid ui-sortable file-upload">
@@ -158,19 +187,9 @@
     </article>
     <!-- end -->
 
-    {#			<div class="file-upload">#}
-    {#				<div>#}
-    {#					<span style="color: #fff;">파일 업로드(CSV)</span>#}
-    {#                    <input type="file">#}
-    {#				</div>#}
-    {#				<div>#}
-    {#					<button class="btn btn-sm btn-primary">분석 실행</button>#}
-    {#				</div>#}
-    {#			</div>#}
-
-    <span class="minifyme" data-action="minifyMenu">
-				<i class="fa fa-arrow-circle-left hit"></i>
-			</span>
+{#    <span class="minifyme" data-action="minifyMenu">#}
+{#        <i class="fa fa-arrow-circle-left hit"></i>#}
+{#    </span>#}
 </aside>
 
 <div id="main" role="main">
@@ -189,83 +208,13 @@
     </div>
 
     <div id="ribbon" class="filter">
-        <div class="date-filter smart-form">
-            <div class="inline-group">
-                <label class="date-label-left">Date</label>
-                <label class="radio">
-                    <input type="radio" name="radio-inline" checked="checked"><i></i>전일</label>
-                <label class="radio">
-                    <input type="radio" name="radio-inline"><i></i>최근 1주일</label>
-                <label class="radio">
-                    <input type="radio" name="radio-inline"><i></i>직접선택</label>
-                <label class="input datepicker-startdate"> <i class="icon-append fa fa-calendar"></i>
-                    <input type="text" name="startdate" id="startdate" placeholder="Start Date" class="hasDatepicker">
-                </label>
-                <label class="date-label"> ─ </label>
-                <label class="input datepicker-enddate"> <i class="icon-append fa fa-calendar"></i>
-                    <input type="text" name="enddate" id="finishdate" placeholder="End Date" class="hasDatepicker valid" aria-invalid="false">
-                </label>
-            </div>
-        </div>
-    </div>
-
-    <div id="ribbon" class="filter">
         <div class="smart-form">
             <div class="inline-group">
                 <label class="date-label-left" style="padding-top: 10px !important;">Layout</label>
                 <label><a href="#"><i class="fa fa-stop filter-layout"></i></a></label>
                 <label><a href="#"><i class="fa fa-pause filter-layout"></i></a></label>
                 <label><a href="#"><i class="fa fa-th-large filter-layout"></i></a></label>
-                <div class="div-chart">
-                    <label class="data-label-chart">Chart</label>
-                    <label><a href="#"><i class="fa fa-signal filter-chart"></i></a></label>
-                    <label><a href="#"><i class="fa fa-signal filter-chart"></i></a></label>
-                    <label><a href="#"><i class="fa fa-signal filter-chart"></i></a></label>
-                    <label><a href="#"><i class="fa fa-signal filter-chart"></i></a></label>
-                    <label><a href="#"><i class="fa fa-signal filter-chart"></i></a></label>
-                    <label><a href="#"><i class="fa fa-signal filter-chart"></i></a></label>
-                    <label><a href="#"><i class="fa fa-signal filter-chart"></i></a></label>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div id="ribbon" class="filter">
-        <div class="smart-form">
-            <div class="inline-group">
-                <label class="date-label-left" style="padding-top: 10px !important;">Algorithm</label>
-                <label class="filter-algorithm"><a href="#">Naive Bayes</a></label>
-                <label class="filter-algorithm"><a href="#">SVM</a></label>
-                <label class="filter-algorithm"><a href="#">Random Forest</a></label>
-                <label class="filter-algorithm"><a href="#">XgBoost</a></label>
-                <label class="filter-algorithm"><a href="#">DNN</a></label>
-                <div class="div-chart">
-                    <label class="data-label-chart" style="padding-top: 10px !important;">Variable</label>
-                    <label class="filter-Variable"><a href="#">Variable1</a></label>
-                    <label class="filter-Variable"><a href="#">Variable2</a></label>
-                    <label class="filter-Variable"><a href="#">Variable3</a></label>
-                    <label class="filter-Variable"><a href="#">Variable4</a></label>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div id="ribbon" class="filter">
-        <div class="smart-form">
-            <div class="inline-group">
-                <label class="date-label-left" style="padding-top: 10px !important;">Filter</label>
-                <label class="filter-Filter"><a href="#">Filter1</a></label>
-                <label class="filter-Filter"><a href="#">Filter2</a></label>
-                <label class="filter-Filter"><a href="#">Filter3</a></label>
-                <label class="filter-Filter"><a href="#">Filter4</a></label>
-                <label class="filter-Filter"><a href="#">Filter5</a></label>
-                <div class="div-chart">
-                    <label class="data-label-Controls" style="padding-top: 10px !important;">Controls</label>
-                    <label class="filter-Controls"><a href="#">1</a></label>
-                    <label class="filter-Controls"><a href="#">2</a></label>
-                    <label class="filter-Controls"><a href="#">3</a></label>
-                    <label class="filter-Controls"><a href="#">4</a></label>
-                </div>
+{#                <label><a href="#"><i class="ni ni-grid filter-layout"></i></a></label>#}
             </div>
         </div>
     </div>
@@ -291,6 +240,7 @@
                             <div class="jarviswidget-editbox">
                             </div>
                             <div class="widget-body no-padding">
+                                <div><i class="fa fa-file-text"></i></div>
                                 <div id="line-chart-test" class="chart"></div>
                             </div>
                         </div>
@@ -347,8 +297,8 @@
 <script src="{{ url_for('static', filename = 'toast/chart/js/tui-chart-all.js') }}"></script> <!-- Toast-ui chart v3.7.0 -->
 
 <!--[if IE 8]>
-		<h1>해당 Browser에서 지원하지 않습니다. Browser를 최신버전으로 업데이트 하세요.</h1>
-		<![endif]-->
+	<h1>해당 Browser에서 지원하지 않습니다. Browser를 최신버전으로 업데이트 하세요.</h1>
+<![endif]-->
 
 <script>
 

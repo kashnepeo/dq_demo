@@ -166,3 +166,26 @@ label a:hover {
 	font-weight: bold;
 	color: #000;
 }
+
+.login-info-name {
+	text-align: left;
+	color: #fff;
+	padding-top: 3px;
+	font-size: 15px !important;
+}
+
+.file-upload-div {
+	padding: 10px 10px;
+}
+
+.file-upload-name {
+	font-size: 18px;
+	font-weight: bold;
+	color: #000;
+	margin-right: 20px;
+}
+
+.file-upload-btn {
+	vertical-align: top;
+	padding: 2px 10px;
+}
