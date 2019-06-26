@@ -372,8 +372,8 @@
 
 
         var bar_container = document.getElementById('bar-chart-test');
-        var bar_width = $(line_container).width();
-        var bar_height = $(line_container).height();
+        var bar_width = $(bar_container).width();
+        var bar_height = $(bar_container).height();
 
         var bar_data = {
             categories: ['2015', '2016', '2017', '2018'],
@@ -416,7 +416,6 @@
         var bar_chart = tui.chart.columnChart(bar_container, bar_data, bar_options);
 
         console.log("bar_chart: ", bar_chart);
-
 
         $('#submit_btn').on("click", function () {
             file_analyze();
@@ -468,7 +467,23 @@
             }
         }
 
+        $(window).resize(function(e) {
+            line_chart.resize({
+                width: $(line_container).width(),
+                height: $(line_container).height()
+            });
+
+            bar_chart.resize({
+                width: $(bar_container).width(),
+                height: $(bar_container).height()
+            });
+
+        });
+
     });
+
+
+
 
 </script>
 
