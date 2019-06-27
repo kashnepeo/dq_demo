@@ -11,7 +11,8 @@ from sklearn.model_selection import GridSearchCV
 from sklearn.model_selection import KFold
 from sklearn.model_selection import cross_val_score
 from sklearn.model_selection import train_test_split
-from ml_rest.ml.classifier.preprocessing import Preprocessing
+# from ml_rest.ml.classifier.preprocessing import Preprocessing
+from .preprocessing import Preprocessing
 
 
 class BaggingClass:
@@ -54,17 +55,9 @@ class BaggingClass:
         self._y_train = self.data.loc[:78, 'CALL_L_CLASS_CD'].values
         self._x_test = self.data.loc[34:, 'STT_CONT'].values
         self._y_test = self.data.loc[34:, 'CALL_L_CLASS_CD'].values
-        print("_x_train: ", self._x_train)
-        print("_y_train: ", self._y_train)
-        print("_x_test: ", self._x_test)
-        print("_y_test: ", self._y_test)
 
         self.X_train_tfidf_vector, self.X_test_tfidf_vector, self.vocab, self.dist = preprocessor.keyword_vectorizer(
             x_train=self._x_train, x_test=self._x_test)
-        print("X_train_tfidf_vector: ", self.X_train_tfidf_vector)
-        print("X_test_tfidf_vector: ", self.X_test_tfidf_vector)
-        print("vocab: ", self.vocab)
-        print("dist: ", self.dist)
 
         # 모델 선언
         self._model = BaggingClassifier()
