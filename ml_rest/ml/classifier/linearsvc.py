@@ -29,8 +29,7 @@ class LinearSVCClass:
 
         # 원본 데이터 로드
         # data = pd.read_csv(self._f_path + "/classifier/resource/classifier_sample.csv", sep=",", encoding="utf-8")
-        data = pd.read_csv(self._f_path + "/"+filename, sep=",", encoding="ms949")
-
+        data = pd.read_csv(self._f_path + "/" + filename, sep=",", encoding="ms949")
 
         # 학습 및 레이블(정답) 데이터 분리
         self._x = data.drop("quality", axis=1)
@@ -63,6 +62,7 @@ class LinearSVCClass:
 
     def predict_by_pc(self):
         pass
+
     #  CV 예측(Cross Validation)
     def predict_by_cv(self):
         cv = KFold(n_splits=5, shuffle=True)
@@ -89,7 +89,8 @@ class LinearSVCClass:
         else:
             # 기존 모델 대체
             if os.path.isfile(self._f_path + f'/model/{self._name}.pkl'):
-                os.rename(self._f_path + f'/model/{self._name}.pkl', self._f_path + f'/model/{str(self._name) + str(time.time())}.pkl')
+                os.rename(self._f_path + f'/model/{self._name}.pkl',
+                          self._f_path + f'/model/{str(self._name) + str(time.time())}.pkl')
             joblib.dump(self._model, self._f_path + f'/model/{self._name}.pkl')
 
     def __del__(self):
