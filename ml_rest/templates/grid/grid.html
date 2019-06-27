@@ -57,6 +57,13 @@
             multiColumnSort: true
         };
 
+        var addColumn = function(){
+            var columnDefinition = {id: "column1", name: "title", field: "column1", editor: Slick.Editors.Text};
+            var columns = grid.getColumns();
+            columns.push( columnDefinition );
+            grid.setColumns(columns);
+        }
+
         $(function () {
             var columns = [];
             var data = {{ resultList | tojson }};
@@ -73,6 +80,7 @@
                     name: columnsName[i],
                     field: i,
                     sortable: true,
+                    editor: Slick.Editors.Text,
                     header: {
                         buttons: [
                             {
@@ -172,6 +180,7 @@
     <div style="width:100%; margin-top:30px;" id="container">
         <div id="myGrid" style="width:auto;height:500px;"></div>
     </div>
+    <button onClick="javascript:addColumn();">Add Column</button>
 </div>
 </body>
 </html>

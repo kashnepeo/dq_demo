@@ -5,12 +5,12 @@ from werkzeug.utils import secure_filename
 app = Flask(__name__)
 
 
-@app.route('/upload')
+@app.route('/testUpload')
 def render_file():
     return render_template('grid/upload.html')
 
 
-@app.route('/fileUpload', methods=['GET', 'POST'])
+@app.route('/fileTestUpload', methods=['GET', 'POST'])
 def upload_file():
     if request.method == 'POST':
         f = request.files['file']

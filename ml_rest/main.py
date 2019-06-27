@@ -3,14 +3,12 @@ import os
 import os.path
 import time
 import pandas as pd
-
+import csv
 import flask
-from flask import Flask, request
+from flask import jsonify
 from flask_restful import Resource, Api, abort
+from flask import Flask, request
 from werkzeug.utils import secure_filename
-
-from ml.classifier import *
-from ml.regression import *
 
 # 환경 정보 로드
 with open('./system/config.json') as j:
@@ -37,6 +35,28 @@ def index():
 def analysis():
     return flask.render_template("analysis/analysis.html")
 
+@app.route("/csvAnalysis")
+def csvAnalysis():
+    return flask.render_template("csvAnalysis/csvAnalysis.html")
+
+@app.route('/fileUpload', methods=['GET', 'POST'])
+def upload_file():
+    if request.method == 'POST':
+        f = request.files['file2']
+        f.save(secure_filename(f.filename))
+        f = open(secure_filename(f.filename))
+        lists = csv.reader(f)
+        resultList = []
+        for list in lists:
+            resultList.append([except_fn(x) for x in list])
+        f.close
+        return jsonify(resultList)
+
+def except_fn(x):
+    try:
+        return "{:d}".format(round(float(x)))
+    except ValueError:
+        return x
 
 def abort_function():
     abort(404)
