@@ -37,7 +37,7 @@ def analysis():
 
 
 @app.route("/csvAnalysis")
-def csvAnalysis():
+def csv_analysis():
     return flask.render_template("csvAnalysis/csvAnalysis.html")
 
 

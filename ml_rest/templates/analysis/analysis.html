@@ -92,104 +92,38 @@
 {#        </ul>#}
 {#    </nav>#}
 
-    <div class="jarviswidget">
+    <div>
         <div>
             <div class="widget-body no-padding smart-form">
-                <div class="file-upload-div">
-                    <span class="file-upload-name">CSV 업로드</span>
-                    <a href="javascript:void(0);" class="btn btn-primary btn-xs file-upload-btn" type="file">Upload</a>
+                <div class="file-upload">
+                    <div>
+                        <span class="file-upload-name">CSV 업로드</span>
+                        <a href="javascript:void(0);" class="btn btn-primary btn-xs file-upload-btn" type="file">Upload</a>
+                    </div>
                 </div>
-                <fieldset>
-                    <section>
-                        <label class="label">Path</label>
-                        <div>
-                            <input class="form-control" type="text" name="path" id="path" disabled="disabled">
-                        </div>
-                    </section>
-                    <section>
-                        <label class="label">Train Column</label>
-                        <div>
-                            <input class="form-control" type="text" name="train" id="train" disabled="disabled">
-                        </div>
-                    </section>
-                    <section>
-                        <label class="label">Prediction Column</label>
-                        <div>
-                            <input class="form-control" type="text" name="prediction" id="prediction" disabled="disabled">
-                        </div>
-                    </section>
-                </fieldset>
+{#                <fieldset>#}
+{#                    <section>#}
+{#                        <label class="label">Path</label>#}
+{#                        <div>#}
+{#                            <input class="form-control" type="text" name="path" id="path" disabled="disabled">#}
+{#                        </div>#}
+{#                    </section>#}
+{#                    <section>#}
+{#                        <label class="label">Train Column</label>#}
+{#                        <div>#}
+{#                            <input class="form-control" type="text" name="train" id="train" disabled="disabled">#}
+{#                        </div>#}
+{#                    </section>#}
+{#                    <section>#}
+{#                        <label class="label">Prediction Column</label>#}
+{#                        <div>#}
+{#                            <input class="form-control" type="text" name="prediction" id="prediction" disabled="disabled">#}
+{#                        </div>#}
+{#                    </section>#}
+{#                </fieldset>#}
             </div>
         </div>
     </div>
-
-    <!-- start -->
-    <article class="col-sm-12 col-md-12 col-lg-12 sortable-grid ui-sortable file-upload">
-        <div class="jarviswidget jarviswidget-sortable" id="wid-id-1" data-widget-colorbutton="false" data-widget-editbutton="false" data-widget-custombutton="false" role="widget">
-            <div role="content">
-                <div class="widget-body no-padding">
-                    <form id="csv_upload" class="smart-form" method="post" enctype="multipart/form-data" onsubmit="return false">
-                        <header>
-                            파일 업로드(CSV)
-                        </header>
-                        <fieldset>
-                            <section>
-                                <label class="label">알고리즘 선택</label>
-                                <label class="select">
-                                    <select id="classifier_algorithm">
-                                        <option value="bagging">BaggingClassfier</option>
-                                        <option value="bernoulinb">BernouliNB</option>
-                                        <option value="decisiontree">DecisionTreeClassifier</option>
-                                        <option value="extratree">ExtraTreeClassifier</option>
-                                        <option value="extratrees">ExtraTreesClassifier</option>
-                                        <option value="gaussiannb">GaussianNB</option>
-                                        <option value="gaussianprocess">
-                                            GaussianProcessClassifier(Only Model)
-                                        </option>
-                                        <option value="gradientboosting">
-                                            GradientBoostingClassifier
-                                        </option>
-                                        <option value="kneighbors">KNeighborsClassifier</option>
-                                        <option value="linearsvc">LinearSVC</option>
-                                        <option value="logisticregression">LogisticRegression
-                                        </option>
-                                        <option value="mlp">MLPClassfier</option>
-                                        <option value="nusvc">NuSVC</option>
-                                        <option value="perceptron">Perceptron</option>
-                                        <option value="randomforest">RandomForestClassfier</option>
-                                        <option value="sgd">SGDClassfier</option>
-                                        <option value="svc">SVC</option>
-                                    </select> <i></i> </label>
-                            </section>
-                            <section>
-                                <label class="label">File input</label>
-                                <div class="input input-file">
-                                    <span class="button"><input type="file" id="id_file" name="id_file" onchange="this.parentNode.nextSibling.value = this.value">Browse</span><input type="text" placeholder="Include some files" readonly="">
-                                </div>
-
-                            </section>
-                        </fieldset>
-                        <footer>
-                            <button type="submit" id="submit_btn" class="btn btn-primary">
-                                Run
-                            </button>
-                            <button type="button" class="btn btn-default" onclick="window.history.back();">
-                                Back
-                            </button>
-                        </footer>
-                    </form>
-                </div>
-                <!-- end widget content -->
-            </div>
-            <!-- end widget div -->
-        </div>
-        <!-- end widget -->
-    </article>
-    <!-- end -->
-
-{#    <span class="minifyme" data-action="minifyMenu">#}
-{#        <i class="fa fa-arrow-circle-left hit"></i>#}
-{#    </span>#}
 </aside>
 
 <div id="main" role="main">
@@ -271,6 +205,208 @@
     </div>
 </div>
 
+<div id="dialog_simple" title="Dialog Simple Title">
+    <div class="widget-body">
+        <div id="bootstrap-wizard-1" class="col-sm-12">
+            <div class="form-bootstrapWizard">
+                <ul class="bootstrapWizard form-wizard">
+                    <li class="active" data-target="#step1">
+                        <a href="#tab1" data-toggle="tab" aria-expanded="true" class="cancelEvent"> <span class="step">1</span> <span class="title">CSV Upload</span> </a>
+                    </li>
+                    <li data-target="#step2" class="">
+                        <a href="#tab2" data-toggle="tab" aria-expanded="false" class="cancelEvent"> <span class="step">2</span> <span class="title">신규 모델 생성</span> </a>
+                    </li>
+                    <li data-target="#step3" class="">
+                        <a href="#tab3" data-toggle="tab" aria-expanded="false" class="cancelEvent"> <span class="step">3</span> <span class="title">CSV 설정</span> </a>
+                    </li>
+                    <li data-target="#step4" class="">
+                        <a href="#tab4" data-toggle="tab" aria-expanded="false" class="cancelEvent"> <span class="step">4</span> <span class="title">설정 완료</span> </a>
+                    </li>
+                </ul>
+                <div class="clearfix"></div>
+            </div>
+            <div class="tab-content">
+                <div id="loading_oh" style="position: absolute;margin: 10% 20% 0% 40%;z-index:1;">
+                    <table width="auto" height="auto" align="center" cellpadding="0" cellspacing="0">
+                        <tr>
+                            <td align="center"><img src="{{ url_for('static', filename = 'image/loading.gif') }}" border="0"><br><b><font color="black">잠시만 기다려 주세요</font></b></td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="tab-pane active" id="tab1">
+                    <br>
+                    <h3><strong>Step 1 </strong> - CSV File Upload</h3>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <!-- start -->
+                                <form id="order-form" class="smart-form" enctype="multipart/form-data" method="POST">
+                                    <div class="input input-file">
+                                        <span class="button">
+                                        <input id="file2" type="file" name="file2" onchange="this.parentNode.nextSibling.value = this.value">Browse</span><input type="text" placeholder="Include some files" readonly="">
+                                    </div>
+                                </form>
+                                <!--end-->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane" id="tab2">
+                    <br>
+                    <h3><strong>Step 2</strong> - 신규 모델 생성</h3>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <form id="contact-form" method="post" class="smart-form" novalidate="novalidate">
+                                    <label class="label">모델명</label>
+                                    <label class="input">
+                                        <i class="icon-append fa fa-tag"></i>
+                                        <input type="text" name="subject" id="subject">
+                                    </label>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="smart-form">
+                                <section>
+                                    <label class="label">모델 유형</label>
+                                    <div class="inline-group">
+                                        <label class="radio">
+                                            <input type="radio" name="model-category" checked="checked">
+                                            <i></i>분류</label>
+                                        <label class="radio">
+                                            <input type="radio" name="model-category">
+                                            <i></i>회귀</label>
+                                    </div>
+                                </section>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="smart-form">
+                                <section>
+                                    <label class="label">알고리즘 선택</label>
+                                    <div class="inline-group">
+                                        <select id="classifier_algorithm">
+                                        <option value="bagging">BaggingClassfier</option>
+                                        <option value="bernoulinb">BernouliNB</option>
+                                        <option value="decisiontree">DecisionTreeClassifier</option>
+                                        <option value="extratree">ExtraTreeClassifier</option>
+                                        <option value="extratrees">ExtraTreesClassifier</option>
+                                        <option value="gaussiannb">GaussianNB</option>
+                                        <option value="gaussianprocess">
+                                            GaussianProcessClassifier(Only Model)
+                                        </option>
+                                        <option value="gradientboosting">
+                                            GradientBoostingClassifier
+                                        </option>
+                                        <option value="kneighbors">KNeighborsClassifier</option>
+                                        <option value="linearsvc">LinearSVC</option>
+                                        <option value="logisticregression">LogisticRegression
+                                        </option>
+                                        <option value="mlp">MLPClassfier</option>
+                                        <option value="nusvc">NuSVC</option>
+                                        <option value="perceptron">Perceptron</option>
+                                        <option value="randomforest">RandomForestClassfier</option>
+                                        <option value="sgd">SGDClassfier</option>
+                                        <option value="svc">SVC</option>
+                                    </select>
+                                    </div>
+                                </section>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+                <div class="tab-pane" id="tab3">
+                    <br>
+                    <h3><strong>Step 3</strong> - CSV 설정</h3>
+                     <div class="row">
+                        <div class="col-sm-12">
+                            <div class="smart-form">
+                                <section>
+                                    <label class="label"><strong>모델 저장</strong></label>
+                                    <div class="inline-group">
+                                        <label class="radio">
+                                            <input type="radio" name="model-save" checked="checked">
+                                            <i></i>가망 고객 분석</label>
+                                        <label class="radio">
+                                            <input type="radio" name="model-save">
+                                            <i></i>고객 반응 분석</label>
+                                        <label class="radio">
+                                            <input type="radio" name="model-save">
+                                            <i></i>이탈 고객 분석</label>
+                                        <label class="radio">
+                                            <input type="radio" name="model-save">
+                                            <i></i>민원 고객 분석</label>
+                                    </div>
+                                </section>
+                            </div>
+                        </div>
+                    </div>
+                     <div class="row">
+                        <div class="col-sm-12">
+                            <div class="smart-form">
+                                <section>
+                                    <label class="label"><strong>학습 컬럼 선택</strong></label>
+                                    <div class="inline-group" id="learningArea">
+
+                                    </div>
+                                </section>
+                            </div>
+                        </div>
+                    </div>
+                     <div class="row">
+                        <div class="col-sm-12">
+                            <div class="smart-form">
+                                <section>
+                                    <label class="label"><strong>예측 컬럼 선택</strong></label>
+                                    <div class="inline-group" id="predictionArea">
+                                    </div>
+                                </section>
+                            </div>
+                        </div>
+                    </div>
+{#                                <div class="row">#}
+{#                                    <div class="col-sm-12">#}
+{#                                        <div class="smart-form">#}
+{#                                            <div id="csvGrid" style="width:auto;height:200px;"></div>#}
+{#                                        </div>#}
+{#                                    </div>#}
+{#                                </div>#}
+                </div>
+                <div class="tab-pane" id="tab4">
+                    <br>
+                    <h3><strong>Step 4</strong> - 설정 완료</h3>
+                    <br>
+                    <h1 class="text-center text-success"><strong><i class="fa fa-check fa-lg"></i> Complete</strong></h1>
+                    <h4 class="text-center">Click next to finish</h4>
+                    <br>
+                    <br>
+                </div>
+                <div class="form-actions" style="margin-bottom:0px;">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <ul class="pager wizard no-margin no-steps-container">
+                                <li class="previous">
+                                    <a href="javascript:void(0);" class="btn btn-default txt-color-darken"> Previous </a>
+                                </li>
+                                <li class="next">
+                                    <a href="javascript:void(0);" class="btn btn-default txt-color-darken"> Next </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="page-footer">
     <div class="row">
         <div class="col-xs-12 col-sm-6">
@@ -293,6 +429,8 @@
 <script src="{{ url_for('static', filename = 'smartadmin/js/fastclick.min.js') }}"></script> <!-- FastClick: For mobile devices -->
 <script src="{{ url_for('static', filename = 'smartadmin/js/demo.min.js') }}"></script> <!-- Demo purpose only -->
 <script src="{{ url_for('static', filename = 'smartadmin/js/app.min.js') }}"></script> <!-- MAIN APP JS FILE -->
+<script src="{{ url_for('static', filename = 'smartadmin/js/jquery.bootstrap.wizard.min.js') }}"></script> <!-- wizard JS FILE -->
+<script src="{{ url_for('static', filename = 'smartadmin/js/wizard.min.js') }}"></script> <!-- wizard JS FILE -->
 
 <script src="{{ url_for('static', filename = 'toast/chart/js/tui-chart-all.js') }}"></script> <!-- Toast-ui chart v3.7.0 -->
 
@@ -479,6 +617,183 @@
             });
 
         });
+
+        $(".cancelEvent").click(function(){
+                return false;
+        })
+
+        $("#loading_oh").hide();
+
+        $('.file-upload-btn').click(function() {
+            $('#dialog_simple').dialog('open');
+            return false;
+
+        });
+
+        $('#dialog_simple').dialog({
+            autoOpen : false,
+            modal : true,
+            width : "40%",
+            height : "auto",
+            resizable : false,
+            title : "CSV 업로드",
+            close: function( event, ui ) {
+                $('#bootstrap-wizard-1').bootstrapWizard('first');
+                formReset();
+            }
+        });
+
+        $('#bootstrap-wizard-1').bootstrapWizard({
+            'tabClass': 'form-wizard',
+            'onNext': function (tab, navigation, index) {
+                if(index === 1) {
+                    if($("#file2")[0].files.length > 0){
+                        var ext = $("#file2")[0].files[0]['name'].split('.')[1];
+                        if (ext !== 'csv') {
+                            alert("확장자 csv 파일 업로드해주세요.");
+                            return false;
+                        } else {
+                            $("#loading_oh").show();
+                            var formData = new FormData($('#order-form')[0]);
+                            formData.append("fileObj", $("#file2")[0].files[0]);
+                                setTimeout(function() {
+                                    $.ajax({
+                                        url: '/fileUpload',
+                                        processData: false,
+                                        contentType: false,
+                                        data: formData,
+                                        type: 'POST',
+                                        async: false,
+                                        success: function (result) {
+                                            // 업로드 CSV 전송
+                                            fnGrid(result);
+                                            stepCheck(index);
+                                        }
+                                });
+                            }, 100); //1000 = 1초
+
+                        }
+                    }else{
+                        alert("파일을 선택 해주세요.");
+                        return false;
+                    }
+                }else if(index === 2){
+                    stepCheck(index);
+                }else if(index === 3){
+                    stepCheck(index);
+                }else if(index === 4){
+                    stepCheck(index);
+                    $('#dialog_simple').dialog('close');
+                }
+            }
+        });
+
+
+        var grid;
+        var options = {
+            enableCellNavigation: true,
+            editable: true,
+            asyncEditorLoading: false,
+            autoEdit: false ,
+            forceFitColumns: true ,
+            enableColumnReorder: false,
+            multiColumnSort: true
+        };
+
+        var fnGrid = function(resultList){
+            var columns = [];
+            var data = resultList;
+            // 배열 0번째는 columns 명으로 제외
+            var columnsName = data[0];
+
+            var learningAppenHtml = "";
+            $.each(columnsName, function(index, item){
+                learningAppenHtml += "<label class='radio'>" +
+                "<input type='radio' name='learning-coloumn'>" +
+                "<i></i>"+item+"</label>";
+            });
+
+            var predictionAppenHtml = "";
+            $.each(columnsName, function(index, item){
+                predictionAppenHtml += "<label class='radio'>" +
+                "<input type='radio' name='prediction-coloumn'>" +
+                "<i></i>"+item+"</label>";
+            });
+
+            $("#learningArea").append(learningAppenHtml);
+            $("#predictionArea").append(predictionAppenHtml);
+
+            data.splice(0, 1);
+            $("#loading_oh").hide();
+            /*
+            for (var i = 0; i < data[0].length; i++) {
+                columns.push({
+                    id: i,
+                    name: columnsName[i],
+                    field: i,
+                    sortable: true,
+                    header: {
+                        buttons: [
+                            {
+                                cssClass: "icon-filter-highlight-off",
+                                command: "toggle-filter-highlight",
+                                tooltip: "Highlight negative numbers."
+                            },
+                            {
+                                cssClass: "icon-value-highlight-off",
+                                command: "toggle-value-highlight",
+                                tooltip: "Highlight negative numbers."
+                            }
+                        ]
+                    }
+                });
+            }
+
+            grid = new Slick.Grid("#csvGrid", data, columns, options);
+            grid.setSelectionModel(new Slick.RowSelectionModel({selectActiveRow: false}));
+
+            grid.onSort.subscribe(function (e, args) {
+                var cols = args.sortCols;
+                data.sort(function (dataRow1, dataRow2) {
+                    for (var i = 0, l = cols.length; i < l; i++) {
+                      var field = cols[i].sortCol.field;
+                      var sign = cols[i].sortAsc ? 1 : -1;
+                      var value1 = dataRow1[field], value2 = dataRow2[field];
+                      var result = (value1 == value2 ? 0 : (value1 > value2 ? 1 : -1)) * sign;
+                      if (result != 0) {
+                        return result;
+                      }
+                    }
+                    return 0;
+                });
+              grid.invalidate();
+              grid.render();
+            });
+            */
+        }
+
+        // 초기화 function
+        var formReset = function(){
+            for(var eleNum = 0; eleNum < 4; eleNum++){
+                $('#bootstrap-wizard-1').find('.form-wizard').children('li').eq(eleNum).removeClass('complete');
+                $('#bootstrap-wizard-1').find('.form-wizard').children('li').eq(eleNum).removeClass('active');
+                $('#bootstrap-wizard-1').find('.form-wizard').children('li').eq(eleNum).children('a').children('.step').html("");
+                $('#bootstrap-wizard-1').find('.form-wizard').children('li').eq(eleNum).children('a').children('.step').append(eleNum+1);
+            }
+            $('#bootstrap-wizard-1').find('.form-wizard').children('li').eq(0).addClass('active');
+            $("div[id^='tab']").removeClass("active");
+            $("#tab1").addClass("active");
+            $('form').each(function(){
+                this.reset();
+            });
+            $("#csvGrid").empty();
+            grid = null;
+        }
+
+        var stepCheck = function(index){
+            $('#bootstrap-wizard-1').find('.form-wizard').children('li').eq(index - 1).addClass('complete');
+            $('#bootstrap-wizard-1').find('.form-wizard').children('li').eq(index - 1).find('.step').html('<i class="fa fa-check"></i>');
+        }
 
     });
 
