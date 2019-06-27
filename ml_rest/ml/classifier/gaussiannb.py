@@ -22,7 +22,7 @@ class GaussianNBClass:
     Method    : predict, predict_by_cv, save_model
     """
 
-    def __init__(self, filename):
+    def __init__(self, params, filename):
         # 알고리즘 이름
         self._name = 'gaussiannb'
         # 기본 경로
@@ -30,6 +30,14 @@ class GaussianNBClass:
 
         # 경고 메시지 삭제
         warnings.filterwarnings('ignore')
+
+        subject = params['subject']
+        classifier_algorithm = params['classifier_algorithm']
+        model_save = params['model_save']
+        learning_coloumn = params['learning_coloumn']
+        prediction_coloumn = params['prediction_coloumn']
+
+        print(model_save, subject)
 
         # 전처리 클래스 생성
         preprocessor = Preprocessing(filename=filename)
@@ -45,10 +53,14 @@ class GaussianNBClass:
 
         # 학습 데이터 및 테스트 데이터 분리
         # self._x_train, self._x_test, self._y_train, self._y_test = train_test_split(self._x, self._y, test_size=0.2, shuffle=True, random_state=42)
-        self._x_train = self.data.loc[:78, 'STT_CONT'].values
-        self._y_train = self.data.loc[:78, 'CALL_L_CLASS_CD'].values
-        self._x_test = self.data.loc[34:, 'STT_CONT'].values
-        self._y_test = self.data.loc[34:, 'CALL_L_CLASS_CD'].values
+        # self._x_train = self.data.loc[:78, 'STT_CONT'].values
+        self._x_train = self.data.loc[:78, learning_coloumn].values
+        # self._y_train = self.data.loc[:78, 'CALL_L_CLASS_CD'].values
+        self._y_train = self.data.loc[:78, prediction_coloumn].values
+        # self._x_test = self.data.loc[34:, 'STT_CONT'].values
+        self._x_test = self.data.loc[34:, learning_coloumn].values
+        # self._y_test = self.data.loc[34:, 'CALL_L_CLASS_CD'].values
+        self._y_test = self.data.loc[34:, prediction_coloumn].values
 
         # 전처리 데이터 로드
         self.X_train_tfidf_vector, self.X_test_tfidf_vector, self.vocab, self.dist = preprocessor.keyword_vectorizer(x_train=self._x_train, x_test=self._x_test)

@@ -1,13 +1,15 @@
+import csv
 import json
 import os
 import os.path
 import time
-import pandas as pd
-import csv
+
 import flask
-from flask import jsonify
+import pandas as pd
+from flask import Flask, request, jsonify
 from flask_restful import Resource, Api, abort
-from flask import Flask, request
+from ml.classifier import *
+from ml.regression import *
 from werkzeug.utils import secure_filename
 
 # 환경 정보 로드
@@ -34,11 +36,6 @@ def index():
 @app.route("/analysis")
 def analysis():
     return flask.render_template("analysis/analysis.html")
-
-
-@app.route("/csvAnalysis")
-def csvAnalysis():
-    return flask.render_template("csvAnalysis/csvAnalysis.html")
 
 
 @app.route('/fileUpload', methods=['GET', 'POST'])
@@ -69,14 +66,15 @@ def abort_function():
 # Classifier
 class ClassifierHandler(Resource):
     def post(self):
-        csv_file = request.files['csv_file']
-        classifier_algorithm = request.form['classifier_algorithm']
+        csv_file = request.files['fileObj']
         _f_path = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), os.pardir))
         csv_file.save(os.path.join(_f_path, 'ml_rest', 'ml', 'classifier', 'resource', secure_filename(csv_file.filename)))
+        classifier_algorithm = request.form['classifier_algorithm']
+        print(classifier_algorithm + '.' + app.config['algorithm']['classifier'][classifier_algorithm])
 
         # 분류 객체 생성(Str -> Class)
         try:
-            cls = eval(classifier_algorithm + '.' + app.config['algorithm']['classifier'][classifier_algorithm])(filename=csv_file.filename)
+            cls = eval(classifier_algorithm + '.' + app.config['algorithm']['classifier'][classifier_algorithm])(params=request.form, filename=csv_file.filename)
         except KeyError:
             abort_function()
 
@@ -152,6 +150,7 @@ class NltkHandler(Resource):
 api.add_resource(ClassifierHandler, '/classifier')
 api.add_resource(RegressionHandler, '/regression/<string:element>')
 api.add_resource(NltkHandler, '/nltk/<string:element>')
+
 
 if __name__ == '__main__':
     # Flask 서비스 스타트
