@@ -548,18 +548,20 @@
             console.log("bar_chart: ", bar_chart);
         }
 
-        $(window).resize(function (e) {
-            line_chart.resize({
-                width: $(line_container).width(),
-                height: $(line_container).height()
-            });
+        /*
+            $(window).resize(function (e) {
+                line_chart.resize({
+                    width: $(line_container).width(),
+                    height: $(line_container).height()
+                });
 
-            bar_chart.resize({
-                width: $(bar_container).width(),
-                height: $(bar_container).height()
-            });
+                bar_chart.resize({
+                    width: $(bar_container).width(),
+                    height: $(bar_container).height()
+                });
 
-        });
+            });
+        */
 
         $(".cancelEvent").click(function () {
             return false;
@@ -712,12 +714,12 @@
                                 console.log(result)
                                 series_line_chart(result.recordkey, result.call_l_class_cd, result.predict);
                                 horizental_bar_chart(result.report_lable, result.report_value);
+                                $('#dialog_simple').dialog('close');
+                                $("#loading_oh").hide();
                             }
                         });
                     }, 100); //1000 = 1초
                     stepCheck(index);
-                    $('#dialog_simple').dialog('close');
-                    $("#loading_oh").hide();
                 }
             }
         });
