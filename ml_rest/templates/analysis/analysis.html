@@ -250,132 +250,132 @@
                         </div>
                     </div>
                 </div>
-                <div class="tab-pane" id="tab2">
-                    <br>
-                    <h3><strong>Step 2</strong> - 신규 모델 생성</h3>
-                    <div class="row">
-                        <div class="col-sm-12">
-                            <div class="form-group">
-                                <form id="contact-form" method="post" class="smart-form" novalidate="novalidate">
-                                    <label class="label">모델명</label>
-                                    <label class="input">
-                                        <i class="icon-append fa fa-tag"></i>
-                                        <input type="text" name="subject" id="subject">
-                                    </label>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-sm-12">
-                            <div class="smart-form">
-                                <section>
-                                    <label class="label">모델 유형</label>
-                                    <div class="inline-group">
-                                        <label class="radio">
-                                            <input type="radio" name="model-category" value="classifier" checked="checked">
-                                            <i></i>분류</label>
-                                        <label class="radio">
-                                            <input type="radio" name="model-category" value="regression">
-                                            <i></i>회귀</label>
+                    <div class="tab-pane" id="tab2">
+                            <br>
+                            <h3><strong>Step 2</strong> - 신규 모델 생성</h3>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <form id="contact-form" method="post" class="smart-form" novalidate="novalidate">
+                                        <label class="label">모델명</label>
+                                        <label class="input">
+                                            <i class="icon-append fa fa-tag"></i>
+                                            <input type="text" name="modelName" id="modelName">
+                                        </label>
                                     </div>
-                                </section>
+                                </div>
                             </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-sm-12">
-                            <div class="smart-form">
-                                <section>
-                                    <label class="label">알고리즘 선택</label>
-                                    <div class="inline-group">
-                                        <select id="classifier_algorithm">
-                                            <option value="bagging">BaggingClassfier</option>
-                                            <option value="bernoulinb">BernouliNB</option>
-                                            <option value="decisiontree">DecisionTreeClassifier</option>
-                                            <option value="extratree">ExtraTreeClassifier</option>
-                                            <option value="extratrees">ExtraTreesClassifier</option>
-                                            <option value="gaussiannb">GaussianNB</option>
-                                            {#                                        <option value="gaussianprocess">#}
-                                            {#                                            GaussianProcessClassifier(Only Model)#}
-                                            {#                                        </option>#}
-                                            <option value="gradientboosting">
-                                                GradientBoostingClassifier
-                                            </option>
-                                            <option value="kneighbors">KNeighborsClassifier</option>
-                                            <option value="linearsvc">LinearSVC</option>
-                                            <option value="logisticregression">LogisticRegression
-                                            </option>
-                                            <option value="mlp">MLPClassfier</option>
-                                            {#                                        <option value="nusvc">NuSVC</option>#}
-                                            <option value="perceptron">Perceptron</option>
-                                            <option value="randomforest">RandomForestClassfier</option>
-                                            <option value="sgd">SGDClassfier</option>
-                                            <option value="svc">SVC</option>
-                                        </select>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="smart-form">
+                                        <section>
+                                            <label class="label">모델 유형</label>
+                                            <div class="inline-group">
+                                                <label class="radio">
+                                                    <input type="radio" name="modelCategory" value="classifier" checked="checked">
+                                                    <i></i>분류</label>
+                                                <label class="radio">
+                                                    <input type="radio" name="modelCategory" value="regression">
+                                                    <i></i>회귀</label>
+                                            </div>
+                                        </section>
                                     </div>
-                                </section>
+                                </div>
                             </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="tab-pane" id="tab3">
-                    <br>
-                    <h3><strong>Step 3</strong> - CSV 설정</h3>
-                    <div class="row">
-                        <div class="col-sm-12">
-                            <div class="smart-form">
-                                <section>
-                                    <label class="label"><strong>모델 저장</strong></label>
-                                    <div class="inline-group">
-                                        <label class="radio">
-                                            <input type="radio" name="model-save" value="가망 고객 분석" checked="checked">
-                                            <i></i>가망 고객 분석</label>
-                                        <label class="radio">
-                                            <input type="radio" value="고객 반응 분석" name="model-save">
-                                            <i></i>고객 반응 분석</label>
-                                        <label class="radio">
-                                            <input type="radio" value="이탈 고객 분석" name="model-save">
-                                            <i></i>이탈 고객 분석</label>
-                                        <label class="radio">
-                                            <input type="radio" value="민원 고객 분석" name="model-save">
-                                            <i></i>민원 고객 분석</label>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="smart-form">
+                                        <section>
+                                            <label class="label">알고리즘 선택</label>
+                                            <div class="inline-group">
+                                                <select id="classifier_algorithm">
+                                                    <option value="bagging">BaggingClassfier</option>
+                                                    <option value="bernoulinb">BernouliNB</option>
+                                                    <option value="decisiontree">DecisionTreeClassifier</option>
+                                                    <option value="extratree">ExtraTreeClassifier</option>
+                                                    <option value="extratrees">ExtraTreesClassifier</option>
+                                                    <option value="gaussiannb">GaussianNB</option>
+                                                    {#                                        <option value="gaussianprocess">#}
+                                                    {#                                            GaussianProcessClassifier(Only Model)#}
+                                                    {#                                        </option>#}
+                                                    <option value="gradientboosting">
+                                                        GradientBoostingClassifier
+                                                    </option>
+                                                    <option value="kneighbors">KNeighborsClassifier</option>
+                                                    <option value="linearsvc">LinearSVC</option>
+                                                    <option value="logisticregression">LogisticRegression
+                                                    </option>
+                                                    <option value="mlp">MLPClassfier</option>
+                                                    {#                                        <option value="nusvc">NuSVC</option>#}
+                                                    <option value="perceptron">Perceptron</option>
+                                                    <option value="randomforest">RandomForestClassfier</option>
+                                                    <option value="sgd">SGDClassfier</option>
+                                                    <option value="svc">SVC</option>
+                                                </select>
+                                                </form>
+                                            </div>
+                                        </section>
                                     </div>
-                                </section>
+                                </div>
+                            </div>
+                    </div>
+                    <div class="tab-pane" id="tab3">
+                        <br>
+                        <h3><strong>Step 3</strong> - CSV 설정</h3>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="smart-form">
+                                    <section>
+                                        <label class="label"><strong>모델 저장</strong></label>
+                                        <div class="inline-group">
+                                            <label class="radio">
+                                                <input type="radio" name="modelCd" value="가망 고객 분석" checked="checked">
+                                                <i></i>가망 고객 분석</label>
+                                            <label class="radio">
+                                                <input type="radio" value="고객 반응 분석" name="modelCd">
+                                                <i></i>고객 반응 분석</label>
+                                            <label class="radio">
+                                                <input type="radio" value="이탈 고객 분석" name="modelCd">
+                                                <i></i>이탈 고객 분석</label>
+                                            <label class="radio">
+                                                <input type="radio" value="민원 고객 분석" name="modelCd">
+                                                <i></i>민원 고객 분석</label>
+                                        </div>
+                                    </section>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-sm-12">
-                            <div class="smart-form">
-                                <section>
-                                    <label class="label"><strong>학습 컬럼 선택</strong></label>
-                                    <div class="inline-group" id="learningArea">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="smart-form">
+                                    <section>
+                                        <label class="label"><strong>학습 컬럼 선택</strong></label>
+                                        <div class="inline-group" id="learningArea">
 
-                                    </div>
-                                </section>
+                                        </div>
+                                    </section>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-sm-12">
-                            <div class="smart-form">
-                                <section>
-                                    <label class="label"><strong>예측 컬럼 선택</strong></label>
-                                    <div class="inline-group" id="predictionArea">
-                                    </div>
-                                </section>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="smart-form">
+                                    <section>
+                                        <label class="label"><strong>예측 컬럼 선택</strong></label>
+                                        <div class="inline-group" id="predictionArea">
+                                        </div>
+                                    </section>
+                                </div>
                             </div>
                         </div>
+                        {#                                <div class="row">#}
+                        {#                                    <div class="col-sm-12">#}
+                        {#                                        <div class="smart-form">#}
+                        {#                                            <div id="csvGrid" style="width:auto;height:200px;"></div>#}
+                        {#                                        </div>#}
+                        {#                                    </div>#}
+                        {#                                </div>#}
                     </div>
-                    {#                                <div class="row">#}
-                    {#                                    <div class="col-sm-12">#}
-                    {#                                        <div class="smart-form">#}
-                    {#                                            <div id="csvGrid" style="width:auto;height:200px;"></div>#}
-                    {#                                        </div>#}
-                    {#                                    </div>#}
-                    {#                                </div>#}
-                </div>
                 </form>
                 <div class="tab-pane" id="tab4">
                     <br>
@@ -429,6 +429,7 @@
 <script src="{{ url_for('static', filename = 'smartadmin/js/app.min.js') }}"></script> <!-- MAIN APP JS FILE -->
 <script src="{{ url_for('static', filename = 'smartadmin/js/jquery.bootstrap.wizard.min.js') }}"></script> <!-- wizard JS FILE -->
 <script src="{{ url_for('static', filename = 'smartadmin/js/wizard.min.js') }}"></script> <!-- wizard JS FILE -->
+<script src="{{ url_for('static', filename = 'jquery/js/jquery.validate.min.js') }}"></script>
 
 <script src="{{ url_for('static', filename = 'toast/chart/js/tui-chart-all.js') }}"></script> <!-- Toast-ui chart v3.7.0 -->
 
@@ -585,6 +586,41 @@
             }
         });
 
+       var $validator = $("#contact-form").validate({
+            rules: {
+                modelName: {
+                    required: true
+                },
+                modelCategory: {
+                    required: true
+                },
+                classifier_algorithm:{
+                    required: true
+                }
+            },
+            messages: {
+              modelName: "모델명을 입력해주세요.",
+              modelCategory: "모델유형을 선택해주세요.",
+              classifier_algorithm: "알고리즘을 선택해주세요."
+            },
+
+            highlight: function (element) {
+              $(element).closest('.form-group').removeClass('has-success').addClass('has-error');
+            },
+            unhighlight: function (element) {
+              $(element).closest('.form-group').removeClass('has-error').addClass('has-success');
+            },
+            errorElement: 'span',
+            errorClass: 'help-block',
+            errorPlacement: function (error, element) {
+              if (element.parent('.input-group').length) {
+                error.insertAfter(element.parent());
+              } else {
+                error.insertAfter(element);
+              }
+            }
+          });
+
         $('#bootstrap-wizard-1').bootstrapWizard({
             'tabClass': 'form-wizard',
             'onNext': function (tab, navigation, index) {
@@ -620,20 +656,44 @@
                         return false;
                     }
                 } else if (index === 2) {
+                    const $valid = $("#contact-form").valid();
+			        if (!$valid) {
+			            $validator.focusInvalid();
+			            return false;
+			        }
                     stepCheck(index);
                 } else if (index === 3) {
+                    var formData = new FormData();
+                    formData.append("model_name" , $("#modelName").val());
+                    formData.append("model_category" , $("input[name=modelCategory]:checked").val());
+                    formData.append("model_algorithm", $("#classifier_algorithm").val());
+                    formData.append("model_cd" , $('input[name="modelCd"]:checked').val());
+                    formData.append("model_learning" , $('input[name="learning-coloumn"]:checked').val());
+                    formData.append("model_prediction" , $('input[name="prediction-coloumn"]:checked').val()) ;
+
+                    $.ajax({
+                        url: "/csvInfoCU",
+                        processData: false,
+                        contentType: false,
+                        data: formData,
+                        type: 'POST',
+                        async: false,
+                        success: function (result) {
+                            console.log(result);
+                        }
+                    });
+
                     stepCheck(index);
                 } else if (index === 4) {
                     $("#loading_oh").show();
-
-                    const model_category = $('input[name="model-category"]:checked').val();
-                    const model_save = $('input[name="model-save"]:checked').val();
+                    const model_category = $('input[name="modelCategory"]:checked').val();
+                    const model_save = $('input[name="modelCd"]:checked').val();
                     const learning_coloumn = $('input[name="learning-coloumn"]:checked').val();
                     const prediction_coloumn = $('input[name="prediction-coloumn"]:checked').val();
 
                     var formData = new FormData($('#contact-form')[0]);
                     formData.append("fileObj", $("#file2")[0].files[0]);
-                    formData.append("subject", $("#subject").val());
+                    formData.append("subject", $("#modelName").val());
                     formData.append("classifier_algorithm", $("#classifier_algorithm").val());
                     formData.append("model_save", model_save);
                     formData.append("learning_coloumn", learning_coloumn);
@@ -657,6 +717,7 @@
                     }, 100); //1000 = 1초
                     stepCheck(index);
                     $('#dialog_simple').dialog('close');
+                    $("#loading_oh").hide();
                 }
             }
         });

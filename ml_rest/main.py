@@ -3,7 +3,7 @@ import json
 import os
 import os.path
 import time
-
+import pymysql
 import flask
 import pandas as pd
 from flask import Flask, request, jsonify
@@ -38,18 +38,71 @@ def analysis():
     return flask.render_template("analysis/analysis.html")
 
 
-@app.route('/fileUpload', methods=['GET', 'POST'])
-def upload_file():
-    if request.method == 'POST':
-        f = request.files['file2']
-        f.save(secure_filename(f.filename))
-        f = open(secure_filename(f.filename))
-        lists = csv.reader(f)
-        resultList = []
-        for list in lists:
-            resultList.append([except_fn(x) for x in list])
-        f.close
-        return jsonify(resultList)
+# CSV 업로드
+class UploadFile(Resource):
+    def post(self):
+        if request.method == 'POST':
+            f = request.files['file2']
+            f.save(secure_filename(f.filename))
+            f = open(secure_filename(f.filename))
+            lists = csv.reader(f)
+            resultList = []
+            for list in lists:
+                resultList.append([except_fn(x) for x in list])
+            f.close
+
+            # 응답 헤더
+            response_data = app.response_class(
+                response=json.dumps(resultList),
+                status=200,
+                mimetype='application/json'
+            )
+
+        return response_data
+
+
+class CsvInfoCU(Resource):
+    def post(self):
+        if request.method == 'POST':
+            db_class = Database()
+            sql = "INSERT INTO dev.csv_dump_table("
+            if request.form['model_name'] is not None:
+                sql += "model_nm"
+            if request.form['model_category'] is not None:
+                sql += ", model_category"
+            if request.form['model_algorithm'] is not None:
+                sql += ", model_algorithm"
+            if request.form['model_cd'] is not None:
+                sql += ", model_cd"
+            if request.form['model_learning'] is not None:
+                sql += ", model_learning"
+            if request.form['model_prediction'] is not None:
+                sql += ", model_prediction"
+            sql += ") VALUES ("
+            if request.form['model_name'] is not None:
+                sql += "'%s'" % (request.form['model_name'])
+            if request.form['model_category'] is not None:
+                sql += ", '%s'" % (request.form['model_category'])
+            if request.form['model_algorithm'] is not None:
+                sql += ", '%s'" % (request.form['model_algorithm'])
+            if request.form['model_cd'] is not None:
+                sql += ", '%s'" % (request.form['model_cd'])
+            if request.form['model_learning'] is not None:
+                sql += ", '%s'" % (request.form['model_learning'])
+            if request.form['model_prediction'] is not None:
+                sql += ", '%s'" % (request.form['model_prediction'])
+            sql += ")"
+            db_class.execute(sql)
+            db_class.commit()
+            sql = "SELECT last_insert_id()"
+            row = db_class.executeOne(sql)
+            # 응답 헤더
+            response_data = app.response_class(
+                response=json.dumps(row),
+                status=200,
+                mimetype='application/json'
+            )
+        return response_data
 
 
 def except_fn(x):
@@ -147,9 +200,37 @@ class NltkHandler(Resource):
         pass
 
 
+class Database():
+    def __init__(self):
+        self.db = pymysql.connect(host='tasvc.diquest.com',
+                                  user='diquest',
+                                  password='ek2znptm2',
+                                  db='dev',
+                                  charset='utf8')
+        self.cursor = self.db.cursor(pymysql.cursors.DictCursor)
+
+    def execute(self, query, args={}):
+        self.cursor.execute(query, args)
+
+    def executeOne(self, query, args={}):
+        self.cursor.execute(query, args)
+        row = self.cursor.fetchone()
+        return row
+
+    def executeAll(self, query, args={}):
+        self.cursor.execute(query, args)
+        row = self.cursor.fetchall()
+        return row
+
+    def commit(self):
+        self.db.commit()
+
+
 api.add_resource(ClassifierHandler, '/classifier')
 api.add_resource(RegressionHandler, '/regression/<string:element>')
 api.add_resource(NltkHandler, '/nltk/<string:element>')
+api.add_resource(UploadFile, '/fileUpload')
+api.add_resource(CsvInfoCU, '/csvInfoCU')
 
 
 if __name__ == '__main__':
