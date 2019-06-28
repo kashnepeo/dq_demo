@@ -11,8 +11,8 @@ from sklearn.model_selection import KFold
 from sklearn.model_selection import cross_val_score
 from sklearn.svm import *
 
-from ml_rest.ml.classifier.preprocessing import Preprocessing
-# from .preprocessing import Preprocessing
+# from ml_rest.ml.classifier.preprocessing import Preprocessing
+from .preprocessing import Preprocessing
 
 
 class GaussianNBClass:
