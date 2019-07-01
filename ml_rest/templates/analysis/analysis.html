@@ -439,6 +439,7 @@
 
 <script>
 
+
     $(document).ready(function () {
         pageSetUp();
 
@@ -744,15 +745,15 @@
 
             var learningAppenHtml = "";
             $.each(columnsName, function (index, item) {
-                learningAppenHtml += "<label class='radio'>" +
-                    "<input type='radio' value='" + item + "' name='learning-coloumn'>" +
+                learningAppenHtml += "<label class='checkbox'>" +
+                    "<input type='checkbox' value='" + item + "' name='learning-coloumn' onClick='changeLearning(\""+item+"\");'>" +
                     "<i></i>" + item + "</label>";
             });
 
             var predictionAppenHtml = "";
             $.each(columnsName, function (index, item) {
-                predictionAppenHtml += "<label class='radio'>" +
-                    "<input type='radio' value='" + item + "' name='prediction-coloumn'>" +
+                predictionAppenHtml += "<label class='checkbox'>" +
+                    "<input type='checkbox' value='" + item + "' name='prediction-coloumn' onClick='changePrediction(\""+item+"\");'>" +
                     "<i></i>" + item + "</label>";
             });
 
@@ -832,6 +833,33 @@
         }
 
     });
+
+        function changeLearning(checkValue){
+            var predictionCheckbox = $('input[name="prediction-coloumn"]');
+            for(var i = 0; i < predictionCheckbox.length; i++){
+                if(predictionCheckbox[i].value === checkValue){
+                    if(predictionCheckbox[i].disabled){
+                        predictionCheckbox[i].disabled = false;
+                    }else{
+                        predictionCheckbox[i].disabled = true;
+                    }
+
+                }
+            };
+         }
+
+        function changePrediction(checkValue){
+            var learningCheckbox = $('input[name="learning-coloumn"]');
+            for(var i = 0; i < learningCheckbox.length; i++){
+                if(learningCheckbox[i].value === checkValue){
+                    if(learningCheckbox[i].disabled){
+                        learningCheckbox[i].disabled = false;
+                    }else{
+                        learningCheckbox[i].disabled = true;
+                    }
+                }
+            };
+         }
 
 
 </script>
