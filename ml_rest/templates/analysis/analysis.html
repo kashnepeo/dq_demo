@@ -671,9 +671,24 @@
                     formData.append("model_category" , $("input[name=modelCategory]:checked").val());
                     formData.append("model_algorithm", $("#classifier_algorithm").val());
                     formData.append("model_cd" , $('input[name="modelCd"]:checked').val());
-                    formData.append("model_learning" , $('input[name="learning-coloumn"]:checked').val());
-                    formData.append("model_prediction" , $('input[name="prediction-coloumn"]:checked').val()) ;
-
+                    var learningArray = "";
+                    for(var i = 0; i < $('input[name="learning-coloumn"]:checked').length; i++){
+                        if(i == 0){
+                            learningArray = $('input[name="learning-coloumn"]:checked')[i].value;
+                        }else{
+                            learningArray += "|"+$('input[name="learning-coloumn"]:checked')[i].value;
+                        }
+                    }
+                    var predictionArray = "";
+                    for(var i = 0; i < $('input[name="prediction-coloumn"]:checked').length; i++){
+                        if(i == 0){
+                            predictionArray = $('input[name="prediction-coloumn"]:checked')[i].value;
+                        }else{
+                            predictionArray += "|"+$('input[name="prediction-coloumn"]:checked')[i].value;
+                        }
+                    }
+                    formData.append("model_learning" , learningArray);
+                    formData.append("model_prediction" , predictionArray) ;
                     $.ajax({
                         url: "/csvInfoCU",
                         processData: false,
@@ -742,6 +757,9 @@
             var data = resultList;
             // 배열 0번째는 columns 명으로 제외
             var columnsName = data[0];
+
+            $("#learningArea").empty();
+            $("#predictionArea").empty();
 
             var learningAppenHtml = "";
             $.each(columnsName, function (index, item) {
