@@ -445,14 +445,14 @@
 
         // line chart
         // 차트가 담길 element
-        var line_container = document.getElementById('line-chart-test');
-        var line_width = $(line_container).width();
-        var line_height = $(line_container).height();
-        var line_chart;
+        let line_container = document.getElementById('line-chart-test');
+        let line_width = $(line_container).width();
+        let line_height = $(line_container).height();
+        let line_chart;
 
         // 차트 data
         function series_line_chart(categories, origin_data, predict_data) {
-            var line_data = {
+            let line_data = {
                 categories: categories, // ['1월', '2월', '3월', '4월', '5월', '6월'],
                 series: [
                     {
@@ -467,7 +467,7 @@
             };
 
             // 차트 options
-            var line_options = {
+            let line_options = {
                 theme: 'customTheme',
                 chart: {
                     width: line_width,
@@ -511,14 +511,14 @@
         // });
 
 
-        var bar_container = document.getElementById('bar-chart-test');
-        var bar_width = $(bar_container).width();
-        var bar_height = $(bar_container).height();
-        var bar_chart;
+        let bar_container = document.getElementById('bar-chart-test');
+        let bar_width = $(bar_container).width();
+        let bar_height = $(bar_container).height();
+        let bar_chart;
 
         // 차트 data
         function horizental_bar_chart(report_lable, report_value) {
-            var bar_data = {
+            let bar_data = {
                 categories: report_lable,
                 series: [
                     {
@@ -527,7 +527,7 @@
                     }
                 ]
             };
-            var bar_options = {
+            let bar_options = {
                 chart: {
                     width: bar_width,
                     height: bar_height,
@@ -589,7 +589,7 @@
             }
         });
 
-       var $validator = $("#contact-form").validate({
+       let $validator = $("#contact-form").validate({
             rules: {
                 modelName: {
                     required: true
@@ -629,13 +629,13 @@
             'onNext': function (tab, navigation, index) {
                 if (index === 1) {
                     if ($("#file2")[0].files.length > 0) {
-                        var ext = $("#file2")[0].files[0]['name'].split('.')[1];
+                        let ext = $("#file2")[0].files[0]['name'].split('.')[1];
                         if (ext !== 'csv') {
                             alert("확장자 csv 파일 업로드해주세요.");
                             return false;
                         } else {
                             $("#loading_oh").show();
-                            var formData = new FormData($('#order-form')[0]);
+                            let formData = new FormData($('#order-form')[0]);
                             formData.append("fileObj", $("#file2")[0].files[0]);
                             setTimeout(function () {
                                 $.ajax({
@@ -666,7 +666,7 @@
 			        }
                     stepCheck(index);
                 } else if (index === 3) {
-                    var formData = new FormData();
+                    let formData = new FormData();
                     formData.append("model_name" , $("#modelName").val());
                     formData.append("model_category" , $("input[name=modelCategory]:checked").val());
                     formData.append("model_algorithm", $("#classifier_algorithm").val());
@@ -693,7 +693,7 @@
                     const learning_coloumn = $('input[name="learning-coloumn"]:checked').val();
                     const prediction_coloumn = $('input[name="prediction-coloumn"]:checked').val();
 
-                    var formData = new FormData($('#contact-form')[0]);
+                    let formData = new FormData($('#contact-form')[0]);
                     formData.append("fileObj", $("#file2")[0].files[0]);
                     formData.append("subject", $("#modelName").val());
                     formData.append("classifier_algorithm", $("#classifier_algorithm").val());
@@ -725,8 +725,8 @@
         });
 
 
-        var grid;
-        var options = {
+        let grid;
+        let options = {
             enableCellNavigation: true,
             editable: true,
             asyncEditorLoading: false,
@@ -736,23 +736,23 @@
             multiColumnSort: true
         };
 
-        var fnGrid = function (resultList) {
-            var columns = [];
-            var data = resultList;
+        let fnGrid = function (resultList) {
+            let columns = [];
+            let data = resultList;
             // 배열 0번째는 columns 명으로 제외
-            var columnsName = data[0];
+            let columnsName = data[0];
 
             $("#learningArea").empty();
             $("#predictionArea").empty();
 
-            var learningAppenHtml = "";
+            let learningAppenHtml = "";
             $.each(columnsName, function (index, item) {
                 learningAppenHtml += "<label class='checkbox'>" +
                     "<input type='checkbox' value='" + item + "' name='learning-coloumn' onChange='changeLearning(\""+item+"\");'>" +
                     "<i></i>" + item + "</label>";
             });
 
-            var predictionAppenHtml = "";
+            let predictionAppenHtml = "";
             $.each(columnsName, function (index, item) {
                 predictionAppenHtml += "<label class='checkbox'>" +
                     "<input type='checkbox' value='" + item + "' name='prediction-coloumn' onChange='changePrediction(\""+item+"\");'>" +
@@ -765,7 +765,7 @@
             data.splice(0, 1);
             $("#loading_oh").hide();
             /*
-            for (var i = 0; i < data[0].length; i++) {
+            for (let i = 0; i < data[0].length; i++) {
                 columns.push({
                     id: i,
                     name: columnsName[i],
@@ -792,13 +792,13 @@
             grid.setSelectionModel(new Slick.RowSelectionModel({selectActiveRow: false}));
 
             grid.onSort.subscribe(function (e, args) {
-                var cols = args.sortCols;
+                let cols = args.sortCols;
                 data.sort(function (dataRow1, dataRow2) {
-                    for (var i = 0, l = cols.length; i < l; i++) {
-                      var field = cols[i].sortCol.field;
-                      var sign = cols[i].sortAsc ? 1 : -1;
-                      var value1 = dataRow1[field], value2 = dataRow2[field];
-                      var result = (value1 == value2 ? 0 : (value1 > value2 ? 1 : -1)) * sign;
+                    for (let i = 0, l = cols.length; i < l; i++) {
+                      let field = cols[i].sortCol.field;
+                      let sign = cols[i].sortAsc ? 1 : -1;
+                      let value1 = dataRow1[field], value2 = dataRow2[field];
+                      let result = (value1 == value2 ? 0 : (value1 > value2 ? 1 : -1)) * sign;
                       if (result != 0) {
                         return result;
                       }
@@ -812,8 +812,8 @@
         }
 
         // 초기화 function
-        var formReset = function () {
-            for (var eleNum = 0; eleNum < 4; eleNum++) {
+        let formReset = function () {
+            for (let eleNum = 0; eleNum < 4; eleNum++) {
                 $('#bootstrap-wizard-1').find('.form-wizard').children('li').eq(eleNum).removeClass('complete');
                 $('#bootstrap-wizard-1').find('.form-wizard').children('li').eq(eleNum).removeClass('active');
                 $('#bootstrap-wizard-1').find('.form-wizard').children('li').eq(eleNum).children('a').children('.step').html("");
@@ -829,14 +829,14 @@
             grid = null;
         }
 
-        var stepCheck = function (index) {
+        let stepCheck = function (index) {
             $('#bootstrap-wizard-1').find('.form-wizard').children('li').eq(index - 1).addClass('complete');
             $('#bootstrap-wizard-1').find('.form-wizard').children('li').eq(index - 1).find('.step').html('<i class="fa fa-check"></i>');
         }
 
-        var getLearningColmun = function(){
-            var learningArray = "";
-            for(var i = 0; i < $('input[name="learning-coloumn"]:checked').length; i++){
+        let getLearningColmun = function(){
+            let learningArray = "";
+            for(let i = 0; i < $('input[name="learning-coloumn"]:checked').length; i++){
                 if(i == 0){
                     learningArray = $('input[name="learning-coloumn"]:checked')[i].value;
                 }else{
@@ -849,13 +849,13 @@
     });
 
         function changeLearning(checkValue){
-            var predictionCheckbox = $('input[name="prediction-coloumn"]:checked').val();
+            let predictionCheckbox = $('input[name="prediction-coloumn"]:checked').val();
             if(predictionCheckbox === checkValue){
                 return false;
             }
 
             predictionCheckbox = $('input[name="prediction-coloumn"]');
-            for(var i = 0; i < predictionCheckbox.length; i++){
+            for(let i = 0; i < predictionCheckbox.length; i++){
                 if(predictionCheckbox[i].value === checkValue){
                     if(predictionCheckbox[i].disabled){
                         predictionCheckbox[i].disabled = false;
@@ -868,9 +868,8 @@
          }
 
         function changePrediction(checkValue){
-
-            var learningCheckbox = $('input[name="learning-coloumn"]');
-            for(var i = 0; i < learningCheckbox.length; i++){
+            let learningCheckbox = $('input[name="learning-coloumn"]');
+            for(let i = 0; i < learningCheckbox.length; i++){
                 if(learningCheckbox[i].value === checkValue){
                     learningCheckbox[i].disabled = true;
                 }else{
@@ -878,9 +877,8 @@
                 }
             };
 
-
-            var predictionCheckbox = $('input[name="prediction-coloumn"]');
-            for(var i = 0; i < predictionCheckbox.length; i++){
+            let predictionCheckbox = $('input[name="prediction-coloumn"]');
+            for(let i = 0; i < predictionCheckbox.length; i++){
                 if(predictionCheckbox[i].value === checkValue){
                     predictionCheckbox[i].checked = true;
                 }else{
@@ -888,9 +886,6 @@
                 }
             };
          }
-
-
-
 </script>
 
 </body>
