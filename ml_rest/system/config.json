@@ -46,5 +46,12 @@
       "ridgecv": "RidgeCvClass",
       "sgd": "SgdClass"
     }
+  },
+  "dbInfo": {
+      "host" : "tasvc.diquest.com",
+      "user" : "diquest",
+      "password" : "ek2znptm2",
+      "db" : "dev",
+      "charset" : "utf8"
   }
 }

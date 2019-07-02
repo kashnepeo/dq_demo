@@ -200,13 +200,14 @@ class NltkHandler(Resource):
         pass
 
 
+# DB
 class Database():
     def __init__(self):
-        self.db = pymysql.connect(host='tasvc.diquest.com',
-                                  user='diquest',
-                                  password='ek2znptm2',
-                                  db='dev',
-                                  charset='utf8')
+        self.db = pymysql.connect(host=app.config['dbInfo']['host'],
+                                  user=app.config['dbInfo']['user'],
+                                  password=app.config['dbInfo']['password'],
+                                  db=app.config['dbInfo']['db'],
+                                  charset=app.config['dbInfo']['charset'])
         self.cursor = self.db.cursor(pymysql.cursors.DictCursor)
 
     def execute(self, query, args={}):
