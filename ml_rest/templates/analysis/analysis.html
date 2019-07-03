@@ -9,25 +9,36 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
     <!-- Basic Styles -->
-    <link rel="stylesheet" type="text/css" media="screen" href="{{ url_for('static', filename = 'bootstrap/css/bootstrap.min.css') }}">
+    <link rel="stylesheet" type="text/css" media="screen"
+          href="{{ url_for('static', filename = 'bootstrap/css/bootstrap.min.css') }}">
 
     <!-- SmartAdmin Styles : Caution! DO NOT change the order -->
-    <link rel="stylesheet" type="text/css" media="screen" href="{{ url_for('static', filename = 'smartadmin/css/smartadmin-production-plugins.min.css') }}">
-    <link rel="stylesheet" type="text/css" media="screen" href="{{ url_for('static', filename = 'smartadmin/css/smartadmin-production.min.css') }}">
-    <link rel="stylesheet" type="text/css" media="screen" href="{{ url_for('static', filename = 'smartadmin/css/smartadmin-skins.min.css') }}">
-    <link rel="stylesheet" type="text/css" media="screen" href="{{ url_for('static', filename = 'smartadmin/css/smartadmin-rtl.min.css') }}"> <!-- SmartAdmin RTL Support  -->
-    <link rel="stylesheet" type="text/css" media="screen" href="{{ url_for('static', filename = 'smartadmin/css/demo.min.css') }}">
+    <link rel="stylesheet" type="text/css" media="screen"
+          href="{{ url_for('static', filename = 'smartadmin/css/smartadmin-production-plugins.min.css') }}">
+    <link rel="stylesheet" type="text/css" media="screen"
+          href="{{ url_for('static', filename = 'smartadmin/css/smartadmin-production.min.css') }}">
+    <link rel="stylesheet" type="text/css" media="screen"
+          href="{{ url_for('static', filename = 'smartadmin/css/smartadmin-skins.min.css') }}">
+    <link rel="stylesheet" type="text/css" media="screen"
+          href="{{ url_for('static', filename = 'smartadmin/css/smartadmin-rtl.min.css') }}">
+    <!-- SmartAdmin RTL Support  -->
+    <link rel="stylesheet" type="text/css" media="screen"
+          href="{{ url_for('static', filename = 'smartadmin/css/demo.min.css') }}">
 
-    <link rel="stylesheet" type="text/css" media="screen" href="{{ url_for('static', filename = 'toast/chart/css/tui-chart.min.css') }}"> <!-- Toast-ui Chart v3.7.0 -->
+    <link rel="stylesheet" type="text/css" media="screen"
+          href="{{ url_for('static', filename = 'toast/chart/css/tui-chart.min.css') }}"> <!-- Toast-ui Chart v3.7.0 -->
 
-    <link rel="stylesheet" type="text/css" media="screen" href="{{ url_for('static', filename = 'common/css/common.css') }}">
+    <link rel="stylesheet" type="text/css" media="screen"
+          href="{{ url_for('static', filename = 'common/css/common.css') }}">
 
     <!-- Favicon -->
     <link rel="shortcut icon" type="image/x-icon" href="{{ url_for('static', filename = 'image/favicon.ico') }}">
     <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename = 'image/favicon.ico') }}">
 
-    <link rel="stylesheet" type="text/css" media="screen" href="{{ url_for('static', filename = 'common/font/font-awesome.min.css') }}"> <!-- Default Font -->
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename = 'common/font/font.css') }}"> <!-- Default Font -->
+    <link rel="stylesheet" type="text/css" media="screen"
+          href="{{ url_for('static', filename = 'common/font/font-awesome.min.css') }}"> <!-- Default Font -->
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename = 'common/font/font.css') }}">
+    <!-- Default Font -->
 
 </head>
 <body class="">
@@ -39,7 +50,8 @@
 
     <div class="pull-right">
         <div id="hide-menu" class="btn-header pull-right">
-            <span> <a href="javascript:void(0);" data-action="toggleMenu" title="Collapse Menu"><i class="fa fa-reorder"></i></a> </span>
+            <span> <a href="javascript:void(0);" data-action="toggleMenu" title="Collapse Menu"><i
+                    class="fa fa-reorder"></i></a> </span>
         </div>
 
         <form action="#" class="header-search pull-right">
@@ -54,7 +66,8 @@
         </form>
 
         <div id="fullscreen" class="btn-header transparent pull-right">
-            <span> <a href="javascript:void(0);" data-action="launchFullscreen" title="Full Screen"><i class="fa fa-arrows-alt"></i></a> </span>
+            <span> <a href="javascript:void(0);" data-action="launchFullscreen" title="Full Screen"><i
+                    class="fa fa-arrows-alt"></i></a> </span>
         </div>
     </div>
 </header>
@@ -98,7 +111,8 @@
                 <div class="file-upload">
                     <div>
                         <span class="file-upload-name">CSV 업로드</span>
-                        <a href="javascript:void(0);" class="btn btn-primary btn-xs file-upload-btn" type="file">Upload</a>
+                        <a href="javascript:void(0);" class="btn btn-primary btn-xs file-upload-btn"
+                           type="file">Upload</a>
                     </div>
                 </div>
                 <fieldset id="fileInfo" style="width:75%;margin-left:5%;display:none;">
@@ -117,7 +131,8 @@
                     <section>
                         <label class="label">Prediction Column</label>
                         <div>
-                            <input class="form-control" type="text" name="prediction" id="prediction" disabled="disabled">
+                            <input class="form-control" type="text" name="prediction" id="prediction"
+                                   disabled="disabled">
                         </div>
                     </section>
                 </fieldset>
@@ -132,17 +147,17 @@
             <li>TA 분석 모델링</li>
         </ol>
     </div>
-{#    <div id="ribbon" class="filter">#}
-{#        <div class="smart-form">#}
-{#            <div class="inline-group">#}
-{#                <label class="date-label-left" style="padding-top: 10px !important;">Layout</label>#}
-{#                <label><a href="#"><i class="fa fa-stop filter-layout"></i></a></label>#}
-{#                <label><a href="#"><i class="fa fa-pause filter-layout"></i></a></label>#}
-{#                <label><a href="#"><i class="fa fa-th-large filter-layout"></i></a></label>#}
-{#                <label><a href="#"><i class="ni ni-grid filter-layout"></i></a></label>#}
-{#            </div>#}
-{#        </div>#}
-{#    </div>#}
+    {#    <div id="ribbon" class="filter">#}
+    {#        <div class="smart-form">#}
+    {#            <div class="inline-group">#}
+    {#                <label class="date-label-left" style="padding-top: 10px !important;">Layout</label>#}
+    {#                <label><a href="#"><i class="fa fa-stop filter-layout"></i></a></label>#}
+    {#                <label><a href="#"><i class="fa fa-pause filter-layout"></i></a></label>#}
+    {#                <label><a href="#"><i class="fa fa-th-large filter-layout"></i></a></label>#}
+    {#                <label><a href="#"><i class="ni ni-grid filter-layout"></i></a></label>#}
+    {#            </div>#}
+    {#        </div>#}
+    {#    </div>#}
 
     <div id="content">
         <div class="row">
@@ -201,16 +216,20 @@
             <div class="form-bootstrapWizard">
                 <ul class="bootstrapWizard form-wizard">
                     <li class="active" data-target="#step1">
-                        <a href="#tab1" data-toggle="tab" aria-expanded="true" class="cancelEvent"> <span class="step">1</span> <span class="title">CSV Upload</span> </a>
+                        <a href="#tab1" data-toggle="tab" aria-expanded="true" class="cancelEvent"> <span
+                                class="step">1</span> <span class="title">CSV Upload</span> </a>
                     </li>
                     <li data-target="#step2" class="">
-                        <a href="#tab2" data-toggle="tab" aria-expanded="false" class="cancelEvent"> <span class="step">2</span> <span class="title">신규 모델 생성</span> </a>
+                        <a href="#tab2" data-toggle="tab" aria-expanded="false" class="cancelEvent"> <span class="step">2</span>
+                            <span class="title">신규 모델 생성</span> </a>
                     </li>
                     <li data-target="#step3" class="">
-                        <a href="#tab3" data-toggle="tab" aria-expanded="false" class="cancelEvent"> <span class="step">3</span> <span class="title">CSV 설정</span> </a>
+                        <a href="#tab3" data-toggle="tab" aria-expanded="false" class="cancelEvent"> <span class="step">3</span>
+                            <span class="title">CSV 설정</span> </a>
                     </li>
                     <li data-target="#step4" class="">
-                        <a href="#tab4" data-toggle="tab" aria-expanded="false" class="cancelEvent"> <span class="step">4</span> <span class="title">설정 완료</span> </a>
+                        <a href="#tab4" data-toggle="tab" aria-expanded="false" class="cancelEvent"> <span class="step">4</span>
+                            <span class="title">설정 완료</span> </a>
                     </li>
                 </ul>
                 <div class="clearfix"></div>
@@ -219,7 +238,8 @@
                 <div id="loading_oh" style="position: absolute;margin: 10% 20% 0% 40%;z-index:1;">
                     <table width="auto" height="auto" align="center" cellpadding="0" cellspacing="0">
                         <tr>
-                            <td align="center"><img src="{{ url_for('static', filename = 'image/loading.gif') }}" border="0"><br><b><font color="black">잠시만 기다려 주세요</font></b></td>
+                            <td align="center"><img src="{{ url_for('static', filename = 'image/loading.gif') }}"
+                                                    border="0"><br><b><font color="black">잠시만 기다려 주세요</font></b></td>
                         </tr>
                     </table>
                 </div>
@@ -233,7 +253,9 @@
                                 <form id="order-form" class="smart-form" enctype="multipart/form-data" method="POST">
                                     <div class="input input-file">
                                         <span class="button">
-                                        <input id="file2" type="file" name="file2" onchange="this.parentNode.nextSibling.value = this.value">Browse</span><input id="filePath" type="text" placeholder="Include some files" readonly="">
+                                        <input id="file2" type="file" name="file2"
+                                               onchange="this.parentNode.nextSibling.value = this.value">Browse</span><input
+                                            id="filePath" type="text" placeholder="Include some files" readonly="">
                                     </div>
                                 </form>
                                 <!--end-->
@@ -241,202 +263,207 @@
                         </div>
                     </div>
                 </div>
-                    <div class="tab-pane" id="tab2">
-                        <br>
-                        <h3><strong>Step 2</strong> - 신규 모델 생성</h3>
-                        <div class="row">
-                            <div class="col-sm-12">
-                                <div class="form-group">
-                                    <form id="contact-form" method="post" class="smart-form" novalidate="novalidate">
-                                        <label class="label">모델명</label>
-                                        <label class="input">
-                                            <i class="icon-append fa fa-tag"></i>
-                                            <input type="text" name="modelName" id="modelName">
-                                        </label>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-12">
-                                <div class="smart-form">
-                                    <div class="col-md-12">
-                                        <label class="select">알고리즘 선택</label>
-                                        <select class="form-control" id="classifier_algorithm">>
-                                             <option value="bagging">BaggingClassfier</option>
-                                                <option value="bernoulinb">BernouliNB</option>
-                                                <option value="decisiontree">DecisionTreeClassifier</option>
-                                                <option value="extratree">ExtraTreeClassifier</option>
-                                                <option value="extratrees">ExtraTreesClassifier</option>
-                                                <option value="gaussiannb">GaussianNB</option>
-                                                {#                                        <option value="gaussianprocess">#}
-                                                {#                                            GaussianProcessClassifier(Only Model)#}
-                                                {#                                        </option>#}
-                                                <option value="gradientboosting">
-                                                    GradientBoostingClassifier
-                                                </option>
-                                                <option value="kneighbors">KNeighborsClassifier</option>
-                                                <option value="linearsvc">LinearSVC</option>
-                                                <option value="logisticregression">LogisticRegression
-                                                </option>
-                                                <option value="mlp">MLPClassfier</option>
-                                                {#                                        <option value="nusvc">NuSVC</option>#}
-                                                <option value="perceptron">Perceptron</option>
-                                                <option value="randomforest">RandomForestClassfier</option>
-                                                <option value="sgd">SGDClassfier</option>
-                                                <option value="svc">SVC</option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <br>
-                        <div class="row">
-                            <div class="col-sm-12">
-                                <div class="smart-form">
-                                    <section>
-                                        <label class="label">모델 유형</label>
-                                        <div class="inline-group">
-                                            <label class="radio">
-                                                <input type="radio" name="modelCategory" value="classifier" checked="checked">
-                                                <i></i>분류</label>
-                                            <label class="radio">
-                                                <input type="radio" name="modelCategory" value="regression">
-                                                <i></i>회귀</label>
-                                        </div>
-                                    </section>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="tab-pane" id="tab3">
-                        <br>
-                        <h3><strong>Step 3</strong> - CSV 설정</h3>
-                        <div class="row">
-                            <div class="col-sm-12">
-                                <div class="smart-form">
-                                    <section>
-                                        <label class="label"><strong>모델 저장</strong></label>
-                                        <div class="inline-group">
-                                            <label class="radio">
-                                                <input type="radio" name="modelCd" value="가망 고객 분석" checked="checked">
-                                                <i></i>가망 고객 분석</label>
-                                            <label class="radio">
-                                                <input type="radio" value="고객 반응 분석" name="modelCd">
-                                                <i></i>고객 반응 분석</label>
-                                            <label class="radio">
-                                                <input type="radio" value="이탈 고객 분석" name="modelCd">
-                                                <i></i>이탈 고객 분석</label>
-                                            <label class="radio">
-                                                <input type="radio" value="민원 고객 분석" name="modelCd">
-                                                <i></i>민원 고객 분석</label>
-                                        </div>
-                                    </section>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-12">
-                                <div class="smart-form">
-                                    <section>
-                                        <label class="label"><strong>학습 컬럼 선택</strong></label>
-                                        <div class="inline-group" id="learningArea">
-                                        </div>
-                                    </section>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-12">
-                                <div class="smart-form">
-                                    <section>
-                                        <label class="label"><strong>예측 컬럼 선택</strong></label>
-                                        <div class="inline-group" id="predictionArea">
-                                        </div>
-                                    </section>
-                                </div>
-                            </div>
-                        </div>
-                        {#                                <div class="row">#}
-                        {#                                    <div class="col-sm-12">#}
-                        {#                                        <div class="smart-form">#}
-                        {#                                            <div id="csvGrid" style="width:auto;height:200px;"></div>#}
-                        {#                                        </div>#}
-                        {#                                    </div>#}
-                        {#                                </div>#}
-                    </div>
-                    <div class="tab-pane" id="tab4">
-                        <br>
-                        <h3><strong>Step 4</strong> - 설정 완료</h3>
-                        <div class="row">
-                            <div class="col-sm-12">
-                                <div class="smart-form">
-                                    <label class="label">FILE NAME</label>
-                                    <label class="input">
-                                        <i class="icon-append fa fa-tag"></i>
-                                        <input type="text" name="filePath_D" id="filePath_D" disabled="disabled">
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-                        <br>
-                        <div class="row">
-                            <div class="col-sm-12">
-                                <div class="smart-form">
+                <div class="tab-pane" id="tab2">
+                    <br>
+                    <h3><strong>Step 2</strong> - 신규 모델 생성</h3>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <form id="contact-form" method="post" class="smart-form" novalidate="novalidate">
                                     <label class="label">모델명</label>
                                     <label class="input">
                                         <i class="icon-append fa fa-tag"></i>
-                                        <input type="text" name="modelName_D" id="modelName_D" disabled="disabled">
+                                        <input type="text" name="modelName" id="modelName">
                                     </label>
-                                </div>
+                                </form>
                             </div>
                         </div>
-                        <br>
-                        <div class="row">
-                            <div class="col-sm-12">
-                                <div class="smart-form">
-                                    <label class="label">모델 유형</label>
-                                    <label class="input">
-                                        <i class="icon-append fa fa-tag"></i>
-                                        <input type="text" name="modelCategory_D" id="modelCategory_D" disabled="disabled">
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-                        <br>
-                        <div class="row">
-                            <div class="col-sm-12">
-                                <div class="smart-form">
-                                    <label class="label">학습 컬럼</label>
-                                    <label class="input">
-                                        <i class="icon-append fa fa-tag"></i>
-                                        <input type="text" name="learningColumn_D" id="learningColumn_D" disabled="disabled">
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-                        <br>
-                        <div class="row">
-                            <div class="col-sm-12">
-                                <div class="smart-form">
-                                    <label class="label">예측 컬럼</label>
-                                    <label class="input">
-                                        <i class="icon-append fa fa-tag"></i>
-                                        <input type="text" name="predictionColumn_D" id="predictionColumn_D" disabled="disabled">
-                                    </label>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="smart-form">
+                                <div class="col-md-12">
+                                    <label class="select">알고리즘 선택</label>
+                                    <select class="form-control" id="classifier_algorithm">>
+                                        <option value="bagging">BaggingClassfier</option>
+                                        <option value="bernoulinb">BernouliNB</option>
+                                        <option value="decisiontree">DecisionTreeClassifier</option>
+                                        <option value="extratree">ExtraTreeClassifier</option>
+                                        <option value="extratrees">ExtraTreesClassifier</option>
+                                        <option value="gaussiannb">GaussianNB</option>
+                                        {#                                        <option value="gaussianprocess">#}
+                                        {#                                            GaussianProcessClassifier(Only Model)#}
+                                        {#                                        </option>#}
+                                        <option value="gradientboosting">
+                                            GradientBoostingClassifier
+                                        </option>
+                                        <option value="kneighbors">KNeighborsClassifier</option>
+                                        <option value="linearsvc">LinearSVC</option>
+                                        <option value="logisticregression">LogisticRegression
+                                        </option>
+                                        <option value="mlp">MLPClassfier</option>
+                                        {#                                        <option value="nusvc">NuSVC</option>#}
+                                        <option value="perceptron">Perceptron</option>
+                                        <option value="randomforest">RandomForestClassfier</option>
+                                        <option value="sgd">SGDClassfier</option>
+                                        <option value="svc">SVC</option>
+                                    </select>
                                 </div>
                             </div>
                         </div>
                     </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="smart-form">
+                                <section>
+                                    <label class="label">모델 유형</label>
+                                    <div class="inline-group">
+                                        <label class="radio">
+                                            <input type="radio" name="modelCategory" value="classifier"
+                                                   checked="checked">
+                                            <i></i>분류</label>
+                                        <label class="radio">
+                                            <input type="radio" name="modelCategory" value="regression">
+                                            <i></i>회귀</label>
+                                    </div>
+                                </section>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane" id="tab3">
+                    <br>
+                    <h3><strong>Step 3</strong> - CSV 설정</h3>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="smart-form">
+                                <section>
+                                    <label class="label"><strong>모델 저장</strong></label>
+                                    <div class="inline-group">
+                                        <label class="radio">
+                                            <input type="radio" name="modelCd" value="가망 고객 분석" checked="checked">
+                                            <i></i>가망 고객 분석</label>
+                                        <label class="radio">
+                                            <input type="radio" value="고객 반응 분석" name="modelCd">
+                                            <i></i>고객 반응 분석</label>
+                                        <label class="radio">
+                                            <input type="radio" value="이탈 고객 분석" name="modelCd">
+                                            <i></i>이탈 고객 분석</label>
+                                        <label class="radio">
+                                            <input type="radio" value="민원 고객 분석" name="modelCd">
+                                            <i></i>민원 고객 분석</label>
+                                    </div>
+                                </section>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="smart-form">
+                                <section>
+                                    <label class="label"><strong>학습 컬럼 선택</strong></label>
+                                    <div class="inline-group" id="learningArea">
+                                    </div>
+                                </section>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="smart-form">
+                                <section>
+                                    <label class="label"><strong>예측 컬럼 선택</strong></label>
+                                    <div class="inline-group" id="predictionArea">
+                                    </div>
+                                </section>
+                            </div>
+                        </div>
+                    </div>
+                    {#                                <div class="row">#}
+                    {#                                    <div class="col-sm-12">#}
+                    {#                                        <div class="smart-form">#}
+                    {#                                            <div id="csvGrid" style="width:auto;height:200px;"></div>#}
+                    {#                                        </div>#}
+                    {#                                    </div>#}
+                    {#                                </div>#}
+                </div>
+                <div class="tab-pane" id="tab4">
+                    <br>
+                    <h3><strong>Step 4</strong> - 설정 완료</h3>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="smart-form">
+                                <label class="label">FILE NAME</label>
+                                <label class="input">
+                                    <i class="icon-append fa fa-tag"></i>
+                                    <input type="text" name="filePath_D" id="filePath_D" disabled="disabled">
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="smart-form">
+                                <label class="label">모델명</label>
+                                <label class="input">
+                                    <i class="icon-append fa fa-tag"></i>
+                                    <input type="text" name="modelName_D" id="modelName_D" disabled="disabled">
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="smart-form">
+                                <label class="label">모델 유형</label>
+                                <label class="input">
+                                    <i class="icon-append fa fa-tag"></i>
+                                    <input type="text" name="modelCategory_D" id="modelCategory_D" disabled="disabled">
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="smart-form">
+                                <label class="label">학습 컬럼</label>
+                                <label class="input">
+                                    <i class="icon-append fa fa-tag"></i>
+                                    <input type="text" name="learningColumn_D" id="learningColumn_D"
+                                           disabled="disabled">
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="smart-form">
+                                <label class="label">예측 컬럼</label>
+                                <label class="input">
+                                    <i class="icon-append fa fa-tag"></i>
+                                    <input type="text" name="predictionColumn_D" id="predictionColumn_D"
+                                           disabled="disabled">
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div class="form-actions" style="margin-bottom:0px;">
                     <div class="row">
                         <div class="col-sm-12">
                             <ul class="pager wizard no-margin no-steps-container">
                                 <li class="previous">
-                                    <a href="javascript:void(0);" class="btn btn-default txt-color-darken"> Previous </a>
+                                    <a href="javascript:void(0);" class="btn btn-default txt-color-darken">
+                                        Previous </a>
                                 </li>
                                 <li class="next">
-                                    <a href="javascript:void(0);" id="nextButton" class="btn btn-default txt-color-darken"> Next </a>
+                                    <a href="javascript:void(0);" id="nextButton"
+                                       class="btn btn-default txt-color-darken"> Next </a>
                                 </li>
                             </ul>
                         </div>
@@ -456,23 +483,29 @@
 </div>
 
 <script src="{{ url_for('static', filename = 'jquery/js/jquery.min.js') }}"></script> <!-- jquery v2.2.4 -->
-<script src="{{ url_for('static', filename = 'jquery/js/jquery.mb.browser.min.js') }}"></script> <!-- browser msie issue fix -->
+<script src="{{ url_for('static', filename = 'jquery/js/jquery.mb.browser.min.js') }}"></script>
+<!-- browser msie issue fix -->
 
-<script src="{{ url_for('static', filename = 'smartadmin/js/pace.min.js') }}" data-pace-options='{"restartOnRequestAfter": true }'></script> <!-- PACE LOADER -->
+<script src="{{ url_for('static', filename = 'smartadmin/js/pace.min.js') }}"
+        data-pace-options='{"restartOnRequestAfter": true }'></script> <!-- PACE LOADER -->
 <script src="{{ url_for('static', filename = 'smartadmin/js/jquery-ui.min.js') }}"></script> <!-- jquery-ui v1.12.1 -->
 <script src="{{ url_for('static', filename = 'smartadmin/js/app.config.js') }}"></script> <!-- IMPORTANT: APP CONFIG -->
 
 <script src="{{ url_for('static', filename = 'bootstrap/js/bootstrap.min.js') }}"></script> <!-- Bootstrap v3.3.7 -->
-<script src="{{ url_for('static', filename = 'smartadmin/js/SmartNotification.min.js') }}"></script> <!-- CUSTOM NOTIFICATION -->
+<script src="{{ url_for('static', filename = 'smartadmin/js/SmartNotification.min.js') }}"></script>
+<!-- CUSTOM NOTIFICATION -->
 <script src="{{ url_for('static', filename = 'smartadmin/js/jarvis.widget.min.js') }}"></script> <!-- JARVIS WIDGETS -->
 <script src="{{ url_for('static', filename = 'smartadmin/js/select2.min.js') }}"></script> <!-- JQUERY SELECT2 INPUT -->
-<script src="{{ url_for('static', filename = 'smartadmin/js/fastclick.min.js') }}"></script> <!-- FastClick: For mobile devices -->
+<script src="{{ url_for('static', filename = 'smartadmin/js/fastclick.min.js') }}"></script>
+<!-- FastClick: For mobile devices -->
 <script src="{{ url_for('static', filename = 'smartadmin/js/app.min.js') }}"></script> <!-- MAIN APP JS FILE -->
-<script src="{{ url_for('static', filename = 'smartadmin/js/jquery.bootstrap.wizard.min.js') }}"></script> <!-- wizard JS FILE -->
+<script src="{{ url_for('static', filename = 'smartadmin/js/jquery.bootstrap.wizard.min.js') }}"></script>
+<!-- wizard JS FILE -->
 <script src="{{ url_for('static', filename = 'smartadmin/js/wizard.min.js') }}"></script> <!-- wizard JS FILE -->
 <script src="{{ url_for('static', filename = 'jquery/js/jquery.validate.min.js') }}"></script>
 
-<script src="{{ url_for('static', filename = 'toast/chart/js/tui-chart-all.js') }}"></script> <!-- Toast-ui chart v3.7.0 -->
+<script src="{{ url_for('static', filename = 'toast/chart/js/tui-chart-all.js') }}"></script>
+<!-- Toast-ui chart v3.7.0 -->
 
 <!--[if IE 8]>
 	<h1>해당 Browser에서 지원하지 않습니다. Browser를 최신버전으로 업데이트 하세요.</h1>
@@ -619,8 +652,8 @@
 
         });
 
-        $("#file2").change(function(){
-           $("#filePath").val($("#file2")[0].files[0].name);
+        $("#file2").change(function () {
+            $("#filePath").val($("#file2")[0].files[0].name);
         });
 
         $('#dialog_simple').dialog({
@@ -630,10 +663,10 @@
             height: "auto",
             resizable: false,
             title: "CSV 업로드",
-            position:{
-                my:"center",
-                at:"center",
-                of:"#main"
+            position: {
+                my: "center",
+                at: "center",
+                of: "#main"
             },
             close: function (event, ui) {
                 $('#bootstrap-wizard-1').bootstrapWizard('first');
@@ -641,7 +674,7 @@
             }
         });
 
-       let $validator = $("#contact-form").validate({
+        let $validator = $("#contact-form").validate({
             rules: {
                 modelName: {
                     required: true
@@ -649,32 +682,32 @@
                 modelCategory: {
                     required: true
                 },
-                classifier_algorithm:{
+                classifier_algorithm: {
                     required: true
                 }
             },
             messages: {
-              modelName: "모델명을 입력해주세요.",
-              modelCategory: "모델유형을 선택해주세요.",
-              classifier_algorithm: "알고리즘을 선택해주세요."
+                modelName: "모델명을 입력해주세요.",
+                modelCategory: "모델유형을 선택해주세요.",
+                classifier_algorithm: "알고리즘을 선택해주세요."
             },
 
             highlight: function (element) {
-              $(element).closest('.form-group').removeClass('has-success').addClass('has-error');
+                $(element).closest('.form-group').removeClass('has-success').addClass('has-error');
             },
             unhighlight: function (element) {
-              $(element).closest('.form-group').removeClass('has-error').addClass('has-success');
+                $(element).closest('.form-group').removeClass('has-error').addClass('has-success');
             },
             errorElement: 'span',
             errorClass: 'help-block',
             errorPlacement: function (error, element) {
-              if (element.parent('.input-group').length) {
-                error.insertAfter(element.parent());
-              } else {
-                error.insertAfter(element);
-              }
+                if (element.parent('.input-group').length) {
+                    error.insertAfter(element.parent());
+                } else {
+                    error.insertAfter(element);
+                }
             }
-          });
+        });
 
         $('#bootstrap-wizard-1').bootstrapWizard({
             'tabClass': 'form-wizard',
@@ -712,19 +745,19 @@
                     }
                 } else if (index === 2) {
                     const $valid = $("#contact-form").valid();
-			        if (!$valid) {
-			            $validator.focusInvalid();
-			            return false;
-			        }
+                    if (!$valid) {
+                        $validator.focusInvalid();
+                        return false;
+                    }
                     stepCheck(index);
                 } else if (index === 3) {
                     let formData = new FormData();
-                    formData.append("model_name" , $("#modelName").val());
-                    formData.append("model_category" , $("input[name=modelCategory]:checked").val());
+                    formData.append("model_name", $("#modelName").val());
+                    formData.append("model_category", $("input[name=modelCategory]:checked").val());
                     formData.append("model_algorithm", $("#classifier_algorithm").val());
-                    formData.append("model_cd" , $('input[name="modelCd"]:checked').val());
-                    formData.append("model_learning" , getLearningColmun());
-                    formData.append("model_prediction" , $('input[name="prediction-coloumn"]:checked').val()) ;
+                    formData.append("model_cd", $('input[name="modelCd"]:checked').val());
+                    formData.append("model_learning", getLearningColmun());
+                    formData.append("model_prediction", $('input[name="prediction-coloumn"]:checked').val());
                     $.ajax({
                         url: "/csvInfoCU",
                         processData: false,
@@ -810,14 +843,14 @@
             let learningAppenHtml = "";
             $.each(columnsName, function (index, item) {
                 learningAppenHtml += "<label class='checkbox'>" +
-                    "<input type='checkbox' value='" + item + "' name='learning-coloumn' onChange='changeLearning(\""+item+"\");'>" +
+                    "<input type='checkbox' value='" + item + "' name='learning-coloumn' onChange='changeLearning(\"" + item + "\");'>" +
                     "<i></i>" + item + "</label>";
             });
 
             let predictionAppenHtml = "";
             $.each(columnsName, function (index, item) {
                 predictionAppenHtml += "<label class='checkbox'>" +
-                    "<input type='checkbox' value='" + item + "' name='prediction-coloumn' onChange='changePrediction(\""+item+"\");'>" +
+                    "<input type='checkbox' value='" + item + "' name='prediction-coloumn' onChange='changePrediction(\"" + item + "\");'>" +
                     "<i></i>" + item + "</label>";
             });
 
@@ -896,13 +929,13 @@
             $('#bootstrap-wizard-1').find('.form-wizard').children('li').eq(index - 1).find('.step').html('<i class="fa fa-check"></i>');
         }
 
-        let getLearningColmun = function(){
+        let getLearningColmun = function () {
             let learningArray = "";
-            for(let i = 0; i < $('input[name="learning-coloumn"]:checked').length; i++){
-                if(i == 0){
+            for (let i = 0; i < $('input[name="learning-coloumn"]:checked').length; i++) {
+                if (i == 0) {
                     learningArray = $('input[name="learning-coloumn"]:checked')[i].value;
-                }else{
-                    learningArray += "|"+$('input[name="learning-coloumn"]:checked')[i].value;
+                } else {
+                    learningArray += "|" + $('input[name="learning-coloumn"]:checked')[i].value;
                 }
             }
 
@@ -910,45 +943,47 @@
         }
     });
 
-        function changeLearning(checkValue){
-            let predictionCheckbox = $('input[name="prediction-coloumn"]:checked').val();
-            if(predictionCheckbox === checkValue){
-                return false;
+    function changeLearning(checkValue) {
+        let predictionCheckbox = $('input[name="prediction-coloumn"]:checked').val();
+        if (predictionCheckbox === checkValue) {
+            return false;
+        }
+
+        predictionCheckbox = $('input[name="prediction-coloumn"]');
+        for (let i = 0; i < predictionCheckbox.length; i++) {
+            if (predictionCheckbox[i].value === checkValue) {
+                if (predictionCheckbox[i].disabled) {
+                    predictionCheckbox[i].disabled = false;
+                } else {
+                    predictionCheckbox[i].disabled = true;
+                }
+
             }
+        }
+        ;
+    }
 
-            predictionCheckbox = $('input[name="prediction-coloumn"]');
-            for(let i = 0; i < predictionCheckbox.length; i++){
-                if(predictionCheckbox[i].value === checkValue){
-                    if(predictionCheckbox[i].disabled){
-                        predictionCheckbox[i].disabled = false;
-                    }else{
-                        predictionCheckbox[i].disabled = true;
-                    }
+    function changePrediction(checkValue) {
+        let learningCheckbox = $('input[name="learning-coloumn"]');
+        for (let i = 0; i < learningCheckbox.length; i++) {
+            if (learningCheckbox[i].value === checkValue) {
+                learningCheckbox[i].disabled = true;
+            } else {
+                learningCheckbox[i].disabled = false;
+            }
+        }
+        ;
 
-                }
-            };
-         }
-
-        function changePrediction(checkValue){
-            let learningCheckbox = $('input[name="learning-coloumn"]');
-            for(let i = 0; i < learningCheckbox.length; i++){
-                if(learningCheckbox[i].value === checkValue){
-                    learningCheckbox[i].disabled = true;
-                }else{
-                    learningCheckbox[i].disabled = false;
-                }
-            };
-
-            let predictionCheckbox = $('input[name="prediction-coloumn"]');
-            for(let i = 0; i < predictionCheckbox.length; i++){
-                if(predictionCheckbox[i].value === checkValue){
-                    predictionCheckbox[i].checked = true;
-                }else{
-                    predictionCheckbox[i].checked = false;
-                }
-            };
-         }
+        let predictionCheckbox = $('input[name="prediction-coloumn"]');
+        for (let i = 0; i < predictionCheckbox.length; i++) {
+            if (predictionCheckbox[i].value === checkValue) {
+                predictionCheckbox[i].checked = true;
+            } else {
+                predictionCheckbox[i].checked = false;
+            }
+        }
+        ;
+    }
 </script>
-
 </body>
 </html>
