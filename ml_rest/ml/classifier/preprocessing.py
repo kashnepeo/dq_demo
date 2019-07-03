@@ -1,11 +1,13 @@
 import os
 import pickle
 import warnings
-
+import requests
 import numpy as np
 import pandas as pd
 from konlpy.tag import Okt
 from sklearn.feature_extraction.text import TfidfVectorizer
+import json
+import re
 
 
 class Preprocessing():
@@ -30,11 +32,11 @@ class Preprocessing():
         self.vectorizer = TfidfVectorizer(
             # analyzer='word',
             lowercase=True,
-            tokenizer=self.tokenizer,
+            tokenizer=self.tokenizer_jiana,
             # preprocessor=None,
             # stop_words='english',
             min_df=2,  # 토큰이 나타날 최소 문서 개수로 오타나 자주 나오지 않는 특수한 전문용어 제거에 좋다.
-            ngram_range=(1, 3),
+            # ngram_range=(1, 3),
             # vocabulary=set(words.words()),  # nltk의 words를 사용하거나 문서 자체의 사전을 만들거나 선택한다.
             max_features=90000
         )
@@ -59,6 +61,18 @@ class Preprocessing():
             text = '.'
         return [token for (token, tag) in self.okt.pos(text, norm=True, stem=True) if (tag == 'Noun' or tag == 'Adjective' or tag == 'Adverb') and token not in self.read_stopword(self.cur_dir) and len(token) > 1]
 
+    # 형태소 분석기를 이용한 단어 분리
+    def tokenizer_jiana(self, text):
+        if not text:
+            text = '.'
+        url = 'http://localhost:8080/analysis'
+        headers = {'Content-Type': 'application/json;charset=UTF-8', 'accept-charset': 'UTF-8'}
+        tag_info = 'ncn,nq_loc,ncp,pv,pa'
+        response = requests.post(url=url, data=json.dumps({'rawData': text, 'tagInfo': tag_info, 'wsNum': 3}), headers=headers)
+        response_str = json.loads(response.text)
+
+        return [re.sub('[0-9]{1,4}([_])', ' ', element).replace('|', '').strip() for element in response_str['result'].strip("[]").split(", ")]
+
     def keyword_vectorizer(self, x_train, x_test):
 
         X_train_tfidf_vector = self.vectorizer.fit_transform(x_train)
@@ -69,8 +83,8 @@ class Preprocessing():
         X_test_tfidf_vector = self.vectorizer.transform(x_test)
 
         dist = np.sum(X_train_tfidf_vector, axis=0)
-        for (tag, cnt) in zip(vocab, dist):
-            print(tag, cnt)
+        # for (tag, cnt) in zip(vocab, dist):
+        #     print(tag, cnt)
 
-        print((X_train_tfidf_vector, X_test_tfidf_vector, vocab, dist))
+        # print((X_train_tfidf_vector, X_test_tfidf_vector, vocab, dist))
         return (X_train_tfidf_vector, X_test_tfidf_vector, vocab, dist)

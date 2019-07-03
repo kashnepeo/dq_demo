@@ -111,6 +111,12 @@ class GaussianNBClass:
         self.output = pd.DataFrame(
             data={'recordkey': recordkey, 'stt_cont': '', 'call_l_class_cd': call_l_class_cd, 'call_m_class_cd': call_m_class_cd, 'call_start_time': call_start_time, 'call_end_time': call_end_time, 'predict': self.y_pred})
 
+        # 분류 결과 file write
+        self.output.to_csv(self._f_path + f'/classifier/csv/result_{self._name}.csv', index=False, quoting=3, escapechar='\\')
+        print('write')
+        # 분석 feature file write
+        pd.DataFrame(self.dist, columns=self.vocab).to_csv(self._f_path + f'/classifier/csv/features_{self._name}.csv', index=False, quoting=3)
+
         # 스코어 리턴, 레포트 정보, 테스트셋 분석결과
         return score, report_df, self.output
 
@@ -132,12 +138,6 @@ class GaussianNBClass:
 
     # 모델 저장 및 갱신
     def save_model(self, renew=False):
-
-        # 분류 결과 file write
-        self.output.to_csv(self._f_path + f'/classifier/csv/result_{self._name}.csv', index=False, quoting=3, escapechar='\\')
-
-        # 분석 feature file write
-        pd.DataFrame(self.dist, columns=self.vocab).to_csv(self._f_path + f'/classifier/csv/features_{self._name}.csv', index=False, quoting=3)
 
         # 모델 저장
         if not renew:
