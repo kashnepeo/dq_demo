@@ -38,6 +38,16 @@ def analysis():
     return flask.render_template("analysis/analysis.html")
 
 
+@app.route("/example")
+def example():
+    return flask.render_template("exampleUI.html")
+
+
+@app.route("/verification")
+def verification():
+    return flask.render_template("analysis/verification.html")
+
+
 # CSV 업로드
 class UploadFile(Resource):
     def post(self):
@@ -121,13 +131,15 @@ class ClassifierHandler(Resource):
     def post(self):
         csv_file = request.files['fileObj']
         _f_path = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), os.pardir))
-        csv_file.save(os.path.join(_f_path, 'ml_rest', 'ml', 'classifier', 'resource', secure_filename(csv_file.filename)))
+        csv_file.save(
+            os.path.join(_f_path, 'ml_rest', 'ml', 'classifier', 'resource', secure_filename(csv_file.filename)))
         classifier_algorithm = request.form['classifier_algorithm']
         print(classifier_algorithm + '.' + app.config['algorithm']['classifier'][classifier_algorithm])
 
         # 분류 객체 생성(Str -> Class)
         try:
-            cls = eval(classifier_algorithm + '.' + app.config['algorithm']['classifier'][classifier_algorithm])(params=request.form, filename=csv_file.filename)
+            cls = eval(classifier_algorithm + '.' + app.config['algorithm']['classifier'][classifier_algorithm])(
+                params=request.form, filename=csv_file.filename)
         except KeyError:
             abort_function()
 
@@ -139,8 +151,11 @@ class ClassifierHandler(Resource):
         predict = output['predict']
         print(type(predict))
         # 응답 데이터
-        data = dict(name=classifier_algorithm, category='classifier', success=True, score=score, report_value=report_df['precision'].tolist(), report_lable=report_df['class'].tolist(),
-                    cv_score=list(), gs_score=cls.predict_by_gs(), req_time=time.time(), recordkey=recordkey.tolist()[:10], call_l_class_cd=call_l_class_cd.tolist()[:10], predict=predict.tolist()[:10])
+        data = dict(name=classifier_algorithm, category='classifier', success=True, score=score,
+                    report_value=report_df['precision'].tolist(), report_lable=report_df['class'].tolist(),
+                    cv_score=list(), gs_score=cls.predict_by_gs(), req_time=time.time(),
+                    recordkey=recordkey.tolist()[:10], call_l_class_cd=call_l_class_cd.tolist()[:10],
+                    predict=predict.tolist()[:10])
 
         # 모델 Payload 확인
         if os.path.isfile(f'./ml/model/{classifier_algorithm}.pkl'):
@@ -232,7 +247,6 @@ api.add_resource(RegressionHandler, '/regression/<string:element>')
 api.add_resource(NltkHandler, '/nltk/<string:element>')
 api.add_resource(UploadFile, '/fileUpload')
 api.add_resource(CsvInfoCU, '/csvInfoCU')
-
 
 if __name__ == '__main__':
     # Flask 서비스 스타트

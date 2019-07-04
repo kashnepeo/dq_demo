@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="utf-8">
+    <!--<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">-->
+    <title> TA </title>
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <!-- Basic Styles -->
+    <link rel="stylesheet" type="text/css" media="screen"
+          href="{{ url_for('static', filename = 'bootstrap/css/bootstrap.min.css') }}">
+
+    <!-- SmartAdmin Styles : Caution! DO NOT change the order -->
+    <link rel="stylesheet" type="text/css" media="screen"
+          href="{{ url_for('static', filename = 'smartadmin/css/smartadmin-production-plugins.min.css') }}">
+    <link rel="stylesheet" type="text/css" media="screen"
+          href="{{ url_for('static', filename = 'smartadmin/css/smartadmin-production.min.css') }}">
+    <link rel="stylesheet" type="text/css" media="screen"
+          href="{{ url_for('static', filename = 'smartadmin/css/smartadmin-skins.min.css') }}">
+    <link rel="stylesheet" type="text/css" media="screen"
+          href="{{ url_for('static', filename = 'smartadmin/css/smartadmin-rtl.min.css') }}">
+    <!-- SmartAdmin RTL Support  -->
+    <link rel="stylesheet" type="text/css" media="screen"
+          href="{{ url_for('static', filename = 'smartadmin/css/demo.min.css') }}">
+
+    <link rel="stylesheet" type="text/css" media="screen"
+          href="{{ url_for('static', filename = 'toast/chart/css/tui-chart.min.css') }}"> <!-- Toast-ui Chart v3.7.0 -->
+    <link rel="stylesheet" type="text/css" media="screen"
+          href="{{ url_for('static', filename = 'toast/grid/css/tui-grid.min.css') }}"> <!-- Toast-grid Chart v3.7.0 -->
+
+    <link rel="stylesheet" type="text/css" media="screen"
+          href="{{ url_for('static', filename = 'common/css/common.css') }}">
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" type="image/x-icon" href="{{ url_for('static', filename = 'image/favicon.ico') }}">
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename = 'image/favicon.ico') }}">
+
+    <link rel="stylesheet" type="text/css" media="screen"
+          href="{{ url_for('static', filename = 'common/font/font-awesome.min.css') }}"> <!-- Default Font -->
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename = 'common/font/font.css') }}">
+    <!-- Default Font -->
+
+</head>
+<body class="">
+
+<header id="header">
+    <div id="logo-group">
+        <span id="logo">TA 분석 모델링</span>
+    </div>
+
+    <div class="pull-right">
+        <div id="hide-menu" class="btn-header pull-right">
+            <span> <a href="javascript:void(0);" data-action="toggleMenu" title="Collapse Menu"><i
+                    class="fa fa-reorder"></i></a> </span>
+        </div>
+
+        <form action="#" class="header-search pull-right">
+            <input id="search-fld" type="text" name="param" placeholder="Find reports and more" data-autocomplete='[
+					"test1",
+					"test2",
+					"test3",
+					]'>
+            <button type="submit">
+                <i class="fa fa-search"></i>
+            </button>
+        </form>
+
+        <div id="fullscreen" class="btn-header transparent pull-right">
+            <span> <a href="javascript:void(0);" data-action="launchFullscreen" title="Full Screen"><i
+                    class="fa fa-arrows-alt"></i></a> </span>
+        </div>
+    </div>
+</header>
+
+<aside id="left-panel">
+    <div class="login-info">
+    </div>
+    <nav>
+        <ul>
+            <li class="active open">
+                <a href="#"><i class="fa fa-lg fa-fw fa-cube txt-color-blue"></i> <span class="menu-item-parent">분석 모델 선택</span></a>
+                <ul style="display: block;">
+                    <li class="active">
+                        <a href="#" title=""><span class="menu-item-parent">신규 고객 모델링</span></a>
+                    </li>
+                    <li>
+                        <a href="#" title=""><span class="menu-item-parent">이탈 고객 모델링</span></a>
+                    </li>
+                    <li class="">
+                        <a href="#" title=""><span class="menu-item-parent">VOC 분석 모델링</span></a>
+                    </li>
+                    <li class="">
+                        <a href="#" title=""><span class="menu-item-parent">고객 반응 분석 모델링</span></a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </nav>
+</aside>
+<div id="main" role="main">
+    <div id="ribbon">
+        <span class="ribbon-button-alignment"></span>
+        <ol class="breadcrumb">
+            <li>Home</li>
+            <li>TA 분석 모델링</li>
+        </ol>
+    </div>
+    <div id="content">
+        <div class="row">
+            <div class="col-sm-12">
+                <section>
+                    <div class="row">
+                        <div id="tabs" style="padding:20px;">
+                            <ul>
+                                <li>
+                                    <a href="#tabs-a" id="a">F1 Score</a>
+                                </li>
+                                <li>
+                                    <a href="#tabs-a" id="b">k-fold cross validation</a>
+                                </li>
+                                <li>
+                                    <a href="#tabs-a" id="c">R² Score</a>
+                                </li>
+                                <li>
+                                    <a href="#tabs-a" id="d">RMSE</a>
+                                </li>
+                            </ul>
+                            <div id="tabs-a">
+                            </div>
+                            <div style="margin-top:30px;float:right;">
+                                <a href="javascript:void(0);" class="btn btn-primary btn-sm">차트</a>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="page-footer">
+    <div class="row">
+        <div class="col-xs-12 col-sm-6">
+            <span class="txt-color-white">Diquest<span class="hidden-xs"> - TA 1.0</span> © 2019</span>
+        </div>
+    </div>
+</div>
+
+<script src="{{ url_for('static', filename = 'jquery/js/jquery.min.js') }}"></script> <!-- jquery v2.2.4 -->
+<script src="{{ url_for('static', filename = 'jquery/js/jquery.mb.browser.min.js') }}"></script>
+<!-- browser msie issue fix -->
+
+<script src="{{ url_for('static', filename = 'smartadmin/js/pace.min.js') }}"
+        data-pace-options='{"restartOnRequestAfter": true }'></script> <!-- PACE LOADER -->
+<script src="{{ url_for('static', filename = 'smartadmin/js/jquery-ui.min.js') }}"></script> <!-- jquery-ui v1.12.1 -->
+<script src="{{ url_for('static', filename = 'smartadmin/js/app.config.js') }}"></script> <!-- IMPORTANT: APP CONFIG -->
+
+<script src="{{ url_for('static', filename = 'bootstrap/js/bootstrap.min.js') }}"></script> <!-- Bootstrap v3.3.7 -->
+<script src="{{ url_for('static', filename = 'smartadmin/js/SmartNotification.min.js') }}"></script>
+<!-- CUSTOM NOTIFICATION -->
+<script src="{{ url_for('static', filename = 'smartadmin/js/jarvis.widget.min.js') }}"></script> <!-- JARVIS WIDGETS -->
+<script src="{{ url_for('static', filename = 'smartadmin/js/select2.min.js') }}"></script> <!-- JQUERY SELECT2 INPUT -->
+<script src="{{ url_for('static', filename = 'smartadmin/js/fastclick.min.js') }}"></script>
+<!-- FastClick: For mobile devices -->
+<script src="{{ url_for('static', filename = 'smartadmin/js/app.min.js') }}"></script> <!-- MAIN APP JS FILE -->
+
+<script src="{{ url_for('static', filename = 'toast/grid/js/underscore.js') }}"></script> <!-- TOAST-GRID JS FILE -->
+<script src="{{ url_for('static', filename = 'toast/grid/js/backbone.js') }}"></script> <!-- TOAST-GRID JS FILE -->
+<script src="{{ url_for('static', filename = 'toast/grid/js/tui-code-snippet.js') }}"></script>
+<!-- TOAST-GRID JS FILE -->
+<script src="{{ url_for('static', filename = 'toast/grid/js/tui-grid.min.js') }}"></script> <!-- TOAST-GRID JS FILE -->
+<!--[if IE 8]>
+<h1>해당 Browser에서 지원하지 않습니다. Browser를 최신버전으로 업데이트 하세요.</h1>
+<![endif]-->
+
+<script>
+    $(document).ready(function () {
+        pageSetUp();
+        $('#tabs').tabs();
+        var grid = new tui.Grid({
+            el: document.getElementById('tabs-a'),
+            columns: [],
+            data:[{
+                id: '10012',
+                city: 'Seoul',
+                country: 'South Korea'
+            },
+            {
+                id: '10013',
+                city: 'Tokyo',
+                country: 'Japan'
+            },
+            {
+                id: '10014',
+                city: 'London',
+                country: 'England'
+            },
+            {
+                id: '10015',
+                city: 'Ljubljana',
+                country: 'Slovenia'
+            },
+            {
+                id: '10016',
+                city: 'Reykjavik',
+                country: 'Iceland'
+            }]
+        });
+        grid.setColumns([
+            {
+                title: 'ID',
+                name: 'id' ,
+                sortable:true
+            },
+            {
+                title: 'CITY',
+                name: 'city',
+                sortable:true
+            },
+            {
+                title: 'COUNTRY',
+                name: 'country',
+                sortable:true
+            }
+        ]);
+
+        $("#tabs>ul>li").on("click", function (e) {
+            $("#tabs-a").html("");
+            switch ($(e.target).attr("id")) {
+                case "a" :
+                    break;
+                case "b" :
+                    break;
+                case "c" :
+                    break;
+                case "d" :
+                    break;
+            }
+            grid = new tui.Grid({
+            el: document.getElementById('tabs-a'),
+            columns: [],
+            data:[{
+                    id: '10012',
+                    city: 'Seoul',
+                    country: 'South Korea'
+                },
+                {
+                    id: '10013',
+                    city: 'Tokyo',
+                    country: 'Japan'
+                },
+                {
+                    id: '10014',
+                    city: 'London',
+                    country: 'England'
+                },
+                {
+                    id: '10015',
+                    city: 'Ljubljana',
+                    country: 'Slovenia'
+                },
+                {
+                    id: '10016',
+                    city: 'Reykjavik',
+                    country: 'Iceland'
+                }]
+            });
+            grid.setColumns([
+                {
+                    title: 'ID',
+                    name: 'id' ,
+                    sortable:true
+                },
+                {
+                    title: 'CITY',
+                    name: 'city',
+                    sortable:true
+                },
+                {
+                    title: 'COUNTRY',
+                    name: 'country',
+                    sortable:true
+                }
+            ]);
+        });
+    });
+</script>
+
+</body>
+</html>
