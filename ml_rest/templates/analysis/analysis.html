@@ -27,6 +27,8 @@
 
     <link rel="stylesheet" type="text/css" media="screen"
           href="{{ url_for('static', filename = 'toast/chart/css/tui-chart.min.css') }}"> <!-- Toast-ui Chart v3.7.0 -->
+    <link rel="stylesheet" type="text/css" media="screen"
+          href="{{ url_for('static', filename = 'toast/grid/css/tui-grid.css') }}"> <!-- Toast-grid Chart v3.7.0 -->
 
     <link rel="stylesheet" type="text/css" media="screen"
           href="{{ url_for('static', filename = 'common/css/common.css') }}">
@@ -380,13 +382,8 @@
                             </div>
                         </div>
                     </div>
-                    {#                                <div class="row">#}
-                    {#                                    <div class="col-sm-12">#}
-                    {#                                        <div class="smart-form">#}
-                    {#                                            <div id="csvGrid" style="width:auto;height:200px;"></div>#}
-                    {#                                        </div>#}
-                    {#                                    </div>#}
-                    {#                                </div>#}
+                    <div id="csvGrid">
+                    </div>
                 </div>
                 <div class="tab-pane" id="tab4">
                     <br>
@@ -503,10 +500,10 @@
 <!-- wizard JS FILE -->
 <script src="{{ url_for('static', filename = 'smartadmin/js/wizard.min.js') }}"></script> <!-- wizard JS FILE -->
 <script src="{{ url_for('static', filename = 'jquery/js/jquery.validate.min.js') }}"></script>
-
 <script src="{{ url_for('static', filename = 'toast/chart/js/tui-chart-all.js') }}"></script>
-<!-- Toast-ui chart v3.7.0 -->
 
+<script src="{{ url_for('static', filename = 'toast/grid/js/tui-grid.js') }}"></script> <!-- TOAST-GRID JS FILE -->
+<!-- Toast-ui chart v3.7.0 -->
 <!--[if IE 8]>
 	<h1>해당 Browser에서 지원하지 않습니다. Browser를 최신버전으로 업데이트 하세요.</h1>
 <![endif]-->
@@ -659,7 +656,7 @@
         $('#dialog_simple').dialog({
             autoOpen: false,
             modal: true,
-            width: "40%",
+            width: '40%',
             height: "auto",
             resizable: false,
             title: "CSV 업로드",
@@ -750,6 +747,15 @@
                         return false;
                     }
                     stepCheck(index);
+                    $('#dialog_simple').dialog({
+                        width: 'auto' ,
+                        position: {
+                            my: "left top",
+                            at: "left top",
+                            of: "#main"
+                        }
+                    });
+                    setInterval(function() { window.dispatchEvent(new Event('resize')); }, 100);
                 } else if (index === 3) {
                     let formData = new FormData();
                     formData.append("model_name", $("#modelName").val());
@@ -775,6 +781,10 @@
                             $("#train").val(getLearningColmun());
                             $("#predictionColumn_D").val($('input[name="prediction-coloumn"]:checked').val());
                             $("#prediction").val($('input[name="prediction-coloumn"]:checked').val());
+
+                            $('#dialog_simple').dialog({
+                                width: '40%'
+                            });
                         }
                     });
 
@@ -820,22 +830,24 @@
         });
 
 
-        let grid;
-        let options = {
-            enableCellNavigation: true,
-            editable: true,
-            asyncEditorLoading: false,
-            autoEdit: false,
-            forceFitColumns: true,
-            enableColumnReorder: false,
-            multiColumnSort: true
-        };
-
         let fnGrid = function (resultList) {
-            let columns = [];
-            let data = resultList;
+            let data = [];
+            for(var i = 0; i < 6; i++){
+                data.push(resultList[i]);
+            }
             // 배열 0번째는 columns 명으로 제외
-            let columnsName = data[0];
+            let columnsName = [];
+            let columns = [];
+
+            for(let key in data[0]){
+                let columnKey = key;
+                columnsName.push(columnKey);
+                columns.push({
+                    title: columnKey,
+                    name: columnKey,
+                    sortable:true
+                });
+            }
 
             $("#learningArea").empty();
             $("#predictionArea").empty();
@@ -853,14 +865,30 @@
                     "<input type='checkbox' value='" + item + "' name='prediction-coloumn' onChange='changePrediction(\"" + item + "\");'>" +
                     "<i></i>" + item + "</label>";
             });
-
             $("#learningArea").append(learningAppenHtml);
             $("#predictionArea").append(predictionAppenHtml);
 
-            data.splice(0, 1);
+            let grid = new tui.Grid({
+                el: document.getElementById('csvGrid'),
+                width:'auto',
+                columns: [],
+                data:data
+            });
+            grid.setColumns(columns);
             $("#loading_oh").hide();
             /*
-            for (let i = 0; i < data[0].length; i++) {
+            let grid;
+            let options = {
+                enableCellNavigation: true,
+                editable: true,
+                asyncEditorLoading: false,
+                autoEdit: false,
+                forceFitColumns: true,
+                enableColumnReorder: false,
+                multiColumnSort: true
+            };
+
+             for (let i = 0; i < data[0].length; i++) {
                 columns.push({
                     id: i,
                     name: columnsName[i],
@@ -882,7 +910,6 @@
                     }
                 });
             }
-
             grid = new Slick.Grid("#csvGrid", data, columns, options);
             grid.setSelectionModel(new Slick.RowSelectionModel({selectActiveRow: false}));
 

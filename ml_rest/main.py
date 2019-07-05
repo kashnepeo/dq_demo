@@ -55,15 +55,21 @@ class UploadFile(Resource):
             f = request.files['file2']
             f.save(secure_filename(f.filename))
             f = open(secure_filename(f.filename))
-            lists = csv.reader(f)
-            resultList = []
-            for list in lists:
-                resultList.append([except_fn(x) for x in list])
+            arr = []
+            with f as csvFile:
+                csvReader = csv.DictReader(csvFile)
+                for csvRow in csvReader:
+                    arr.append(csvRow)
             f.close
+            # lists = csv.reader(f)
+            # resultList = []
+            # for list in lists:
+            #     resultList.append([except_fn(x) for x in list])
+            # f.close
 
             # 응답 헤더
             response_data = app.response_class(
-                response=json.dumps(resultList),
+                response=json.dumps(arr),
                 status=200,
                 mimetype='application/json'
             )
