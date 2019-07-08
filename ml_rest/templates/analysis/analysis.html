@@ -514,6 +514,7 @@
 <script>
 
 
+    let upload_csv_seq = "";
     $(document).ready(function () {
         pageSetUp();
 
@@ -786,8 +787,15 @@
                             $("#prediction").val($('input[name="prediction-coloumn"]:checked').val());
 
                             $('#dialog_simple').dialog({
-                                width: '40%'
+                                width: '40%',
+                                 position: {
+                                    of: "#main",
+                                    at: "center top",
+                                    my: "center top"
+                                }
                             });
+
+                            upload_csv_seq = result.COUNT;
                         }
                     });
 
@@ -806,6 +814,7 @@
                     formData.append("model_save", model_save);
                     formData.append("learning_coloumn", learning_coloumn);
                     formData.append("prediction_coloumn", prediction_coloumn);
+                    formData.append("model_seq" , upload_csv_seq);
 
                     setTimeout(function () {
                         $.ajax({

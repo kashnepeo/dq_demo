@@ -5,6 +5,7 @@ import os.path
 import time
 import pymysql
 import flask
+import math
 import pandas as pd
 from flask import Flask, request, jsonify
 from flask_restful import Resource, Api, abort
@@ -13,7 +14,7 @@ from ml.regression import *
 from werkzeug.utils import secure_filename
 
 # 환경 정보 로드
-with open('./system/config.json') as j:
+with open('./system/config.json', 'rt', encoding='utf-8') as j:
     config = json.loads(j.read())
 
 # 플라스크 객체 선언
@@ -24,6 +25,8 @@ app.config.update(config)
 
 # 서버 인스턴스
 api = Api(app)
+
+csvTotRow = 0
 
 
 # 메인 페이지 라우팅
@@ -60,7 +63,10 @@ class UploadFile(Resource):
                 csvReader = csv.DictReader(csvFile)
                 for csvRow in csvReader:
                     arr.append(csvRow)
-            f.close
+
+            global csvTotRow
+            csvTotRow = len(arr)
+
             # lists = csv.reader(f)
             # resultList = []
             # for list in lists:
@@ -110,8 +116,32 @@ class CsvInfoCU(Resource):
             sql += ")"
             db_class.execute(sql)
             db_class.commit()
-            sql = "SELECT last_insert_id()"
+            sql = "SELECT last_insert_id() AS COUNT"
             row = db_class.executeOne(sql)
+            # 응답 헤더
+            response_data = app.response_class(
+                response=json.dumps(row),
+                status=200,
+                mimetype='application/json'
+            )
+        return response_data
+
+
+class SelectGridHandler(Resource):
+    def post(self):
+        if request.method == 'POST':
+            db_class = Database()
+            print(request.form['model_seq'])
+            sql = ""
+            if request.form['model_category'] == 'F1 score':
+                sql = "SELECT class_cd AS '상품유형 코드' , class_cd_nm AS '카테고리 명' , lrn_count AS '트레이닝 건수' , vrfc_count AS '검증 건수' ," \
+                      " prec AS 'Precision' , recal AS 'Recall' , fonescore AS 'F1Score' FROM classifier_model_view WHERE model_seq = %s" \
+                      % (request.form['model_seq'])
+
+            print(sql)
+            # 데이타 Fetch
+            row = db_class.executeAll(sql)
+            print(row)
             # 응답 헤더
             response_data = app.response_class(
                 response=json.dumps(row),
@@ -156,6 +186,24 @@ class ClassifierHandler(Resource):
         call_l_class_cd = output['call_l_class_cd']
         predict = output['predict']
         print(type(predict))
+
+        global csvTotRow
+        lrn_count = math.floor(csvTotRow * 0.7)
+        vrfc_count = csvTotRow - lrn_count
+        db_class = Database()
+        for (f, s, t, r, v) in report_df.values:
+            sql = "INSERT INTO dev.classifier_model_view( model_seq, class_cd, class_cd_nm, lrn_count, vrfc_count, prec, recal, fonescore ) VALUES ("
+            sql += str(request.form['model_seq']) + ","
+            sql += f + ",'"
+            sql += app.config['cnslTypeLgcsfCd'][f] + "',"
+            sql += str(lrn_count) + ","
+            sql += str(vrfc_count) + ",'"
+            sql += str(s) + "','"
+            sql += str(t) + "','"
+            sql += str(r) + "')"
+            print(sql)
+            db_class.execute(sql)
+            db_class.commit()
         # 응답 데이터
         data = dict(name=classifier_algorithm, category='classifier', success=True, score=score,
                     report_value=report_df['precision'].tolist(), report_lable=report_df['class'].tolist(),
@@ -253,7 +301,7 @@ api.add_resource(RegressionHandler, '/regression/<string:element>')
 api.add_resource(NltkHandler, '/nltk/<string:element>')
 api.add_resource(UploadFile, '/fileUpload')
 api.add_resource(CsvInfoCU, '/csvInfoCU')
-
+api.add_resource(SelectGridHandler, '/selectGrid')
 if __name__ == '__main__':
     # Flask 서비스 스타트
     app.run(host='0.0.0.0', port=8000, debug=True)

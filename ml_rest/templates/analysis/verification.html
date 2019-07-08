@@ -176,60 +176,51 @@
 <![endif]-->
 
 <script>
+    var grid;
+    var verification = {
+        init : function() {
+            verification.drawGrid(155 , "F1 score");
+        },
+        drawGrid : function(model_seq , model_category){
+             let formData = new FormData();
+             formData.append("model_seq" , model_seq);
+             formData.append("model_category" , model_category);
+             $.ajax({
+                url: '/selectGrid',
+                processData: false,
+                contentType: false,
+                data: formData,
+                type: 'POST',
+                enctype: 'multipart/form-data',
+                success: function (result) {
+                    let columns = [];
+                    for(let key in result[0]){
+                        let columnKey = key;
+                        columns.push({
+                            title: columnKey,
+                            name: columnKey,
+                            sortable:true
+                        });
+                    }
+                    grid = new tui.Grid({
+                        el: document.getElementById('tabs-a'),
+                        columns: [],
+                        data:result
+                    });
+                    grid.setColumns(columns);
+                }
+            });
+        }
+    }
     $(document).ready(function () {
         pageSetUp();
         $('#tabs').tabs();
-        var grid = new tui.Grid({
-            el: document.getElementById('tabs-a'),
-            columns: [],
-            data:[{
-                id: '10012',
-                city: 'Seoul',
-                country: 'South Korea'
-            },
-            {
-                id: '10013',
-                city: 'Tokyo',
-                country: 'Japan'
-            },
-            {
-                id: '10014',
-                city: 'London',
-                country: 'England'
-            },
-            {
-                id: '10015',
-                city: 'Ljubljana',
-                country: 'Slovenia'
-            },
-            {
-                id: '10016',
-                city: 'Reykjavik',
-                country: 'Iceland'
-            }]
-        });
-        grid.setColumns([
-            {
-                title: 'ID',
-                name: 'id' ,
-                sortable:true
-            },
-            {
-                title: 'CITY',
-                name: 'city',
-                sortable:true
-            },
-            {
-                title: 'COUNTRY',
-                name: 'country',
-                sortable:true
-            }
-        ]);
-
+        verification.init();
         $("#tabs>ul>li").on("click", function (e) {
             $("#tabs-a").html("");
             switch ($(e.target).attr("id")) {
                 case "a" :
+                    verification.drawGrid(155 , "F1 score");
                     break;
                 case "b" :
                     break;
@@ -238,52 +229,6 @@
                 case "d" :
                     break;
             }
-            grid = new tui.Grid({
-            el: document.getElementById('tabs-a'),
-            columns: [],
-            data:[{
-                    id: '10012',
-                    city: 'Seoul',
-                    country: 'South Korea'
-                },
-                {
-                    id: '10013',
-                    city: 'Tokyo',
-                    country: 'Japan'
-                },
-                {
-                    id: '10014',
-                    city: 'London',
-                    country: 'England'
-                },
-                {
-                    id: '10015',
-                    city: 'Ljubljana',
-                    country: 'Slovenia'
-                },
-                {
-                    id: '10016',
-                    city: 'Reykjavik',
-                    country: 'Iceland'
-                }]
-            });
-            grid.setColumns([
-                {
-                    title: 'ID',
-                    name: 'id' ,
-                    sortable:true
-                },
-                {
-                    title: 'CITY',
-                    name: 'city',
-                    sortable:true
-                },
-                {
-                    title: 'COUNTRY',
-                    name: 'country',
-                    sortable:true
-                }
-            ]);
         });
     });
 </script>
