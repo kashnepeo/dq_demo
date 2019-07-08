@@ -54,21 +54,26 @@ class BaggingClass:
         n_of_train = int(round(len(self._x) * trainSet))
         n_of_test = int(round(len(self._x) * testSet))
         print("샘플 개수: %d" % len(self._x))
-        print("트레이닝셋 갯수: %d, 트레이닝셋: %.2f%%" % (n_of_train, (trainSet * 100)))
-        print("테스트셋 갯수: %d, 테스트셋: %.2f%%" % (n_of_test, (testSet * 100)))
-        self._x_train = self._x[:n_of_train]
-        self._y_train = self._y[:n_of_train]
-        self._x_test = self._x[n_of_train:]
-        self._y_test = self._x[n_of_train:]
-        print("_x_train: ", len(self._x_train))
-        print("_y_train: ", len(self._y_train))
-        print("_x_test: ", len(self._x_test))
-        print("_y_test: ", len(self._y_test))
+        # print("트레이닝셋 갯수: %d, 트레이닝셋: %.2f%%" % (n_of_train, (trainSet * 100)))
+        # print("테스트셋 갯수: %d, 테스트셋: %.2f%%" % (n_of_test, (testSet * 100)))
+        # self._x_train = self._x[:n_of_train]
+        # self._y_train = self._y[:n_of_train]
+        # self._x_test = self._x[n_of_train:]
+        # self._y_test = self._x[n_of_train:]
+
+        # 전체 데이터 학습
+        self._x_train = self._x[:]
+        self._y_train = self._y[:]
 
         # 후처리 클래스 생성
         columns = self.data.columns.tolist()  # 전처리 컬럼 리스트 (후처리시 동일한 컬럼으로 사용)
         maxdate = max(self._x[:, 0])  # 전처리 최대일자 (후처리시 그 다음날 기준으로 date 생성)
         predictgenerator = PredictGeneraotr(columns, maxdate)
+
+        # 후처리 예측셋
+        self._x_test = predictgenerator._x_test
+
+        print("self._x_test: ", self._x_test)
 
         # 모델 선언
         self._model = BaggingRegressor()
@@ -82,12 +87,12 @@ class BaggingClass:
     # 일반 예측
     def predict(self, save_img=False, show_chart=False):
         # 예측
-        y_pred = self._model.predict(self._x_train)
+        y_pred = self._model.predict(self._x_test)
         print("y_pred: ", y_pred, len(y_pred))
-        print("self._y_test: ", len(self._y_test))
 
         # 스코어 정보
-        score = r2_score(self._y_train, y_pred)
+        # score = r2_score(self._y_train, y_pred)
+        score = 0
         print("score: ", score)
 
         # 리포트 확인

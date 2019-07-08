@@ -26,14 +26,11 @@ class PredictGeneraotr():
         self.predict_df = self.date_generator(columns, maxdate, days=30)
 
         # 후처리 CSV 생성
-        self.predict_df = self.write_predict(self._f_path)
+        self.write_predict(self._f_path)
         print("predict_df: ", self.predict_df.head(5))
 
         # 학습 및 레이블(정답) 데이터 분리
-        # self._x_test = self.predict_df.iloc[:, :-1].values
-        # self._y_test = self.predict_df.iloc[:, -1].values
-        # print("self._x_test: ", self._x_test, len(self._x_test))
-        # print("self._y_test: ", self._y_test, len(self._y_test))
+        self._x_test = self.predict_df.iloc[:].values
 
         print(
             "============================================== PredictGeneraotr __init__ 후처리 End ==============================================")
@@ -60,6 +57,7 @@ class PredictGeneraotr():
                     for call_type_le in range(2):  # call_type
                         date_temp = maxdate + timedelta(days=day + 1)
                         dayofweek = date_temp.weekday()
+                        date_temp = int(str(date_temp).replace('-', ''))
                         # print("date: ", date_temp, "hour: ", hour, "dayofweek: ", dayofweek, "center_le: ", center_le, "call_type_le: ", call_type_le)
                         temp_list.append([date_temp, hour, dayofweek, center_le, call_type_le])
 
@@ -89,5 +87,3 @@ class PredictGeneraotr():
 
         print(
             "============================================== write_predict 후처리 csv생성 End ==============================================")
-
-        return self.predict_df
