@@ -9,6 +9,13 @@ from sklearn.externals import joblib
 from sklearn.metrics import r2_score
 from sklearn.model_selection import GridSearchCV
 
+from ml_rest.ml.regression.preprocessing import *
+from ml_rest.ml.regression.predictgenerator import *
+
+trainSet = 0.7
+testSet = 0.3
+
+
 class BaggingClass:
     """
     Name      : BaggingRegressor
@@ -16,27 +23,52 @@ class BaggingClass:
     Method    : predict, predict_by_cv, save_model
     """
 
-    def __init__(self):
+    def __init__(self, filename):
         # 알고리즘 이름
         self._name = 'bagging'
 
         # 기본 경로
-        self._f_path = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), os.pardir))
+        self._f_path = os.path.abspath(
+            os.path.join(os.path.dirname(os.path.abspath(__file__)), os.pardir)) + "/regression/resource/"
+        print("_f_path: ", self._f_path)
 
         # 경고 메시지 삭제
         warnings.filterwarnings('ignore')
 
         # 원본 데이터 로드
-        data = pd.read_csv(self._f_path + "/regression/resource/regression_sample.csv", sep=",", encoding="utf-8")
+        # data = pd.read_csv(self._f_path + "/regression/resource/regressor_original.csv", sep=",", encoding="utf-8")
+        # print(data.head(5))
+        # print(data.info())
 
-        # 학습 및 테스트 데이터 분리
-        self._x = (data["year"] <= 2017)
-        self._y = (data["year"] >= 2018)
+        # 전처리 클래스 생성
+        self.original_filepath = self._f_path
+        self.original_filename = filename
+        preprocessor = Preprocessing(filepath=self.original_filepath, filename=self.original_filename)
 
-        # 학습 데이터 분리
-        self._x_train, self._y_train = self.preprocessing(data[self._x])
-        # 테스트 데이터 분리
-        self._x_test, self._y_test = self.preprocessing(data[self._y])
+        # 학습 및 레이블(정답) 데이터
+        self._x = preprocessor._x
+        self._y = preprocessor._y
+        self.data = preprocessor.preprocess_df
+
+        # 학습 및 테스트 데이터 분리(7:3)
+        n_of_train = int(round(len(self._x) * trainSet))
+        n_of_test = int(round(len(self._x) * testSet))
+        print("샘플 개수: %d" % len(self._x))
+        print("트레이닝셋 갯수: %d, 트레이닝셋: %.2f%%" % (n_of_train, (trainSet * 100)))
+        print("테스트셋 갯수: %d, 테스트셋: %.2f%%" % (n_of_test, (testSet * 100)))
+        self._x_train = self._x[:n_of_train]
+        self._y_train = self._y[:n_of_train]
+        self._x_test = self._x[n_of_train:]
+        self._y_test = self._x[n_of_train:]
+        print("_x_train: ", len(self._x_train))
+        print("_y_train: ", len(self._y_train))
+        print("_x_test: ", len(self._x_test))
+        print("_y_test: ", len(self._y_test))
+
+        # 후처리 클래스 생성
+        columns = self.data.columns.tolist()  # 전처리 컬럼 리스트 (후처리시 동일한 컬럼으로 사용)
+        maxdate = max(self._x[:, 0])  # 전처리 최대일자 (후처리시 그 다음날 기준으로 date 생성)
+        predictgenerator = PredictGeneraotr(columns, maxdate)
 
         # 모델 선언
         self._model = BaggingRegressor()
@@ -45,39 +77,18 @@ class BaggingClass:
         self._model.fit(self._x_train, self._y_train)
 
         # 그리드 서치 모델
-        self._g_model = None
-
-    # 데이터 전처리
-    def preprocessing(self, data):
-        # 학습
-        x = []
-        # 레이블
-        y = []
-        # 기준점(7일)
-        base_interval = 7
-        # 기온
-        temps = list(data["temperature"])
-
-        for i in range(len(temps)):
-            if i < base_interval:
-                continue
-            y.append(temps[i])
-
-            xa = []
-
-            for p in range(base_interval):
-                d = i + p - base_interval
-                xa.append(temps[d])
-            x.append(xa)
-        return x, y
+        # self._g_model = None
 
     # 일반 예측
     def predict(self, save_img=False, show_chart=False):
         # 예측
-        y_pred = self._model.predict(self._x_test)
+        y_pred = self._model.predict(self._x_train)
+        print("y_pred: ", y_pred, len(y_pred))
+        print("self._y_test: ", len(self._y_test))
 
         # 스코어 정보
-        score = r2_score(self._y_test, y_pred)
+        score = r2_score(self._y_train, y_pred)
+        print("score: ", score)
 
         # 리포트 확인
         if hasattr(self._model, 'coef_') and hasattr(self._model, 'intercept_'):
@@ -162,12 +173,13 @@ class BaggingClass:
             plt.show()
 
     def __del__(self):
-        del self._x_train, self._x_test, self._y_train, self._y_test, self._x, self._y, self._model
+        pass
+        # del self._x_train, self._x_test, self._y_train, self._y_test, self._x, self._y, self._model
 
 
 if __name__ == "__main__":
     # 클래스 선언
-    classifier = BaggingClass()
+    classifier = BaggingClass(filename='regressor_original.csv')
 
     # 분류 실행
     classifier.predict()
