@@ -116,7 +116,7 @@ class CsvInfoCU(Resource):
             sql += ")"
             db_class.execute(sql)
             db_class.commit()
-            sql = "SELECT last_insert_id() AS COUNT"
+            sql = "SELECT last_insert_id() AS upload_csv_seq"
             row = db_class.executeOne(sql)
             # 응답 헤더
             response_data = app.response_class(
