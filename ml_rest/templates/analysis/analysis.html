@@ -42,9 +42,23 @@
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename = 'common/font/font.css') }}">
     <!-- Default Font -->
 
+    <style>
+        .pager .disabled>a, .pager .disabled>a:focus, .pager .disabled>a:hover, .pager .disabled>span {
+            color: #999;
+            background-color: #fff;
+            cursor: default;
+        }
+    </style>
 </head>
 <body class="">
-
+<div id="loading_body" style="position: absolute;margin: 18% 30% 20% 50%;z-index: 1;">
+    <table width="auto" height="auto" align="center" cellpadding="0" cellspacing="0">
+        <tr>
+            <td align="center"><img src="{{ url_for('static', filename = 'image/loading.gif') }}"
+                                    border="0"><br><b><font color="black">잠시만 기다려 주세요</font></b></td>
+        </tr>
+    </table>
+</div>
 <header id="header">
     <div id="logo-group">
         <span id="logo">TA 분석 모델링</span>
@@ -154,11 +168,11 @@
                                                            checked="checked">
                                                     <i></i><img style="width:100%;height:100%" src="{{ url_for('static', filename = 'image/line_chart.png') }}" border="0"></label>
                                             </section>
-                                            <section class="col col-6">
-                                                <label class="radio">
-                                                    <input type="radio" name="viewChart" value="pie_chart">
-                                                    <i></i><img style="width:100%;height:100%" src="{{ url_for('static', filename = 'image/pie_chart.png') }}" border="0"></label>
-                                            </section>
+{#                                            <section class="col col-6">#}
+{#                                                <label class="radio">#}
+{#                                                    <input type="radio" name="viewChart" value="pie_chart">#}
+{#                                                    <i></i><img style="width:100%;height:100%" src="{{ url_for('static', filename = 'image/pie_chart.png') }}" border="0"></label>#}
+{#                                            </section>#}
                                         </div>
                                     </div>
                                 </div>
@@ -244,7 +258,6 @@
         </section>
     </div>
 </div>
-
 <div id="dialog_simple" title="Dialog Simple Title">
     <div class="widget-body">
         <div id="bootstrap-wizard-1" class="col-sm-12">
@@ -270,7 +283,7 @@
                 <div class="clearfix"></div>
             </div>
             <div class="tab-content">
-                <div id="loading_oh" style="position: absolute;margin: 10% 20% 0% 40%;z-index:1;">
+                <div id="loading_modal" style="position: absolute;margin: 10% 20% 0% 40%;z-index:1;">
                     <table width="auto" height="auto" align="center" cellpadding="0" cellspacing="0">
                         <tr>
                             <td align="center"><img src="{{ url_for('static', filename = 'image/loading.gif') }}"
@@ -678,12 +691,17 @@
             return false;
         })
 
-        $("#loading_oh").hide();
+        $("#loading_modal").hide();
+        $("#loading_body").hide();
 
         $('.file-upload-btn').click(function () {
             $('#dialog_simple').dialog('open');
             return false;
 
+        });
+
+        $("input[name='viewChart']").change(function () {
+           $("#executeAnalysis").attr("disabled",false);
         });
 
         $("#file2").change(function () {
@@ -753,7 +771,7 @@
                             alert("확장자 csv 파일 업로드해주세요.");
                             return false;
                         } else {
-                            $("#loading_oh").show();
+                            $("#loading_modal").show();
                             let formData = new FormData($('#order-form')[0]);
                             formData.append("fileObj", $("#file2")[0].files[0]);
                             setTimeout(function () {
@@ -834,12 +852,10 @@
 
                     stepCheck(index);
                 } else if (index === 4) {
-                    $("#loading_oh").show();
-
                     $('#dialog_simple').dialog('close');
-                    $("#loading_oh").hide();
-                    $("#fileInfo").show();
+                    $("#loading_modal").hide();
                     $("#widget-grid").show();
+                    $("#executeAnalysis").attr("disabled",false);
                     stepCheck(index);
                 }
             }
@@ -851,51 +867,52 @@
             const learning_coloumn = $('input[name="learning-coloumn"]:checked').val();
             const prediction_coloumn = $('input[name="prediction-coloumn"]:checked').val();
             const view_chart = $('input[name="viewChart"]:checked').val();
+            if(learning_coloumn != null || prediction_coloumn != null){
+                $("#executeAnalysis").attr("disabled",true);
+                let formData = new FormData($('#contact-form')[0]);
+                formData.append("fileObj", $("#file2")[0].files[0]);
+                formData.append("subject", $("#modelName").val());
+                formData.append("classifier_algorithm", $("#classifier_algorithm").val());
+                formData.append("model_save", model_save);
+                formData.append("learning_coloumn", learning_coloumn);
+                formData.append("prediction_coloumn", prediction_coloumn);
+                formData.append("view_chart", view_chart);
+                formData.append("model_seq", upload_csv_seq);
 
-            let formData = new FormData($('#contact-form')[0]);
-            formData.append("fileObj", $("#file2")[0].files[0]);
-            formData.append("subject", $("#modelName").val());
-            formData.append("classifier_algorithm", $("#classifier_algorithm").val());
-            formData.append("model_save", model_save);
-            formData.append("learning_coloumn", learning_coloumn);
-            formData.append("prediction_coloumn", prediction_coloumn);
-            formData.append("view_chart", view_chart);
-            formData.append("model_seq", upload_csv_seq);
+                $("#loading_body").show();
+                const $valid = $("#contact-form").valid();
+                if (!$valid) {
+                    $validator.focusInvalid();
+                    return false;
+                }
+                setTimeout(function () {
+                    $.ajax({
+                        url: model_category,
+                        processData: false,
+                        contentType: false,
+                        data: formData,
+                        type: 'POST',
+                        enctype: 'multipart/form-data',
+                        success: function (result) {
+                            // 업로드 CSV 전송
+                            console.log(result)
+                            $("#widget-grid").show();
 
-            $("#loading_oh").show();
-            const $valid = $("#contact-form").valid();
-            if (!$valid) {
-                $validator.focusInvalid();
-                return false;
-            }
-            setTimeout(function () {
-                $.ajax({
-                    url: model_category,
-                    processData: false,
-                    contentType: false,
-                    data: formData,
-                    type: 'POST',
-                    enctype: 'multipart/form-data',
-                    success: function (result) {
-                        // 업로드 CSV 전송
-                        console.log(result)
-                        $("#widget-grid").show();
-
-                        if (view_chart == 'line_chart') {
-                            series_line_chart(result.recordkey, result.call_l_class_cd, result.predict);
-                            $("#line-grid").show();
-                        } else {
-                            horizental_bar_chart(result.report_lable, result.report_value);
-                            $("#pie-grid").show();
+                            if (view_chart == 'line_chart') {
+                                series_line_chart(result.recordkey, result.call_l_class_cd, result.predict);
+                                $("#line-grid").show();
+                            } else {
+                                horizental_bar_chart(result.report_lable, result.report_value);
+                                $("#pie-grid").show();
+                            }
+                            $("#loading_body").hide();
+                            formReset();
                         }
-                        $("#loading_oh").hide();
-                        formReset();
-
-                    }
-                });
-            }, 100); //1000 = 1초
-
-
+                    });
+                }, 100); //1000 = 1초
+            }else{
+                alert("csv 업로드를 먼저 해주세요.");
+            }
         });
 
         let fnGrid = function (resultList) {
@@ -943,7 +960,7 @@
                 data:data
             });
             grid.setColumns(columns);
-            $("#loading_oh").hide();
+            $("#loading_modal").hide();
             /*
             let grid;
             let options = {

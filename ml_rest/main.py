@@ -131,17 +131,14 @@ class SelectGridHandler(Resource):
     def post(self):
         if request.method == 'POST':
             db_class = Database()
-            print(request.form['model_seq'])
             sql = ""
             if request.form['model_category'] == 'F1 score':
                 sql = "SELECT class_cd AS '상품유형 코드' , class_cd_nm AS '카테고리 명' , lrn_count AS '트레이닝 건수' , vrfc_count AS '검증 건수' ," \
                       " prec AS 'Precision' , recal AS 'Recall' , fonescore AS 'F1Score' FROM classifier_model_view WHERE model_seq = %s" \
                       % (request.form['model_seq'])
 
-            print(sql)
             # 데이타 Fetch
             row = db_class.executeAll(sql)
-            print(row)
             # 응답 헤더
             response_data = app.response_class(
                 response=json.dumps(row),
