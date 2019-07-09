@@ -196,6 +196,15 @@
             <li>TA 분석 모델링</li>
         </ol>
     </div>
+    <div id="ribbon" class="filter">
+        <div class="smart-form">
+            <div class="inline-group">
+                <div class="div-chart">
+                    <label><a href="#" id="popUpOpen"><i class="fa fa-signal fa-file-text-o" style="font-size:30px;margin-top:4px;"></i></a></label>
+                </div>
+            </div>
+        </div>
+    </div>
     {#    <div id="ribbon" class="filter">#}
     {#        <div class="smart-form">#}
     {#            <div class="inline-group">#}
@@ -563,6 +572,7 @@
     let upload_csv_seq = "";
     $(document).ready(function () {
         pageSetUp();
+        $(".div-chart").hide();
 
         // line chart
         // 차트가 담길 element
@@ -706,6 +716,13 @@
 
         $("#file2").change(function () {
             $("#filePath").val($("#file2")[0].files[0].name);
+        });
+
+        $("#popUpOpen").click(function(){
+            var url="/verification?model_seq="+upload_csv_seq;
+            var popupX = (window.screen.width / 2) - (200 / 2);
+            var popupY= (window.screen.height / 2) - (300 / 2);
+            window.open(url,"","width=1024,height=600,left="+popupX+",top="+popupY);
         });
 
         $('#dialog_simple').dialog({
@@ -902,7 +919,9 @@
                                 $("#pie-grid").show();
                             }
                             $("#loading_body").hide();
+                            $(".div-chart").show();
                             formReset();
+
                         }
                     });
                 }, 100); //1000 = 1초
@@ -1092,6 +1111,7 @@
         }
         ;
     }
+
 </script>
 </body>
 </html>

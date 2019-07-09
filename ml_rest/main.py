@@ -47,9 +47,10 @@ def example():
     return flask.render_template("exampleUI.html")
 
 
-@app.route("/verification")
+@app.route("/verification", methods=['GET'])
 def verification():
-    return flask.render_template("analysis/verification.html")
+    model_seq = request.args.get('model_seq')
+    return flask.render_template("analysis/verification.html" , model_seq=model_seq)
 
 
 # CSV 업로드

@@ -8,7 +8,7 @@
     <meta name="author" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-    <!-- Basic Styles -->
+   <!-- Basic Styles -->
     <link rel="stylesheet" type="text/css" media="screen"
           href="{{ url_for('static', filename = 'bootstrap/css/bootstrap.min.css') }}">
 
@@ -165,23 +165,28 @@
 <script src="{{ url_for('static', filename = 'smartadmin/js/fastclick.min.js') }}"></script>
 <!-- FastClick: For mobile devices -->
 <script src="{{ url_for('static', filename = 'smartadmin/js/app.min.js') }}"></script> <!-- MAIN APP JS FILE -->
+<script src="{{ url_for('static', filename = 'smartadmin/js/jquery.bootstrap.wizard.min.js') }}"></script>
+<!-- wizard JS FILE -->
+<script src="{{ url_for('static', filename = 'smartadmin/js/wizard.min.js') }}"></script> <!-- wizard JS FILE -->
+<script src="{{ url_for('static', filename = 'jquery/js/jquery.validate.min.js') }}"></script>
+<script src="{{ url_for('static', filename = 'toast/chart/js/tui-chart-all.js') }}"></script>
 
 <script src="{{ url_for('static', filename = 'toast/grid/js/underscore.js') }}"></script> <!-- TOAST-GRID JS FILE -->
 <script src="{{ url_for('static', filename = 'toast/grid/js/backbone.js') }}"></script> <!-- TOAST-GRID JS FILE -->
-<script src="{{ url_for('static', filename = 'toast/grid/js/tui-code-snippet.js') }}"></script>
-<!-- TOAST-GRID JS FILE -->
+<script src="{{ url_for('static', filename = 'toast/grid/js/tui-code-snippet.js') }}"></script> <!-- TOAST-GRID JS FILE -->
 <script src="{{ url_for('static', filename = 'toast/grid/js/tui-grid.js') }}"></script> <!-- TOAST-GRID JS FILE -->
+<!-- Toast-ui chart v3.7.0 -->
 <!--[if IE 8]>
-<h1>해당 Browser에서 지원하지 않습니다. Browser를 최신버전으로 업데이트 하세요.</h1>
+	<h1>해당 Browser에서 지원하지 않습니다. Browser를 최신버전으로 업데이트 하세요.</h1>
 <![endif]-->
 
 <script>
     var grid;
     var verification = {
         init : function() {
-            verification.drawGrid(155 , "F1 score");
+            verification.selectData( {{ model_seq }} , "F1 score");
         },
-        drawGrid : function(model_seq , model_category){
+        selectData : function(model_seq , model_category){
              let formData = new FormData();
              formData.append("model_seq" , model_seq);
              formData.append("model_category" , model_category);
@@ -193,22 +198,26 @@
                 type: 'POST',
                 enctype: 'multipart/form-data',
                 success: function (result) {
-                    let columns = [];
-                    for(let key in result[0]){
-                        let columnKey = key;
-                        columns.push({
-                            title: columnKey,
-                            name: columnKey,
-                            sortable:true
-                        });
-                    }
-                    grid = new tui.Grid({
-                        el: document.getElementById('tabs-a'),
-                        columns: [],
-                        data:result
-                    });
-                    grid.setColumns(columns);
+                   verification.drawGrid(result);
                 }
+            });
+        },
+        drawGrid : function(result){
+            let columns = [];
+            for(let key in result[0]){
+                let columnKey = key;
+                columns.push({
+                    title: columnKey,
+                    name: columnKey,
+                    sortable:true,
+                    align:"center"
+                });
+            }
+            grid = new tui.Grid({
+                el: document.getElementById('tabs-a'),
+                width:'auto',
+                columns: columns,
+                data:result
             });
         }
     }
@@ -220,7 +229,7 @@
             $("#tabs-a").html("");
             switch ($(e.target).attr("id")) {
                 case "a" :
-                    verification.drawGrid(155 , "F1 score");
+                    verification.selectData(155 , "F1 score");
                     break;
                 case "b" :
                     break;
@@ -232,6 +241,5 @@
         });
     });
 </script>
-
 </body>
 </html>
