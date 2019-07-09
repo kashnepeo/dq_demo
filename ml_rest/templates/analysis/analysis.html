@@ -770,26 +770,6 @@
                         if (ext !== 'csv') {
                             alert("확장자 csv 파일 업로드해주세요.");
                             return false;
-                        } else {
-                            $("#loading_modal").show();
-                            let formData = new FormData($('#order-form')[0]);
-                            formData.append("fileObj", $("#file2")[0].files[0]);
-                            setTimeout(function () {
-                                $.ajax({
-                                    url: '/fileUpload',
-                                    processData: false,
-                                    contentType: false,
-                                    data: formData,
-                                    type: 'POST',
-                                    async: false,
-                                    success: function (result) {
-                                        // 업로드 CSV 전송
-                                        fnGrid(result);
-                                        stepCheck(index);
-                                    }
-                                });
-                            }, 100); //1000 = 1초
-
                         }
                     } else {
                         alert("파일을 선택 해주세요.");
@@ -801,16 +781,32 @@
                         $validator.focusInvalid();
                         return false;
                     }
-                    stepCheck(index);
-                    $('#dialog_simple').dialog({
-                        width: 'auto' ,
-                        position: {
-                            my: "left top",
-                            at: "left top",
-                            of: "#main"
+                    $("#loading_modal").show();
+                    let formData = new FormData($('#order-form')[0]);
+                    formData.append("fileObj", $("#file2")[0].files[0]);
+                    formData.append("model_category", $("input[name=modelCategory]:checked").val());
+                    $.ajax({
+                        url: '/fileUpload',
+                        processData: false,
+                        contentType: false,
+                        data: formData,
+                        type: 'POST',
+                        async: false,
+                        success: function (result) {
+                            // 업로드 CSV 전송
+                            fnGrid(result);
+                            stepCheck(index);
+                            $('#dialog_simple').dialog({
+                                width: 'auto' ,
+                                position: {
+                                    my: "left top",
+                                    at: "left top",
+                                    of: "#main"
+                                }
+                            });
+                            setInterval(function() { window.dispatchEvent(new Event('resize')); }, 100);
                         }
                     });
-                    setInterval(function() { window.dispatchEvent(new Event('resize')); }, 100);
                 } else if (index === 3) {
                     let formData = new FormData();
                     formData.append("model_name", $("#modelName").val());

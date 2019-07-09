@@ -6,6 +6,7 @@ import time
 import pymysql
 import flask
 import math
+import datetime
 import pandas as pd
 from flask import Flask, request, jsonify
 from flask_restful import Resource, Api, abort
@@ -55,23 +56,25 @@ def verification():
 class UploadFile(Resource):
     def post(self):
         if request.method == 'POST':
+            # 기본 경로
+            self._f_path = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), os.pardir))
+            today = datetime.datetime.today()
+            # 디렉토리 확인
+            if not os.path.isdir(self._f_path + '/ml_rest/ml/' + request.form['model_category'] +'/resource/'+today.strftime('%Y%m%d')):
+                os.makedirs(self._f_path + '/ml_rest/ml/' + request.form['model_category'] +'/resource/'+today.strftime('%Y%m%d'))
+            # CSV 업로드
             f = request.files['file2']
-            f.save(secure_filename(f.filename))
-            f = open(secure_filename(f.filename))
+            f.save(self._f_path + '/ml_rest/ml/' + request.form['model_category'] +'/resource/'+today.strftime('%Y%m%d')+'/'+secure_filename(f.filename))
+            f = open(self._f_path + '/ml_rest/ml/' + request.form['model_category'] +'/resource/'+today.strftime('%Y%m%d')+'/'+secure_filename(f.filename))
+            # CSV 데이터 파싱
             arr = []
             with f as csvFile:
                 csvReader = csv.DictReader(csvFile)
                 for csvRow in csvReader:
                     arr.append(csvRow)
-
+            # 업로드 CSV 데이터
             global csvTotRow
             csvTotRow = len(arr)
-
-            # lists = csv.reader(f)
-            # resultList = []
-            # for list in lists:
-            #     resultList.append([except_fn(x) for x in list])
-            # f.close
 
             # 응답 헤더
             response_data = app.response_class(
