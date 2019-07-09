@@ -69,7 +69,8 @@ class GaussianNBClass:
         self._model = SVC()
 
         # 전처리 데이터를 이용한 모델 학습
-        self._model.fit(self.X_train_tfidf_vector, self._y_train)
+        test = self._model.fit(self.X_train_tfidf_vector, self._y_train)
+        # print(test.decision_function(self._x_test))
 
     # 일반 예측
     def predict(self):
@@ -154,7 +155,6 @@ class GaussianNBClass:
 
 
 if __name__ == "__main__":
-
     # 클래스 선언
     classifier = GaussianNBClass(filename='sample2.csv')
 

@@ -74,17 +74,12 @@ class Preprocessing():
         return [re.sub('[0-9]{1,4}([_])', ' ', element).replace('|', '').strip() for element in response_str['result'].strip("[]").split(", ")]
 
     def keyword_vectorizer(self, x_train, x_test):
-
         X_train_tfidf_vector = self.vectorizer.fit_transform(x_train)
         vocab = self.vectorizer.get_feature_names()
         print('feature counts : ', len(vocab))
 
-        # X_test_tfidf_vector = pipeline.fit_transform(X_test)
         X_test_tfidf_vector = self.vectorizer.transform(x_test)
 
         dist = np.sum(X_train_tfidf_vector, axis=0)
-        # for (tag, cnt) in zip(vocab, dist):
-        #     print(tag, cnt)
 
-        # print((X_train_tfidf_vector, X_test_tfidf_vector, vocab, dist))
         return (X_train_tfidf_vector, X_test_tfidf_vector, vocab, dist)

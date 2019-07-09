@@ -325,7 +325,7 @@
                                         <option value="decisiontree">DecisionTreeClassifier</option>
                                         <option value="extratree">ExtraTreeClassifier</option>
                                         <option value="extratrees">ExtraTreesClassifier</option>
-                                        <option value="gaussiannb">GaussianNB</option>
+{#                                        <option value="gaussiannb">GaussianNB</option>#}
                                         {#                                        <option value="gaussianprocess">#}
                                         {#                                            GaussianProcessClassifier(Only Model)#}
                                         {#                                        </option>#}
@@ -682,6 +682,7 @@
 
         $('.file-upload-btn').click(function () {
             $('#dialog_simple').dialog('open');
+            formReset();
             return false;
 
         });
@@ -889,8 +890,6 @@
                             $("#pie-grid").show();
                         }
                         $("#loading_oh").hide();
-                        formReset();
-
                     }
                 });
             }, 100); //1000 = 1초
