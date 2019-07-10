@@ -7,14 +7,11 @@ from sklearn.preprocessing import LabelEncoder
 class Preprocessing():
 
     # 초기 init 함수
-    def __init__(self, filepath, filename):
+    def __init__(self, name, filepath, filename):
         print(
             "============================================== preprocessing __init__ 전처리 Start ==============================================")
-        print("filepath: ", filepath)
-        print("filename: ", filename)
 
         self._f_path = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), os.pardir))
-        print("_f_path: ", self._f_path)
 
         # 경고 메시지 삭제
         warnings.filterwarnings('ignore')
@@ -27,10 +24,9 @@ class Preprocessing():
 
         # 센터, 콜타입 라벨인코딩 변환
         self.addcolumn_df = self.label_encoding()
-        print("addcolumn_df: ", self.addcolumn_df.head(5))
 
         # 전처리 CSV 생성
-        self.preprocess_df = self.write_preprocessing(self._f_path)
+        self.preprocess_df = self.write_preprocessing(name, self._f_path)
 
         # 원본df: self.original_df
         # 추가df: self.addcolumn_df
@@ -105,7 +101,7 @@ class Preprocessing():
         return self.addcolumn_df
 
     # 전처리 csv 생성
-    def write_preprocessing(self, filepath):
+    def write_preprocessing(self, name, filepath):
         print(
             "============================================== write_preprocessing 전처리 csv생성 Start ==============================================")
         # pre = self.original_df.append(self.preprocess_df)
@@ -123,9 +119,10 @@ class Preprocessing():
         preprocess_df = preprocess_df.groupby(['DATE', 'HOUR', 'DAYOFWEEK', 'CENTER_LE', 'CALL_TYPE_LE'])[
             'CALL_TOTAL'].sum().reset_index()
 
+
         # 전처리 csv 생성
         self.preprocess_filepath = filepath + "/regression/csv/"
-        self.preprocess_filename = "preprocessing.csv"
+        self.preprocess_filename = name + "_preprocessing.csv"
         if not os.path.exists(filepath):
             os.mkdir(filepath)
 
