@@ -733,9 +733,9 @@
             resizable: false,
             title: "CSV 업로드",
             position: {
-                my: "center",
-                at: "center",
-                of: "#main"
+                  of: "#ribbon",
+                  at: "left bottom",
+                  my: "left top"
             },
             close: function (event, ui) {
                 $('#bootstrap-wizard-1').bootstrapWizard('first');
@@ -816,9 +816,9 @@
                             $('#dialog_simple').dialog({
                                 width: 'auto' ,
                                 position: {
-                                    my: "left top",
-                                    at: "left top",
-                                    of: "#main"
+                                    of: "#ribbon",
+                                    at: "left bottom",
+                                    my: "left top"
                                 }
                             });
                             setInterval(function() { window.dispatchEvent(new Event('resize')); }, 100);
@@ -853,9 +853,9 @@
                             $('#dialog_simple').dialog({
                                 width: '40%',
                                  position: {
-                                    of: "#main",
-                                    at: "center top",
-                                    my: "center top"
+                                    of: "#ribbon",
+                                    at: "left bottom",
+                                    my: "left top"
                                 }
                             });
 
