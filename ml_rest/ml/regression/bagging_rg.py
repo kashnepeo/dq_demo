@@ -28,8 +28,7 @@ class BaggingClass:
         self._name = 'bagging'
 
         # 기본 경로
-        self._f_path = os.path.abspath(
-            os.path.join(os.path.dirname(os.path.abspath(__file__)), os.pardir)) + "/regression/resource/"
+        self._f_path = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), os.pardir))
         print("_f_path: ", self._f_path)
 
         # 경고 메시지 삭제
@@ -41,9 +40,9 @@ class BaggingClass:
         # print(data.info())
 
         # 전처리 클래스 생성
-        self.original_filepath = self._f_path
+        self.original_filepath = self._f_path + "/regression/resource/"
         self.original_filename = filename
-        preprocessor = Preprocessing(filepath=self.original_filepath, filename=self.original_filename)
+        preprocessor = Preprocessing(name=self._name, filepath=self.original_filepath, filename=self.original_filename)
 
         # 학습 및 레이블(정답) 데이터
         self._x = preprocessor._x
@@ -65,16 +64,6 @@ class BaggingClass:
         self._x_train = self._x[:]
         self._y_train = self._y[:]
 
-        # 후처리 클래스 생성
-        columns = self.data.columns.tolist()  # 전처리 컬럼 리스트 (후처리시 동일한 컬럼으로 사용)
-        maxdate = max(self._x[:, 0])  # 전처리 최대일자 (후처리시 그 다음날 기준으로 date 생성)
-        predictgenerator = PredictGeneraotr(columns, maxdate)
-
-        # 후처리 예측셋
-        self._x_test = predictgenerator._x_test
-
-        print("self._x_test: ", self._x_test)
-
         # 모델 선언
         self._model = BaggingRegressor()
 
@@ -86,14 +75,29 @@ class BaggingClass:
 
     # 일반 예측
     def predict(self, save_img=False, show_chart=False):
+
+        # 후처리 클래스 생성
+        columns = self.data.columns.tolist()  # 전처리 컬럼 리스트 (후처리시 동일한 컬럼으로 사용)
+        maxdate = max(self._x[:, 0])  # 전처리 최대일자 (후처리시 그 다음날 기준으로 date 생성)
+        predictgenerator = PredictGeneraotr(name=self._name, columns=columns, maxdate=maxdate)
+
+        # 후처리 예측셋
+        self._x_test = predictgenerator._x_test
+
         # 예측
         y_pred = self._model.predict(self._x_test)
         print("y_pred: ", y_pred, len(y_pred))
 
+        predictgenerator.predict_df['CALL_TOTAL'] = y_pred
+
+        predict_df_filepath = self._f_path + "/regression/csv/"
+        predict_df_filename = self._name + "_predict.csv"
+
+        predictgenerator.predict_df.to_csv(predict_df_filepath + predict_df_filename, index=False, mode='w')
+
         # 스코어 정보
         # score = r2_score(self._y_train, y_pred)
         score = 0
-        print("score: ", score)
 
         # 리포트 확인
         if hasattr(self._model, 'coef_') and hasattr(self._model, 'intercept_'):
@@ -196,7 +200,7 @@ if __name__ == "__main__":
     # classifier.predict_by_cv()
 
     # 모델 신규
-    # classifier.save_model()
+    classifier.save_model()
 
     # 모델 갱신
     # classifier.save_model(renew=True)
