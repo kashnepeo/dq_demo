@@ -49,6 +49,10 @@
             cursor: default;
         }
     </style>
+
+    <script src="https://cdn.anychart.com/releases/8.6.0/js/anychart-base.min.js" type="text/javascript"></script>
+	<script src="https://cdn.anychart.com/releases/8.6.0/js/anychart-tag-cloud.min.js"></script>
+	<script src="https://cdn.anychart.com/releases/8.6.0/js/anychart-core.min.js"></script>
 </head>
 <body class="">
 <div id="loading_body" style="position: absolute;margin: 18% 30% 20% 50%;z-index: 1;">
@@ -168,11 +172,18 @@
                                                            checked="checked">
                                                     <i></i><img style="width:100%;height:100%" src="{{ url_for('static', filename = 'image/line_chart.png') }}" border="0"></label>
                                             </section>
-{#                                            <section class="col col-6">#}
-{#                                                <label class="radio">#}
-{#                                                    <input type="radio" name="viewChart" value="pie_chart">#}
-{#                                                    <i></i><img style="width:100%;height:100%" src="{{ url_for('static', filename = 'image/pie_chart.png') }}" border="0"></label>#}
-{#                                            </section>#}
+                                            <section class="col col-6">
+                                                <label class="radio">
+                                                    <input type="radio" name="viewChart" value="pie_chart">
+                                                    <i></i><img style="width:100%;height:100%" src="{{ url_for('static', filename = 'image/pie_chart.png') }}" border="0"></label>
+                                            </section>
+                                        </div>
+                                        <div class="panel-body no-padding">
+                                            <section class="col col-6">
+                                                <label class="radio">
+                                                    <input type="radio" name="viewChart" value="cloud_chart">
+                                                    <i></i><img style="width:100%;height:100%" src="{{ url_for('static', filename = 'image/cloud_chart.png') }}" border="0"></label>
+                                            </section>
                                         </div>
                                     </div>
                                 </div>
@@ -224,7 +235,7 @@
             </div>
         </div>
 
-        <section id="widget-grid" class="">
+        <section id="line-grid" class="">
             <div class="row">
                 <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                     <div class="jarviswidget jarviswidget-color-blueDark" id="wid-id-1" data-widget-editbutton="false"
@@ -244,7 +255,8 @@
                     </div>
                 </article>
             </div>
-
+        </section>
+        <section id="pie-grid" class="">
             <div class="row">
                 <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                     <div class="jarviswidget jarviswidget-color-blueDark" id="wid-id-2" data-widget-editbutton="false"
@@ -259,6 +271,27 @@
                             </div>
                             <div class="widget-body no-padding">
                                 <div id="bar-chart-test" class="chart"></div>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+            </div>
+        </section>
+        <section id="cloud-grid" class="">
+            <div class="row">
+                <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <div class="jarviswidget jarviswidget-color-blueDark" id="wid-id-2" data-widget-editbutton="false"
+                         data-widget-deletebutton="false"
+                         data-widget-fullscreenbutton="false">
+                        <header>
+                            <span class="widget-icon"> <i class="fa fa-bar-chart-o"></i> </span>
+                            <h2>TA 분석 모델링 결과</h2>
+                        </header>
+                        <div>
+                            <div class="jarviswidget-editbox">
+                            </div>
+                            <div class="widget-body no-padding">
+                                <div id="cloud-chart-test" class="chart"></div>
                             </div>
                         </div>
                     </div>
@@ -347,10 +380,6 @@
                                         <option value="decisiontree">DecisionTreeClassifier</option>
                                         <option value="extratree">ExtraTreeClassifier</option>
                                         <option value="extratrees">ExtraTreesClassifier</option>
-                                        <option value="gaussiannb">GaussianNB</option>
-                                        {#                                        <option value="gaussianprocess">#}
-                                        {#                                            GaussianProcessClassifier(Only Model)#}
-                                        {#                                        </option>#}
                                         <option value="gradientboosting">
                                             GradientBoostingClassifier
                                         </option>
@@ -359,7 +388,6 @@
                                         <option value="logisticregression">LogisticRegression
                                         </option>
                                         <option value="mlp">MLPClassfier</option>
-                                        {#                                        <option value="nusvc">NuSVC</option>#}
                                         <option value="perceptron">Perceptron</option>
                                         <option value="randomforest">RandomForestClassfier</option>
                                         <option value="sgd">SGDClassfier</option>
@@ -585,6 +613,29 @@
         let line_height = $(line_container).height();
         let line_chart;
 
+        // word cloud
+        function word_cloud_cat(data){
+
+            // create a chart and set the data
+            var chart = anychart.tagCloud(data);
+
+            // create and configure a color scale.
+            var customColorScale = anychart.scales.ordinalColor();
+            customColorScale.colors(["red", "orange", "purple","green","blue"]);
+
+            // set the color scale as the color scale of the chart
+            chart.colorScale(customColorScale);
+
+            // add a color range
+            chart.colorRange().enabled(true);
+
+            // set the container id
+            chart.container("cloud-chart-test");
+
+            // initiate drawing the chart
+            chart.draw();
+        }
+
         // 차트 data
         function series_line_chart(categories, origin_data, predict_data) {
             let line_data = {
@@ -699,7 +750,9 @@
             });
         */
 
-        $("#widget-grid").hide();
+        $("#line-grid").hide();
+        $("#pie-grid").hide();
+        $("#cloud-grid").hide();
 
         $(".cancelEvent").click(function () {
             return false;
@@ -929,6 +982,9 @@
                             if (view_chart == 'line_chart') {
                                 series_line_chart(result.recordkey, result.call_l_class_cd, result.predict);
                                 $("#line-grid").show();
+                            } else if(view_chart == 'cloud_chart') {
+                                word_cloud_cat(result.feature_data);
+                                $("#cloud-grid").show();
                             } else {
                                 horizental_bar_chart(result.report_lable, result.report_value);
                                 $("#pie-grid").show();

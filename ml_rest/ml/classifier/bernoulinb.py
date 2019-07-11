@@ -10,8 +10,10 @@ from sklearn.model_selection import KFold
 from sklearn.model_selection import cross_val_score
 from sklearn.naive_bayes import BernoulliNB
 
-# from ml_rest.ml.classifier.preprocessing import Preprocessing
 from .preprocessing import Preprocessing
+
+
+# from ml_rest.ml.classifier.preprocessing import Preprocessing
 
 
 class BernouliNBClass:
@@ -62,7 +64,7 @@ class BernouliNBClass:
         self._y_test = self.data.loc[34:, prediction_coloumn].values
 
         # 전처리 데이터 로드
-        self.X_train_tfidf_vector, self.X_test_tfidf_vector, self.vocab, self.dist = preprocessor.keyword_vectorizer(x_train=self._x_train, x_test=self._x_test)
+        self.X_train_tfidf_vector, self.X_test_tfidf_vector, self.vocab, self.dist, self.result_a = preprocessor.keyword_vectorizer(x_train=self._x_train, x_test=self._x_test)
 
         # 모델 선언
         self._model = BernoulliNB()
@@ -72,7 +74,7 @@ class BernouliNBClass:
         # print(test.decision_function(self._x_test))
 
     # 일반 예측
-    def predict(self):
+    def predict(self, config):
         # 예측
         self.y_pred = self._model.predict(self.X_test_tfidf_vector)
 
@@ -108,8 +110,13 @@ class BernouliNBClass:
         call_start_time = self.data.loc[34:, "CALL_START_TIME"]
         call_end_time = self.data.loc[34:, "CALL_END_TIME"]
 
+        print('call_end_time', len(call_end_time))
+        print('self.result_a', len(self.result_a))
+
+        feature_data = self.make_feature_data(config)
         self.output = pd.DataFrame(
-            data={'recordkey': recordkey, 'stt_cont': '', 'call_l_class_cd': call_l_class_cd, 'call_m_class_cd': call_m_class_cd, 'call_start_time': call_start_time, 'call_end_time': call_end_time, 'predict': self.y_pred})
+            data={'recordkey': recordkey, 'stt_cont': '', 'call_l_class_cd': call_l_class_cd, 'call_m_class_cd': call_m_class_cd, 'call_start_time': call_start_time, 'call_end_time': call_end_time, 'predict': self.y_pred,
+                  'keywords': self.result_a})
 
         # 분류 결과 file write
         self.output.to_csv(self._f_path + f'/classifier/csv/result_{self._name}.csv', index=False, quoting=3, escapechar='\\')
@@ -118,7 +125,7 @@ class BernouliNBClass:
         pd.DataFrame(self.dist, columns=self.vocab).to_csv(self._f_path + f'/classifier/csv/features_{self._name}.csv', index=False, quoting=3)
 
         # 스코어 리턴, 레포트 정보, 테스트셋 분석결과
-        return score, report_df, self.output
+        return score, report_df, self.output, feature_data
 
     #  CV 예측(Cross Validation)
     def predict_by_cv(self):
@@ -152,10 +159,32 @@ class BernouliNBClass:
     def __del__(self):
         del self._x_train, self._x_test, self._y_train, self._y_test, self._x, self._y, self._model
 
+    def make_feature_data(self, config):
+        cat_dict = {}
+        for vect, pred in zip(self.result_a, self.y_pred):
+            print(pred, vect)
+            if pred in cat_dict.keys():
+                cat_dict[pred].update(vect)
+            else:
+                cat_dict[pred] = vect
+        print(cat_dict)
+        for key, value in cat_dict.items():
+            cat_dict[key] = sorted(value.items(), key=(lambda x: x[1]), reverse=True)[:20]
+
+        print(cat_dict)
+        feature_data = []
+        for key, value in cat_dict.items():
+            for each_word in value:
+                feature_data.append(
+                    {"x": str(each_word[0]), "value": float(each_word[1]), "category": config[str(key)]}
+                )
+        print(feature_data)
+        return feature_data
+
 
 if __name__ == "__main__":
     # 클래스 선언
-    classifier = BernouliNBClass()
+    classifier = BernouliNBClass({'subject': 'a', 'classifier_algorithm': 'c', 'model_save': 'aaa', 'learning_coloumn': 'STT_CONT', 'prediction_coloumn': 'CALL_L_CLASS_CD'}, 'refined_call_112.csv')
 
     # 분류 실행
     classifier.predict()

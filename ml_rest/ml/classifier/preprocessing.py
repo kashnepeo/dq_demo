@@ -1,18 +1,18 @@
+import json
 import os
 import pickle
+import re
 import warnings
-import requests
+from datetime import date
+
 import numpy as np
 import pandas as pd
-from konlpy.tag import Okt
+import requests
 from sklearn.feature_extraction.text import TfidfVectorizer
-import json
-import re
 
 
 class Preprocessing():
     def __init__(self, filename):
-        self.okt = Okt()
         self.cur_dir = os.getcwd()
 
         self._f_path = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), os.pardir))
@@ -23,7 +23,9 @@ class Preprocessing():
 
         # 원본 데이터 로드
         # data = pd.read_csv(self._f_path + "/classifier/resource/classifier_sample.csv", sep=",", encoding="utf-8")
-        self.df = pd.read_csv(self._f_path + '/classifier/resource/' + filename, sep=",", encoding="ms949")
+        today = date.today().strftime('%Y%m%d')
+
+        self.df = pd.read_csv(self._f_path + '/classifier/resource/{}/'.format(today) + filename, sep=",", encoding="ms949")
 
         # 학습 및 레이블(정답) 데이터 분리
         self._x = self.df["STT_CONT"]
@@ -61,7 +63,8 @@ class Preprocessing():
             text = '.'
         return [token for (token, tag) in self.okt.pos(text, norm=True, stem=True) if (tag == 'Noun' or tag == 'Adjective' or tag == 'Adverb') and token not in self.read_stopword(self.cur_dir) and len(token) > 1]
 
-    # 형태소 분석기를 이용한 단어 분리
+        # 형태소 분석기를 이용한 단어 분리
+
     def tokenizer_jiana(self, text):
         if not text:
             text = '.'
@@ -81,5 +84,23 @@ class Preprocessing():
         X_test_tfidf_vector = self.vectorizer.transform(x_test)
 
         dist = np.sum(X_train_tfidf_vector, axis=0)
+        # print(self.vectorizer.vocabulary_)
+        # {'행복하': 490, '여행': 263, '시작': 217, '인터넷 면세점': 342, '시이': 216, '드리': 93, '지금': 407, '취소': 434, '인도': 335, '그렇': 47, '우선': 300, '고객': 24,  ...}
 
-        return (X_train_tfidf_vector, X_test_tfidf_vector, vocab, dist)
+        vec2dict_list = self.vec2dict(X_test_tfidf_vector, vocab)
+        return (X_train_tfidf_vector, X_test_tfidf_vector, vocab, dist, vec2dict_list)
+
+    def vec2dict(self, vector, vocab):
+        result_list = []
+        for vec_array in vector.toarray().tolist():
+            vec_dict = {}
+            for idx, row in enumerate(vec_array):
+                if row != 0:
+                    vec_dict[vocab[idx]] = row
+            result_list.append(vec_dict)
+
+        """
+        print(result_list)
+        [{'감사하': 0.23119708875691353, '공치': 0.2803828859329438, '기다리': 0.2831901925747923, .... '해주시': 0.12469584761697167, '행복하': 0.038231980697211065, '확인': 0.11408861631246986}]
+        """
+        return result_list
