@@ -6,7 +6,8 @@ import pandas as pd
 
 from datetime import timedelta, datetime
 
-from ml_rest.ml.regression.preprocessing import *
+# from ml_rest.ml.regression.preprocessing import *
+from .preprocessing import *
 
 
 class PredictGeneraotr():

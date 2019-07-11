@@ -365,6 +365,10 @@
                                         <option value="sgd">SGDClassfier</option>
                                         <option value="svc">SVC</option>
                                     </select>
+                                    <select class="form-control" id="regression_algorithm" style="display: none;">
+                                        <option value="cca_rg">CCARegression</option>
+                                        <option value="bagging_rg">BaggingRegression</option>
+                                    </select>
                                 </div>
                             </div>
                         </div>
@@ -375,7 +379,7 @@
                             <div class="smart-form">
                                 <section>
                                     <label class="label">모델 유형</label>
-                                    <div class="inline-group">
+                                    <div class="inline-group" id="modelCategoryCheck">
                                         <label class="radio">
                                             <input type="radio" name="modelCategory" value="classifier"
                                                    checked="checked">
@@ -885,12 +889,23 @@
                 let formData = new FormData($('#contact-form')[0]);
                 formData.append("fileObj", $("#file2")[0].files[0]);
                 formData.append("subject", $("#modelName").val());
-                formData.append("classifier_algorithm", $("#classifier_algorithm").val());
+                formData.append($('input[name="modelCategory"]:checked').val() + "_algorithm", $("#" + $('input[name="modelCategory"]:checked').val() + "_algorithm").val())
+                {#formData.append("classifier_algorithm", $("#classifier_algorithm").val());#}
                 formData.append("model_save", model_save);
                 formData.append("learning_coloumn", learning_coloumn);
                 formData.append("prediction_coloumn", prediction_coloumn);
                 formData.append("view_chart", view_chart);
                 formData.append("model_seq", upload_csv_seq);
+
+                console.log("model_category: ", model_category);
+                console.log("fileObj: ", $("#file2")[0].files[0]);
+                console.log("subject: ", $("#modelName").val());
+                console.log($('input[name="modelCategory"]:checked').val() + "_algorithm: ", $("#" + $('input[name="modelCategory"]:checked').val() + "_algorithm").val());
+                console.log("model_save: ", model_save);
+                console.log("learning_coloumn: ", learning_coloumn);
+                console.log("prediction_coloumn: ", prediction_coloumn);
+                console.log("view_chart: ", view_chart);
+                console.log("model_seq: ", upload_csv_seq);
 
                 $("#loading_body").show();
                 const $valid = $("#contact-form").valid();
@@ -908,7 +923,7 @@
                         enctype: 'multipart/form-data',
                         success: function (result) {
                             // 업로드 CSV 전송
-                            console.log(result)
+                            console.log("result: ", result)
                             $("#widget-grid").show();
 
                             if (view_chart == 'line_chart') {
@@ -1068,6 +1083,20 @@
 
             return learningArray;
         }
+
+        // step2 모델 유형 선택시 알고리즘선택 selectbox 변경
+        $("input:radio[name=modelCategory]").change(function() {
+
+           if($('input:radio[name=modelCategory]:radio:checked').val() == "classifier") {
+               $("#classifier_algorithm").css("display", "block");
+               $("#regression_algorithm").css("display", "none");
+           } else {
+               $("#classifier_algorithm").css("display", "none");
+               $("#regression_algorithm").css("display", "block");
+           }
+
+        });
+
     });
 
     function changeLearning(checkValue) {
@@ -1110,6 +1139,7 @@
             }
         }
         ;
+
     }
 
 </script>

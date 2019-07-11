@@ -9,8 +9,10 @@ from sklearn.externals import joblib
 from sklearn.metrics import r2_score
 from sklearn.model_selection import GridSearchCV
 
-from ml_rest.ml.regression.preprocessing import *
-from ml_rest.ml.regression.predictgenerator import *
+# from ml_rest.ml.regression.preprocessing import *
+# from ml_rest.ml.regression.predictgenerator import *
+from .preprocessing import *
+from .predictgenerator import *
 
 trainSet = 0.7
 testSet = 0.3

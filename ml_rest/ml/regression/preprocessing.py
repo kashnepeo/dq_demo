@@ -4,6 +4,8 @@ import warnings
 import pandas as pd
 
 from sklearn.preprocessing import LabelEncoder
+
+
 class Preprocessing():
 
     # 초기 init 함수
@@ -118,7 +120,6 @@ class Preprocessing():
         # 날짜, 시간, 요일, 센터, 콜타입으로 그룹핑하고 콜빈도수 계산
         preprocess_df = preprocess_df.groupby(['DATE', 'HOUR', 'DAYOFWEEK', 'CENTER_LE', 'CALL_TYPE_LE'])[
             'CALL_TOTAL'].sum().reset_index()
-
 
         # 전처리 csv 생성
         self.preprocess_filepath = filepath + "/regression/csv/"

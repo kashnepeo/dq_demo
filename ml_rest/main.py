@@ -50,7 +50,7 @@ def example():
 @app.route("/verification", methods=['GET'])
 def verification():
     model_seq = request.args.get('model_seq')
-    return flask.render_template("analysis/verification.html" , model_seq=model_seq)
+    return flask.render_template("analysis/verification.html", model_seq=model_seq)
 
 
 # CSV 업로드
@@ -61,12 +61,18 @@ class UploadFile(Resource):
             self._f_path = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), os.pardir))
             today = datetime.datetime.today()
             # 디렉토리 확인
-            if not os.path.isdir(self._f_path + '/ml_rest/ml/' + request.form['model_category'] +'/resource/'+today.strftime('%Y%m%d')):
-                os.makedirs(self._f_path + '/ml_rest/ml/' + request.form['model_category'] +'/resource/'+today.strftime('%Y%m%d'))
+            if not os.path.isdir(
+                    self._f_path + '/ml_rest/ml/' + request.form['model_category'] + '/resource/' + today.strftime(
+                            '%Y%m%d')):
+                os.makedirs(
+                    self._f_path + '/ml_rest/ml/' + request.form['model_category'] + '/resource/' + today.strftime(
+                        '%Y%m%d'))
             # CSV 업로드
             f = request.files['file2']
-            f.save(self._f_path + '/ml_rest/ml/' + request.form['model_category'] +'/resource/'+today.strftime('%Y%m%d')+'/'+secure_filename(f.filename))
-            f = open(self._f_path + '/ml_rest/ml/' + request.form['model_category'] +'/resource/'+today.strftime('%Y%m%d')+'/'+secure_filename(f.filename))
+            f.save(self._f_path + '/ml_rest/ml/' + request.form['model_category'] + '/resource/' + today.strftime(
+                '%Y%m%d') + '/' + secure_filename(f.filename))
+            f = open(self._f_path + '/ml_rest/ml/' + request.form['model_category'] + '/resource/' + today.strftime(
+                '%Y%m%d') + '/' + secure_filename(f.filename))
             # CSV 데이터 파싱
             arr = []
             with f as csvFile:
@@ -232,7 +238,13 @@ class ClassifierHandler(Resource):
 
 # Regression
 class RegressionHandler(Resource):
+    def post(self):
+        print("RegressionHandler post: ", request)
+
+
     def get(self, element):
+
+        print("RegressionHandler get: ", element)
 
         # 분류 객체 생성(Str -> Class)
         try:
@@ -298,7 +310,8 @@ class Database():
 
 
 api.add_resource(ClassifierHandler, '/classifier')
-api.add_resource(RegressionHandler, '/regression/<string:element>')
+# api.add_resource(RegressionHandler, '/regression/<string:element>')
+api.add_resource(RegressionHandler, '/regression')
 api.add_resource(NltkHandler, '/nltk/<string:element>')
 api.add_resource(UploadFile, '/fileUpload')
 api.add_resource(CsvInfoCU, '/csvInfoCU')
