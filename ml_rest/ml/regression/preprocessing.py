@@ -34,10 +34,6 @@ class Preprocessing():
         # 추가df: self.addcolumn_df
         # 전처리df: self.preprocess_df
 
-        # 학습 및 레이블(정답) 데이터 분리
-        self._x = self.preprocess_df.iloc[:, :-1].values
-        self._y = self.preprocess_df.iloc[:, -1].values
-
         print(
             "============================================== preprocessing __init__ 전처리 End ==============================================")
 
@@ -63,10 +59,10 @@ class Preprocessing():
 
         # 3. 데이터 시간(hh) 데이터 분리
         hour = stt_cmdtm.str[11:13].str.replace(':', '').astype('int')
-
         # 4. 요일 구하기
-        # day_name = pd.to_datetime(date).dt.day_name()  # 요일 이름
-        dayofweek = pd.to_datetime(date).dt.dayofweek  # 요일 숫자
+        tempdate = stt_cmdtm.str[:10]
+        # day_name = pd.to_datetime(tempdate).dt.day_name()  # 요일 이름
+        dayofweek = pd.to_datetime(tempdate).dt.dayofweek  # 요일 숫자
         # 월:0 , 화:1 , 수:2 , 목:3 , 금:4 , 토:5 , 일:6
 
         # 4. 날짜, 시간, 요일 데이터 return

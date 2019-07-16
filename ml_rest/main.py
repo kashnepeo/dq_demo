@@ -13,6 +13,7 @@ from flask_restful import Resource, Api, abort
 from ml.classifier import *
 from ml.regression import *
 from werkzeug.utils import secure_filename
+from sklearn.externals import joblib
 
 # 환경 정보 로드
 with open('./system/config.json', 'rt', encoding='utf-8') as j:
@@ -63,7 +64,7 @@ class UploadFile(Resource):
             # 디렉토리 확인
             if not os.path.isdir(
                     self._f_path + '/ml_rest/ml/' + request.form['model_category'] + '/resource/' + today.strftime(
-                            '%Y%m%d')):
+                        '%Y%m%d')):
                 os.makedirs(
                     self._f_path + '/ml_rest/ml/' + request.form['model_category'] + '/resource/' + today.strftime(
                         '%Y%m%d'))
@@ -241,6 +242,59 @@ class RegressionHandler(Resource):
     def post(self):
         print("RegressionHandler post: ", request)
 
+        print("modelName: ", request.form['modelName'])  # 모델명
+        print("subject: ", request.form['subject'])  # 모델명
+        print("regression_algorithm: ", request.form['regression_algorithm'])  # 알고리즘명
+        print("model_save: ", request.form['model_save'])  # 모델저장 선택 (가망고객분석, 고객반응분석, 이탈고객분석, 민원고객분석)
+        print("learning_coloumn: ", request.form['learning_coloumn'])  # 학습컬럼
+        print("prediction_coloumn: ", request.form['prediction_coloumn'])  # 예측컬럼
+        print("view_chart: ", request.form['view_chart'])  # 차트 (라인차트)
+        print("model_seq: ", request.form['model_seq'])  # 모델시퀀스번호
+        print("fileObj: ", request.files['fileObj'])  # 업로드한 CSV파일정보
+        print("fileObj filename: ", request.files['fileObj'].filename)  # 업로드한 CSV파일정보
+
+        _f_path = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), os.pardir))
+        print("_f_path: ", _f_path)
+
+        regression_algorithm = request.form['regression_algorithm']
+
+        # 1. 업로드한 CSV 서버 디렉토리에 저장
+        upload_csv_file = request.files['fileObj']
+        filename = regression_algorithm + '_' + upload_csv_file.filename
+        upload_csv_file.save(
+            os.path.join(_f_path, 'ml_rest', 'ml', 'regression', 'csv',
+                         secure_filename(regression_algorithm + '_' + upload_csv_file.filename)))
+
+        # 분류 객체 생성(Str -> Class)
+        # 2. 선택한 알고리즘모델 학습 (EX. bagging_rg 실행)
+        try:
+            cls = eval(regression_algorithm + '_rg.' + app.config['algorithm']['regression'][regression_algorithm])(
+                params=request.form, filename=filename)
+        except KeyError:
+            abort_function()
+
+        # 3. 선택한 알고리즘모델 예측 실행 (r2_score 및 다른 검증방식 CSV 저장)
+        r2_score = cls.predict()
+        print("main.py r2_score: ", r2_score)
+
+        # 4. 학습모델 저장
+        if os.path.isfile(f'./ml/model/{regression_algorithm}_rg.pkl'):
+            print(f'{regression_algorithm}_rg Model Exist,')
+            cls.save_model(renew=True)
+        else:
+            print(f'{regression_algorithm}_rg Model Not Exist,')
+            # 최초 모델 생성
+            cls.save_model()
+
+        # 5. 후처리데이터 생성 및 예측 CSV 저장
+        predict_df = cls.predict_generator()
+        print("main.py predict_df: ", predict_df.head(5), predict_df.info())
+
+        predict_df.to_csv(os.path.join(_f_path, 'ml_rest', 'ml', 'regression', 'csv',
+                                       secure_filename(regression_algorithm + '_predict_' + upload_csv_file.filename)),
+                          index=False, mode='w')
+
+        # 6. 선택한 차트로 데이터 구성 (x축: 날짜, y축: 콜 예측인입량
 
     def get(self, element):
 

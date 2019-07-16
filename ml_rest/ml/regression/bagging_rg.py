@@ -25,46 +25,48 @@ class BaggingClass:
     Method    : predict, predict_by_cv, save_model
     """
 
-    def __init__(self, filename):
+    def __init__(self, params, filename):
         # 알고리즘 이름
         self._name = 'bagging'
-
+        print("BaggingRegressor BaggingClass __init__ Start")
         # 기본 경로
         self._f_path = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), os.pardir))
         print("_f_path: ", self._f_path)
+
+        print("params: ", params)
+        print("filename: ", filename)
+        # print("subject: ", params['subject'])
+        # print("regression_algorithm: ", params['regression_algorithm'])
+        # print("model_save: ", params['model_save'])
+        # print("learning_coloumn: ", params['learning_coloumn'])
+        # print("prediction_coloumn: ", params['prediction_coloumn'])
+        # print("view_chart: ", params['line_chart'])
+        # print("model_seq: ", params['model_seq'])
 
         # 경고 메시지 삭제
         warnings.filterwarnings('ignore')
 
         # 원본 데이터 로드
-        # data = pd.read_csv(self._f_path + "/regression/resource/regressor_original.csv", sep=",", encoding="utf-8")
-        # print(data.head(5))
-        # print(data.info())
-
-        # 전처리 클래스 생성
-        self.original_filepath = self._f_path + "/regression/resource/"
-        self.original_filename = filename
-        preprocessor = Preprocessing(name=self._name, filepath=self.original_filepath, filename=self.original_filename)
+        self.data = pd.read_csv(self._f_path + "/regression/csv/" + filename, sep=",", encoding="utf-8")
+        print(self.data.head(5))
+        print(self.data.info())
 
         # 학습 및 레이블(정답) 데이터
-        self._x = preprocessor._x
-        self._y = preprocessor._y
-        self.data = preprocessor.preprocess_df
+        self.learning_coloumn = params['learning_coloumn']
+        self.prediction_coloumn = params['prediction_coloumn']
+        self._x = self.data[self.learning_coloumn].values
+        self._y = self.data[self.prediction_coloumn].values
 
         # 학습 및 테스트 데이터 분리(7:3)
         n_of_train = int(round(len(self._x) * trainSet))
         n_of_test = int(round(len(self._x) * testSet))
         print("샘플 개수: %d" % len(self._x))
-        # print("트레이닝셋 갯수: %d, 트레이닝셋: %.2f%%" % (n_of_train, (trainSet * 100)))
-        # print("테스트셋 갯수: %d, 테스트셋: %.2f%%" % (n_of_test, (testSet * 100)))
-        # self._x_train = self._x[:n_of_train]
-        # self._y_train = self._y[:n_of_train]
-        # self._x_test = self._x[n_of_train:]
-        # self._y_test = self._x[n_of_train:]
-
-        # 전체 데이터 학습
-        self._x_train = self._x[:]
-        self._y_train = self._y[:]
+        print("트레이닝셋 갯수: %d, 트레이닝셋: %.2f%%" % (n_of_train, (trainSet * 100)))
+        print("테스트셋 갯수: %d, 테스트셋: %.2f%%" % (n_of_test, (testSet * 100)))
+        self._x_train = self._x[:n_of_train].reshape(-1, 1)
+        self._y_train = self._y[:n_of_train].reshape(-1, 1)
+        self._x_test = self._x[n_of_test:].reshape(-1, 1)
+        self._y_test = self._x[n_of_test:].reshape(-1, 1)
 
         # 모델 선언
         self._model = BaggingRegressor()
@@ -75,45 +77,66 @@ class BaggingClass:
         # 그리드 서치 모델
         # self._g_model = None
 
+        print("BaggingRegressor BaggingClass __init__ End")
+
     # 일반 예측
     def predict(self, save_img=False, show_chart=False):
+        print("================ predict Start =============")
 
-        # 후처리 클래스 생성
-        columns = self.data.columns.tolist()  # 전처리 컬럼 리스트 (후처리시 동일한 컬럼으로 사용)
-        maxdate = max(self._x[:, 0])  # 전처리 최대일자 (후처리시 그 다음날 기준으로 date 생성)
-        predictgenerator = PredictGeneraotr(name=self._name, columns=columns, maxdate=maxdate)
-
-        # 후처리 예측셋
-        self._x_test = predictgenerator._x_test
+        print("data.head(): ", self.data.head(5))
+        print("data.info(): ", self.data.info())
 
         # 예측
         y_pred = self._model.predict(self._x_test)
         print("y_pred: ", y_pred, len(y_pred))
 
-        predictgenerator.predict_df['CALL_TOTAL'] = y_pred
-
-        predict_df_filepath = self._f_path + "/regression/csv/"
-        predict_df_filename = self._name + "_predict.csv"
-
-        predictgenerator.predict_df.to_csv(predict_df_filepath + predict_df_filename, index=False, mode='w')
-
         # 스코어 정보
-        # score = r2_score(self._y_train, y_pred)
-        score = 0
+        score = r2_score(self._y_test, y_pred)
 
         # 리포트 확인
         if hasattr(self._model, 'coef_') and hasattr(self._model, 'intercept_'):
             print(f'Coef = {self._model.coef_}')
             print(f'intercept = {self._model.intercept_}')
 
-        print(f'Score = {score}')
+        print(f'r2_Score = {score}')
 
         # 이미지 저장 여부
         if save_img:
             self.save_chart_image(y_pred, show_chart)
 
+        print("================ predict End =============")
+
         # 예측 값  & 스코어
-        return [list(y_pred), score]
+        # return [list(y_pred), score]
+        return score
+
+    # 후처리데이터 생성 및 예측
+    def predict_generator(self):
+        columns = self.data.columns.tolist()  # 업로드 컬럼 리스트 (후처리시 동일한 컬럼으로 사용)
+        maxdate = max(self.data['DATE'])  # 업로드 데이터 최대일자 (후처리시 그 다음날 기준으로 date 생성)
+
+        # 후처리 데이터 생성
+        predictgenerator = PredictGeneraotr(name=self._name, learning_coloumn=self.learning_coloumn,
+                                            prediction_coloumn=self.prediction_coloumn, columns=columns,
+                                            maxdate=maxdate)
+
+        # 학습모델 로드
+        model_path = self._f_path + f'/model/{self._name}_rg.pkl'
+        load_model = joblib.load(model_path)
+        print("load_model: ", load_model)
+
+        # 후처리데이터 예측
+        self._x_test = predictgenerator._x_test.reshape(-1, 1)
+        y_pred = load_model.predict(self._x_test)
+        print("y_pred: ", y_pred, len(y_pred))
+
+        # 후처리데이터 예측값 추가
+        predictgenerator.predict_df[self.prediction_coloumn] = y_pred
+        # predict_df_filepath = self._f_path + "/regression/csv/"
+        # predict_df_filename = self._name + "_predict.csv"
+        # predictgenerator.predict_df.to_csv(predict_df_filepath + predict_df_filename, index=False, mode='w')
+
+        return predictgenerator.predict_df
 
     #  CV 예측(Cross Validation)
     def predict_by_cv(self):
@@ -162,7 +185,7 @@ class BaggingClass:
             # 기존 모델 대체
             if os.path.isfile(self._f_path + f'/model/{self._name}_rg.pkl'):
                 os.rename(self._f_path + f'/model/{self._name}_rg.pkl',
-                          self._f_path + f'/model/{str(self._name) + str(time.time())}_rg.pkl')
+                          self._f_path + f'/model/{str(self._name) + "_rg_" + str(time.time())}.pkl')
             joblib.dump(self._model, self._f_path + f'/model/{self._name}_rg.pkl')
 
     # 회귀 차트 저장
