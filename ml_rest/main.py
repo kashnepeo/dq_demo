@@ -207,7 +207,7 @@ class ClassifierHandler(Resource):
             sql += str(vrfc_count) + ",'"
             sql += str(s) + "','"
             sql += str(t) + "','"
-            sql += str(r) + "')"
+            sql += str(r) + "') ON DUPLICATE KEY UPDATE model_seq = " + str(request.form['model_seq'])
             print(sql)
             db_class.execute(sql)
             db_class.commit()

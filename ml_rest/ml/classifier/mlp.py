@@ -46,33 +46,26 @@ class MlpClass:
         self._y = preprocessor._y
         self.data = preprocessor.df
 
-        # 원본 데이터 로드
-        # data = pd.read_csv(os.path.abspath(os.path.join(self._f_path, '../', filename)), sep=",", encoding="ms949")
-        # print('data : ', data.head(10))
-
-        # 학습 데이터 및 테스트 데이터 분리
-        # self._x_train, self._x_test, self._y_train, self._y_test = train_test_split(self._x, self._y, test_size=0.2, shuffle=True, random_state=42)
-        # self._x_train = self.data.loc[:78, 'STT_CONT'].values
         self._x_train = self.data.loc[:78, learning_coloumn].values
-        # self._y_train = self.data.loc[:78, 'CALL_L_CLASS_CD'].values
         self._y_train = self.data.loc[:78, prediction_coloumn].values
-        # self._x_test = self.data.loc[34:, 'STT_CONT'].values
         self._x_test = self.data.loc[34:, learning_coloumn].values
-        # self._y_test = self.data.loc[34:, 'CALL_L_CLASS_CD'].values
         self._y_test = self.data.loc[34:, prediction_coloumn].values
 
         # 전처리 데이터 로드
-        self.X_train_tfidf_vector, self.X_test_tfidf_vector, self.vocab, self.dist = preprocessor.keyword_vectorizer(x_train=self._x_train, x_test=self._x_test)
+        self.X_train_tfidf_vector, self.X_test_tfidf_vector, self.vocab, self.dist, self.result_a = preprocessor.keyword_vectorizer(x_train=self._x_train, x_test=self._x_test)
 
         # 모델 선언
         self._model = MLPClassifier()
 
         # 전처리 데이터를 이용한 모델 학습
-        test = self._model.fit(self.X_train_tfidf_vector, self._y_train)
-        # print(test.decision_function(self._x_test))
+        self._model.fit(self.X_train_tfidf_vector, self._y_train)
+
+        # 그리드 서치 모델
+        self._g_model = None
+        self.output = None
 
     # 일반 예측
-    def predict(self):
+    def predict(self, config):
         # 예측
         self.y_pred = self._model.predict(self.X_test_tfidf_vector)
 
@@ -108,8 +101,15 @@ class MlpClass:
         call_start_time = self.data.loc[34:, "CALL_START_TIME"]
         call_end_time = self.data.loc[34:, "CALL_END_TIME"]
 
+        feature_data, category_list = self.make_feature_data(config)
         self.output = pd.DataFrame(
-            data={'recordkey': recordkey, 'stt_cont': '', 'call_l_class_cd': call_l_class_cd, 'call_m_class_cd': call_m_class_cd, 'call_start_time': call_start_time, 'call_end_time': call_end_time, 'predict': self.y_pred})
+            data={'recordkey': recordkey
+                , 'stt_cont': '', 'call_l_class_cd': call_l_class_cd
+                , 'call_m_class_cd': call_m_class_cd
+                , 'call_start_time': call_start_time
+                , 'call_end_time': call_end_time
+                , 'predict': self.y_pred
+                , 'keywords': self.result_a})
 
         # 분류 결과 file write
         self.output.to_csv(self._f_path + f'/classifier/csv/result_{self._name}.csv', index=False, quoting=3, escapechar='\\')
@@ -118,14 +118,14 @@ class MlpClass:
         pd.DataFrame(self.dist, columns=self.vocab).to_csv(self._f_path + f'/classifier/csv/features_{self._name}.csv', index=False, quoting=3)
 
         # 스코어 리턴, 레포트 정보, 테스트셋 분석결과
-        return score, report_df, self.output
+        return score, report_df, self.output, feature_data, category_list
 
     #  CV 예측(Cross Validation)
     def predict_by_cv(self):
         cv = KFold(n_splits=5, shuffle=True)
         # CV 지원 여부
         if hasattr(self._model, "score"):
-            cv_score = cross_val_score(self._model, self._x, self._y, cv=cv)
+            cv_score = cross_val_score(self._model, self.X_train_tfidf_vector, self._y_train, cv=cv)
             # 스코어 확인
             print(f'Score = {cv_score}')
             # 스코어 리턴
@@ -150,7 +150,31 @@ class MlpClass:
             joblib.dump(self._model, self._f_path + f'/model/{self._name}.pkl')
 
     def __del__(self):
-        del self._x_train, self._x_test, self._y_train, self._y_test, self._x, self._y, self._model
+        del self._x_train, self._x_test, self._y_train, self._y_test, self._x, self._y, self._model, self.X_train_tfidf_vector, self.X_test_tfidf_vector, self.vocab, self.dist, self.output
+
+    def make_feature_data(self, config):
+        cat_dict = {}
+        for vect, pred in zip(self.result_a, self.y_pred):
+            # print(pred, vect)
+            if pred in cat_dict.keys():
+                cat_dict[pred].update(vect)
+            else:
+                cat_dict[pred] = vect
+        # print(cat_dict)
+        for key, value in cat_dict.items():
+            cat_dict[key] = sorted(value.items(), key=(lambda x: x[1]), reverse=True)[:20]
+
+        category_list = [config[str(key)] for key in cat_dict.keys()]
+
+        # print(cat_dict)
+        feature_data = []
+        for key, value in cat_dict.items():
+            for each_word in value:
+                feature_data.append(
+                    {"x": str(each_word[0]), "value": float(each_word[1]), "category": config[str(key)]}
+                )
+        # print(feature_data)
+        return feature_data, category_list
 
 
 if __name__ == "__main__":
