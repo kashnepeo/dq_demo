@@ -195,7 +195,10 @@
                     </section>
                     <section>
                         <div>
-                            <button id="executeAnalysis" class="btn btn-primary btn-lg">RUN</button>
+                            <button id="executeAnalysis" class="btn btn-primary btn-sm" style="width: 100%;">Run</button>
+                        </div>
+                        <div stlye="margin-top:10px;">
+                            <button id="formReset" class="btn btn-danger btn-sm" style="margin-top: 15px;width: 100%;">Reset</button>
                         </div>
                     </section>
                 </fieldset>
@@ -637,15 +640,28 @@
         let line_height = $(line_container).height();
         let line_chart;
 
+        // generate random rgb
+        function generate_rgb(size) {
+            rgb_list = new Array();
+            for (var i = 1; i <= size; i++) {
+                var hue = 'rgb(' + (Math.floor(Math.random() * 256)) + ',' + (Math.floor(Math.random() * 256)) + ',' + (Math.floor(Math.random() * 256)) + ')';
+                rgb_list.push(hue);
+            }
+            return rgb_list;
+        }
+
         // word cloud
-        function word_cloud_cat(data){
+        function word_cloud_cat(data, category_list){
 
             // create a chart and set the data
             var chart = anychart.tagCloud(data);
 
             // create and configure a color scale.
             var customColorScale = anychart.scales.ordinalColor();
-            customColorScale.colors(["red", "orange", "purple","green","blue"]);
+
+            let rgb_list = generate_rgb(category_list.length);
+
+            customColorScale.colors(rgb_list);
 
             // set the color scale as the color scale of the chart
             chart.colorScale(customColorScale);
@@ -792,7 +808,7 @@
         });
 
         $("input[name='viewChart']").change(function () {
-           $("#executeAnalysis").attr("disabled",false);
+            $("#executeAnalysis").attr("disabled" , false);
         });
 
         $("#file2").change(function () {
@@ -819,7 +835,7 @@
             },
             close: function (event, ui) {
                 $('#bootstrap-wizard-1').bootstrapWizard('first');
-                // formReset();
+                //formReset();
             }
         });
 
@@ -872,6 +888,7 @@
                         alert("파일을 선택 해주세요.");
                         return false;
                     }
+                    stepCheck(index);
                 } else if (index === 2) {
                     const $valid = $("#contact-form").valid();
                     if (!$valid) {
@@ -901,7 +918,7 @@
                                     my: "left top"
                                 }
                             });
-                            $("#dialog_simple").css("width","5px");
+                            $("#dialog_simple").css("width","1px");
                             setTimeout(function () {
                                  $("#dialog_simple").css("width","auto");
                             }, 1);
@@ -957,6 +974,10 @@
             }
         });
 
+        $("#formReset").click(function(){
+            formReset();
+        })
+
         $("#executeAnalysis").click(function () {
             const model_category = $('input[name="modelCategory"]:checked').val();
             const model_save = $('input[name="modelCd"]:checked').val();
@@ -1009,7 +1030,7 @@
                                 series_line_chart(result.recordkey, result.call_l_class_cd, result.predict);
                                 $("#line-grid").show();
                             } else if(view_chart == 'cloud_chart') {
-                                word_cloud_cat(result.feature_data);
+                                word_cloud_cat(result.feature_data, result.category_list);
                                 $("#cloud-grid").show();
                             } else {
                                 horizental_bar_chart(result.report_lable, result.report_value);
@@ -1017,8 +1038,7 @@
                             }
                             $("#loading_body").hide();
                             $(".div-chart").show();
-                            formReset();
-
+                            {#formReset();#}
                         }
                     });
                 }, 100); //1000 = 1초
@@ -1028,6 +1048,7 @@
         });
 
         let fnGrid = function (resultList) {
+            $("#csvGrid").empty();
             let data = [];
             for(var i = 0; i < 6; i++){
                 data.push(resultList[i]);
@@ -1146,6 +1167,18 @@
             });
             $("#csvGrid").empty();
             grid = null;
+
+            $("#file2").val();
+            $("#filePath_D").val("");
+            $("#path").val("");
+            $("#modelName_D").val("");
+            $("#modelCategory_D").val("");
+            $("#predictionColumn_D").val("");
+            $("#prediction").val("");
+            $("#train").val("");
+            $('input[name="learning-coloumn"]').prop("checked" , false);
+            $('input[name="prediction-coloumn"]').prop("checked" , false);
+
         }
 
         let stepCheck = function (index) {
