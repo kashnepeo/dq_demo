@@ -3,17 +3,16 @@ import time
 import warnings
 
 import pandas as pd
+from sklearn.naive_bayes import BernoulliNB
 from sklearn.externals import joblib
 from sklearn.metrics import accuracy_score
 from sklearn.metrics import classification_report
+from sklearn.model_selection import GridSearchCV
 from sklearn.model_selection import KFold
 from sklearn.model_selection import cross_val_score
-from sklearn.naive_bayes import BernoulliNB
-
-from .preprocessing import Preprocessing
-
 
 # from ml_rest.ml.classifier.preprocessing import Preprocessing
+from .preprocessing import Preprocessing
 
 
 class BernouliNBClass:
@@ -48,19 +47,11 @@ class BernouliNBClass:
         self._y = preprocessor._y
         self.data = preprocessor.df
 
-        # 원본 데이터 로드
-        # data = pd.read_csv(os.path.abspath(os.path.join(self._f_path, '../', filename)), sep=",", encoding="ms949")
-        # print('data : ', data.head(10))
-
         # 학습 데이터 및 테스트 데이터 분리
         # self._x_train, self._x_test, self._y_train, self._y_test = train_test_split(self._x, self._y, test_size=0.2, shuffle=True, random_state=42)
-        # self._x_train = self.data.loc[:78, 'STT_CONT'].values
         self._x_train = self.data.loc[:78, learning_coloumn].values
-        # self._y_train = self.data.loc[:78, 'CALL_L_CLASS_CD'].values
         self._y_train = self.data.loc[:78, prediction_coloumn].values
-        # self._x_test = self.data.loc[34:, 'STT_CONT'].values
         self._x_test = self.data.loc[34:, learning_coloumn].values
-        # self._y_test = self.data.loc[34:, 'CALL_L_CLASS_CD'].values
         self._y_test = self.data.loc[34:, prediction_coloumn].values
 
         # 전처리 데이터 로드
@@ -70,8 +61,11 @@ class BernouliNBClass:
         self._model = BernoulliNB()
 
         # 전처리 데이터를 이용한 모델 학습
-        test = self._model.fit(self.X_train_tfidf_vector, self._y_train)
-        # print(test.decision_function(self._x_test))
+        self._model.fit(self.X_train_tfidf_vector, self._y_train)
+
+        # 그리드 서치 모델
+        self._g_model = None
+        self.output = None
 
     # 일반 예측
     def predict(self, config):
@@ -113,10 +107,15 @@ class BernouliNBClass:
         print('call_end_time', len(call_end_time))
         print('self.result_a', len(self.result_a))
 
-        feature_data = self.make_feature_data(config)
+        feature_data, category_list = self.make_feature_data(config)
         self.output = pd.DataFrame(
-            data={'recordkey': recordkey, 'stt_cont': '', 'call_l_class_cd': call_l_class_cd, 'call_m_class_cd': call_m_class_cd, 'call_start_time': call_start_time, 'call_end_time': call_end_time, 'predict': self.y_pred,
-                  'keywords': self.result_a})
+            data={'recordkey': recordkey
+                , 'stt_cont': '', 'call_l_class_cd': call_l_class_cd
+                , 'call_m_class_cd': call_m_class_cd
+                , 'call_start_time': call_start_time
+                , 'call_end_time': call_end_time
+                , 'predict': self.y_pred
+                , 'keywords': self.result_a})
 
         # 분류 결과 file write
         self.output.to_csv(self._f_path + f'/classifier/csv/result_{self._name}.csv', index=False, quoting=3, escapechar='\\')
@@ -125,14 +124,16 @@ class BernouliNBClass:
         pd.DataFrame(self.dist, columns=self.vocab).to_csv(self._f_path + f'/classifier/csv/features_{self._name}.csv', index=False, quoting=3)
 
         # 스코어 리턴, 레포트 정보, 테스트셋 분석결과
-        return score, report_df, self.output, feature_data
+        return score, report_df, self.output, feature_data, category_list
 
     #  CV 예측(Cross Validation)
     def predict_by_cv(self):
+        # KFold 선언
         cv = KFold(n_splits=5, shuffle=True)
+
         # CV 지원 여부
         if hasattr(self._model, "score"):
-            cv_score = cross_val_score(self._model, self._x, self._y, cv=cv)
+            cv_score = cross_val_score(self._model, self.X_train_tfidf_vector, self._y_train, cv=cv)
             # 스코어 확인
             print(f'Score = {cv_score}')
             # 스코어 리턴
@@ -143,6 +144,38 @@ class BernouliNBClass:
     #  GridSearchCV 예측
     def predict_by_gs(self):
         pass
+        # KFold 선언
+        # cv = KFold(n_splits=5, shuffle=True)
+        #
+        # # 그리드 서치 Params
+        # param_grid = {
+        #     # 모형 개수
+        #     'n_estimators': [5, 10, 15],
+        #     # 데이터 중복 여부
+        #     'bootstrap': [True, False],
+        #     # 차원 중복 여부
+        #     'bootstrap_features': [True, False],
+        #     # 독립 변수 차원 비율
+        #     'max_samples': [0.6, 0.8, 1.0]
+        # }
+        #
+        # # 그리드 서치 초기화
+        # self._g_model = GridSearchCV(BernoulliNB(), param_grid=param_grid, cv=cv)
+        #
+        # # 그리드 서치 학습
+        # self._g_model.fit(self.X_train_tfidf_vector, self._y_train)
+        #
+        # # 파라미터 모두 출력
+        # print(self._g_model.param_grid)
+        # # 베스트 스코어
+        # print(self._g_model.best_score_)
+        # # 베스트 파라미터
+        # print(self._g_model.best_params_)
+        # # 전체 결과 출력
+        # print(self._g_model.cv_results_)
+        #
+        # return dict(gs_all_params=self._g_model.param_grid, gs_best_score=self._g_model.best_score_,
+        #             gs_best_param=self._g_model.best_params_)
 
     # 모델 저장 및 갱신
     def save_model(self, renew=False):
@@ -157,29 +190,31 @@ class BernouliNBClass:
             joblib.dump(self._model, self._f_path + f'/model/{self._name}.pkl')
 
     def __del__(self):
-        del self._x_train, self._x_test, self._y_train, self._y_test, self._x, self._y, self._model
+        del self._x_train, self._x_test, self._y_train, self._y_test, self._x, self._y, self._model, self.X_train_tfidf_vector, self.X_test_tfidf_vector, self.vocab, self.dist, self.output
 
     def make_feature_data(self, config):
         cat_dict = {}
         for vect, pred in zip(self.result_a, self.y_pred):
-            print(pred, vect)
+            # print(pred, vect)
             if pred in cat_dict.keys():
                 cat_dict[pred].update(vect)
             else:
                 cat_dict[pred] = vect
-        print(cat_dict)
+        # print(cat_dict)
         for key, value in cat_dict.items():
             cat_dict[key] = sorted(value.items(), key=(lambda x: x[1]), reverse=True)[:20]
 
-        print(cat_dict)
+        category_list = [config[str(key)] for key in cat_dict.keys()]
+
+        # print(cat_dict)
         feature_data = []
         for key, value in cat_dict.items():
             for each_word in value:
                 feature_data.append(
                     {"x": str(each_word[0]), "value": float(each_word[1]), "category": config[str(key)]}
                 )
-        print(feature_data)
-        return feature_data
+        # print(feature_data)
+        return feature_data, category_list
 
 
 if __name__ == "__main__":

@@ -187,7 +187,7 @@ class ClassifierHandler(Resource):
             abort_function()
 
         # 스코어 리턴, 레포트 정보, 테스트셋 분석결과
-        score, report_df, output, feature_data = cls.predict(app.config['cnslTypeLgcsfCd'])
+        score, report_df, output, feature_data, category_list = cls.predict(app.config['cnslTypeLgcsfCd'])
 
         recordkey = output['recordkey']
         call_l_class_cd = output['call_l_class_cd']
@@ -216,7 +216,7 @@ class ClassifierHandler(Resource):
                     report_value=report_df['precision'].tolist(), report_lable=report_df['class'].tolist(),
                     cv_score=list(), gs_score=cls.predict_by_gs(), req_time=time.time(),
                     recordkey=recordkey.tolist()[:10], call_l_class_cd=call_l_class_cd.tolist()[:10],
-                    predict=predict.tolist()[:10], feature_data=feature_data)
+                    predict=predict.tolist()[:10], feature_data=feature_data, category_list=category_list)
 
         # 모델 Payload 확인
         if os.path.isfile(f'./ml/model/{classifier_algorithm}.pkl'):

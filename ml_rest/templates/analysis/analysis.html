@@ -616,15 +616,28 @@
         let line_height = $(line_container).height();
         let line_chart;
 
+        // generate random rgb
+        function generate_rgb(size) {
+            rgb_list = new Array();
+            for (var i = 1; i <= size; i++) {
+                var hue = 'rgb(' + (Math.floor(Math.random() * 256)) + ',' + (Math.floor(Math.random() * 256)) + ',' + (Math.floor(Math.random() * 256)) + ')';
+                rgb_list.push(hue);
+            }
+            return rgb_list;
+        }
+
         // word cloud
-        function word_cloud_cat(data){
+        function word_cloud_cat(data, category_list){
 
             // create a chart and set the data
             var chart = anychart.tagCloud(data);
 
             // create and configure a color scale.
             var customColorScale = anychart.scales.ordinalColor();
-            customColorScale.colors(["red", "orange", "purple","green","blue"]);
+
+            let rgb_list = generate_rgb(category_list.length);
+
+            customColorScale.colors(rgb_list);
 
             // set the color scale as the color scale of the chart
             chart.colorScale(customColorScale);
@@ -988,7 +1001,7 @@
                                 series_line_chart(result.recordkey, result.call_l_class_cd, result.predict);
                                 $("#line-grid").show();
                             } else if(view_chart == 'cloud_chart') {
-                                word_cloud_cat(result.feature_data);
+                                word_cloud_cat(result.feature_data, result.category_list);
                                 $("#cloud-grid").show();
                             } else {
                                 horizental_bar_chart(result.report_lable, result.report_value);
