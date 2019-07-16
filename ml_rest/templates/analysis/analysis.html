@@ -195,7 +195,10 @@
                     </section>
                     <section>
                         <div>
-                            <button id="executeAnalysis" class="btn btn-primary btn-lg">RUN</button>
+                            <button id="executeAnalysis" class="btn btn-primary btn-sm" style="width: 100%;">Run</button>
+                        </div>
+                        <div stlye="margin-top:10px;">
+                            <button id="formReset" class="btn btn-danger btn-sm" style="margin-top: 15px;width: 100%;">Reset</button>
                         </div>
                     </section>
                 </fieldset>
@@ -771,7 +774,7 @@
         });
 
         $("input[name='viewChart']").change(function () {
-           $("#executeAnalysis").attr("disabled",false);
+            $("#executeAnalysis").attr("disabled" , false);
         });
 
         $("#file2").change(function () {
@@ -798,7 +801,7 @@
             },
             close: function (event, ui) {
                 $('#bootstrap-wizard-1').bootstrapWizard('first');
-                // formReset();
+                //formReset();
             }
         });
 
@@ -851,6 +854,7 @@
                         alert("파일을 선택 해주세요.");
                         return false;
                     }
+                    stepCheck(index);
                 } else if (index === 2) {
                     const $valid = $("#contact-form").valid();
                     if (!$valid) {
@@ -880,7 +884,7 @@
                                     my: "left top"
                                 }
                             });
-                            $("#dialog_simple").css("width","5px");
+                            $("#dialog_simple").css("width","1px");
                             setTimeout(function () {
                                  $("#dialog_simple").css("width","auto");
                             }, 1);
@@ -935,6 +939,10 @@
                 }
             }
         });
+
+        $("#formReset").click(function(){
+            formReset();
+        })
 
         $("#executeAnalysis").click(function () {
             const model_category = $('input[name="modelCategory"]:checked').val();
@@ -996,8 +1004,7 @@
                             }
                             $("#loading_body").hide();
                             $(".div-chart").show();
-                            formReset();
-
+                            {#formReset();#}
                         }
                     });
                 }, 100); //1000 = 1초
@@ -1007,6 +1014,7 @@
         });
 
         let fnGrid = function (resultList) {
+            $("#csvGrid").empty();
             let data = [];
             for(var i = 0; i < 6; i++){
                 data.push(resultList[i]);
@@ -1125,6 +1133,18 @@
             });
             $("#csvGrid").empty();
             grid = null;
+
+            $("#file2").val();
+            $("#filePath_D").val("");
+            $("#path").val("");
+            $("#modelName_D").val("");
+            $("#modelCategory_D").val("");
+            $("#predictionColumn_D").val("");
+            $("#prediction").val("");
+            $("#train").val("");
+            $('input[name="learning-coloumn"]').prop("checked" , false);
+            $('input[name="prediction-coloumn"]').prop("checked" , false);
+
         }
 
         let stepCheck = function (index) {
