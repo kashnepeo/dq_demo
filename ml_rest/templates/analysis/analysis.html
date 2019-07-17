@@ -9,38 +9,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
     <!-- Basic Styles -->
-    <link rel="stylesheet" type="text/css" media="screen"
-          href="{{ url_for('static', filename = 'bootstrap/css/bootstrap.min.css') }}">
-
+    <link rel="stylesheet" type="text/css" media="screen" href="{{ url_for('static', filename = 'bootstrap/css/bootstrap.min.css') }}">
     <!-- SmartAdmin Styles : Caution! DO NOT change the order -->
-    <link rel="stylesheet" type="text/css" media="screen"
-          href="{{ url_for('static', filename = 'smartadmin/css/smartadmin-production-plugins.min.css') }}">
-    <link rel="stylesheet" type="text/css" media="screen"
-          href="{{ url_for('static', filename = 'smartadmin/css/smartadmin-production.min.css') }}">
-    <link rel="stylesheet" type="text/css" media="screen"
-          href="{{ url_for('static', filename = 'smartadmin/css/smartadmin-skins.min.css') }}">
-    <link rel="stylesheet" type="text/css" media="screen"
-          href="{{ url_for('static', filename = 'smartadmin/css/smartadmin-rtl.min.css') }}">
-    <!-- SmartAdmin RTL Support  -->
-    <link rel="stylesheet" type="text/css" media="screen"
-          href="{{ url_for('static', filename = 'smartadmin/css/demo.min.css') }}">
-
-    <link rel="stylesheet" type="text/css" media="screen"
-          href="{{ url_for('static', filename = 'toast/chart/css/tui-chart.min.css') }}"> <!-- Toast-ui Chart v3.7.0 -->
-    <link rel="stylesheet" type="text/css" media="screen"
-          href="{{ url_for('static', filename = 'toast/grid/css/tui-grid.css') }}"> <!-- Toast-grid Chart v3.7.0 -->
-
-    <link rel="stylesheet" type="text/css" media="screen"
-          href="{{ url_for('static', filename = 'common/css/common.css') }}">
-
+    <link rel="stylesheet" type="text/css" media="screen" href="{{ url_for('static', filename = 'smartadmin/css/smartadmin-production-plugins.min.css') }}">
+    <link rel="stylesheet" type="text/css" media="screen" href="{{ url_for('static', filename = 'smartadmin/css/smartadmin-production.min.css') }}">
+    <link rel="stylesheet" type="text/css" media="screen" href="{{ url_for('static', filename = 'smartadmin/css/smartadmin-skins.min.css') }}">
+    <link rel="stylesheet" type="text/css" media="screen" href="{{ url_for('static', filename = 'smartadmin/css/smartadmin-rtl.min.css') }}">
+    <link rel="stylesheet" type="text/css" media="screen" href="{{ url_for('static', filename = 'smartadmin/css/demo.min.css') }}">
+    <link rel="stylesheet" type="text/css" media="screen" href="{{ url_for('static', filename = 'toast/chart/css/tui-chart.min.css') }}"> <!-- Toast-ui Chart v3.7.0 -->
+    <link rel="stylesheet" type="text/css" media="screen" href="{{ url_for('static', filename = 'common/css/common.css') }}">
     <!-- Favicon -->
     <link rel="shortcut icon" type="image/x-icon" href="{{ url_for('static', filename = 'image/favicon.ico') }}">
     <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename = 'image/favicon.ico') }}">
-
-    <link rel="stylesheet" type="text/css" media="screen"
-          href="{{ url_for('static', filename = 'common/font/font-awesome.min.css') }}"> <!-- Default Font -->
+    <link rel="stylesheet" type="text/css" media="screen" href="{{ url_for('static', filename = 'common/font/font-awesome.min.css') }}"> <!-- Default Font -->
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename = 'common/font/font.css') }}">
     <!-- Default Font -->
+    <!-- grid Style -->
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename = 'grid/css/smoothness/jquery-ui-1.8.16.custom.css') }}">
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename = 'grid/slick.grid.css') }}">
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename = 'grid/plugins/slick.headerbuttons.css') }}">
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename = 'grid/controls/slick.columnpicker.css') }}">
 
     <style>
         .pager .disabled>a, .pager .disabled>a:focus, .pager .disabled>a:hover, .pager .disabled>span {
@@ -56,6 +44,11 @@
     <script src="https://cdn.anychart.com/releases/8.6.0/js/anychart-base.min.js" type="text/javascript"></script>
 	<script src="https://cdn.anychart.com/releases/8.6.0/js/anychart-tag-cloud.min.js"></script>
 	<script src="https://cdn.anychart.com/releases/8.6.0/js/anychart-core.min.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename = 'grid/css/smoothness/jquery-ui-1.8.16.custom.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename = 'grid/slick.grid.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename = 'grid/plugins/slick.headerbuttons.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename = 'grid/controls/slick.columnpicker.css') }}">
 </head>
 <body class="">
 <div id="loading_body" style="position: absolute;margin: 18% 30% 20% 50%;z-index: 1;">
@@ -496,7 +489,12 @@
                             </div>
                         </div>
                     </div>
-                    <div id="csvGrid">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="smart-form">
+                                <div id="csvGrid" style="width:auto;height:200px;"></div>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="tab-pane" id="tab4">
@@ -594,32 +592,36 @@
 </div>
 
 <script src="{{ url_for('static', filename = 'jquery/js/jquery.min.js') }}"></script> <!-- jquery v2.2.4 -->
-<script src="{{ url_for('static', filename = 'jquery/js/jquery.mb.browser.min.js') }}"></script>
-<!-- browser msie issue fix -->
-
-<script src="{{ url_for('static', filename = 'smartadmin/js/pace.min.js') }}"
-        data-pace-options='{"restartOnRequestAfter": true }'></script> <!-- PACE LOADER -->
+<script src="{{ url_for('static', filename = 'jquery/js/jquery.mb.browser.min.js') }}"></script> <!-- browser msie issue fix -->
+<script src="{{ url_for('static', filename = 'jquery/js/jquery.validate.min.js') }}"></script>
+<script src="{{ url_for('static', filename = 'smartadmin/js/pace.min.js') }}" data-pace-options='{"restartOnRequestAfter": true }'></script> <!-- PACE LOADER -->
 <script src="{{ url_for('static', filename = 'smartadmin/js/jquery-ui.min.js') }}"></script> <!-- jquery-ui v1.12.1 -->
 <script src="{{ url_for('static', filename = 'smartadmin/js/app.config.js') }}"></script> <!-- IMPORTANT: APP CONFIG -->
-
 <script src="{{ url_for('static', filename = 'bootstrap/js/bootstrap.min.js') }}"></script> <!-- Bootstrap v3.3.7 -->
-<script src="{{ url_for('static', filename = 'smartadmin/js/SmartNotification.min.js') }}"></script>
-<!-- CUSTOM NOTIFICATION -->
+<script src="{{ url_for('static', filename = 'smartadmin/js/SmartNotification.min.js') }}"></script> <!-- CUSTOM NOTIFICATION -->
 <script src="{{ url_for('static', filename = 'smartadmin/js/jarvis.widget.min.js') }}"></script> <!-- JARVIS WIDGETS -->
 <script src="{{ url_for('static', filename = 'smartadmin/js/select2.min.js') }}"></script> <!-- JQUERY SELECT2 INPUT -->
-<script src="{{ url_for('static', filename = 'smartadmin/js/fastclick.min.js') }}"></script>
-<!-- FastClick: For mobile devices -->
+<script src="{{ url_for('static', filename = 'smartadmin/js/fastclick.min.js') }}"></script> <!-- FastClick: For mobile devices -->
 <script src="{{ url_for('static', filename = 'smartadmin/js/app.min.js') }}"></script> <!-- MAIN APP JS FILE -->
-<script src="{{ url_for('static', filename = 'smartadmin/js/jquery.bootstrap.wizard.min.js') }}"></script>
-<!-- wizard JS FILE -->
-<script src="{{ url_for('static', filename = 'smartadmin/js/wizard.min.js') }}"></script> <!-- wizard JS FILE -->
+<script src="{{ url_for('static', filename = 'smartadmin/js/jquery.bootstrap.wizard.min.js') }}"></script> <!-- wizard JS FILE -->
 <script src="{{ url_for('static', filename = 'jquery/js/jquery.validate.min.js') }}"></script>
-<script src="{{ url_for('static', filename = 'toast/chart/js/tui-chart-all.js') }}"></script>
-
-<script src="{{ url_for('static', filename = 'toast/grid/js/underscore.js') }}"></script> <!-- TOAST-GRID JS FILE -->
-<script src="{{ url_for('static', filename = 'toast/grid/js/backbone.js') }}"></script> <!-- TOAST-GRID JS FILE -->
-<script src="{{ url_for('static', filename = 'toast/grid/js/tui-code-snippet.js') }}"></script> <!-- TOAST-GRID JS FILE -->
-<script src="{{ url_for('static', filename = 'toast/grid/js/tui-grid.js') }}"></script> <!-- TOAST-GRID JS FILE -->
+<script src="{{ url_for('static', filename = 'smartadmin/js/wizard.min.js') }}"></script> <!-- wizard JS FILE -->
+<script src="{{ url_for('static', filename = 'toast/chart/js/tui-chart-all.js') }}"></script> <!-- Toast-ui chart v3.7.0 -->
+<script src='{{ url_for('static', filename = 'grid/lib/firebugx.js') }}' type='text/javascript'></script>
+<script src='{{ url_for('static', filename = 'grid/lib/jquery.event.drag-2.2.js') }}' type='text/javascript'></script>
+<script src='{{ url_for('static', filename = 'grid/slick.core.js') }}' type='text/javascript'></script>
+<script src='{{ url_for('static', filename = 'grid/slick.grid.js') }}' type='text/javascript'></script>
+<script src='{{ url_for('static', filename = 'grid/plugins/slick.headerbuttons.js') }}' type='text/javascript'></script>
+<script src='{{ url_for('static', filename = 'grid/plugins/slick.checkboxselectcolumn.js') }}' type='text/javascript'></script>
+<script src='{{ url_for('static', filename = 'grid/plugins/slick.autotooltips.js') }}' type='text/javascript'></script>
+<script src='{{ url_for('static', filename = 'grid/plugins/slick.cellrangedecorator.js') }}' type='text/javascript'></script>
+<script src='{{ url_for('static', filename = 'grid/plugins/slick.cellrangeselector.js') }}' type='text/javascript'></script>
+<script src='{{ url_for('static', filename = 'grid/plugins/slick.cellcopymanager.js') }}' type='text/javascript'></script>
+<script src='{{ url_for('static', filename = 'grid/plugins/slick.cellselectionmodel.js') }}' type='text/javascript'></script>
+<script src='{{ url_for('static', filename = 'grid/plugins/slick.rowselectionmodel.js') }}' type='text/javascript'></script>
+<script src='{{ url_for('static', filename = 'grid/controls/slick.columnpicker.js') }}' type='text/javascript'></script>
+<script src='{{ url_for('static', filename = 'grid/slick.formatters.js') }}' type='text/javascript'></script>
+<script src='{{ url_for('static', filename = 'grid/slick.editors.js') }}' type='text/javascript'></script>
 <!-- Toast-ui chart v3.7.0 -->
 <!--[if IE 8]>
 	<h1>해당 Browser에서 지원하지 않습니다. Browser를 최신버전으로 업데이트 하세요.</h1>
@@ -876,6 +878,27 @@
 
         $('#bootstrap-wizard-1').bootstrapWizard({
             'tabClass': 'form-wizard',
+            'onPrevious' : function (tab, navigation, index) {
+                if (index === 2) {
+                    $('#dialog_simple').dialog({
+                        width: '90%',
+                         position: {
+                            of: "#ribbon",
+                            at: "left bottom",
+                            my: "left top"
+                        }
+                    });
+                }else{
+                    $('#dialog_simple').dialog({
+                        width: '40%',
+                         position: {
+                            of: "#ribbon",
+                            at: "left bottom",
+                            my: "left top"
+                        }
+                    });
+                }
+            },
             'onNext': function (tab, navigation, index) {
                 if (index === 1) {
                     if ($("#file2")[0].files.length > 0) {
@@ -910,18 +933,14 @@
                             // 업로드 CSV 전송
                             fnGrid(result);
                             stepCheck(index);
-                            $('#dialog_simple').dialog({
-                                width: 'auto' ,
-                                position: {
+                              $('#dialog_simple').dialog({
+                                width: '90%',
+                                 position: {
                                     of: "#ribbon",
                                     at: "left bottom",
                                     my: "left top"
                                 }
                             });
-                            $("#dialog_simple").css("width","1px");
-                            setTimeout(function () {
-                                 $("#dialog_simple").css("width","auto");
-                            }, 1);
                         }
                     });
                 } else if (index === 3) {
@@ -1047,25 +1066,21 @@
             }
         });
 
+        let grid;
+        let options = {
+            enableCellNavigation: true,
+            editable: true,
+            asyncEditorLoading: false,
+            autoEdit: false,
+            forceFitColumns: true,
+            enableColumnReorder: false,
+            multiColumnSort: true
+        };
         let fnGrid = function (resultList) {
             $("#csvGrid").empty();
-            let data = [];
-            for(var i = 0; i < 6; i++){
-                data.push(resultList[i]);
-            }
-            // 배열 0번째는 columns 명으로 제외
-            let columnsName = [];
+            let data = resultList;
+            let columnsName = data[0];
             let columns = [];
-
-            for(let key in data[0]){
-                let columnKey = key;
-                columnsName.push(columnKey);
-                columns.push({
-                    title: columnKey,
-                    name: columnKey,
-                    sortable:true
-                });
-            }
 
             $("#learningArea").empty();
             $("#predictionArea").empty();
@@ -1086,46 +1101,13 @@
             $("#learningArea").append(learningAppenHtml);
             $("#predictionArea").append(predictionAppenHtml);
 
-            let grid = new tui.Grid({
-                el: document.getElementById('csvGrid'),
-                width:'auto',
-                columns: [],
-                data:data
-            });
-            grid.setColumns(columns);
-            $("#loading_modal").hide();
-            /*
-            let grid;
-            let options = {
-                enableCellNavigation: true,
-                editable: true,
-                asyncEditorLoading: false,
-                autoEdit: false,
-                forceFitColumns: true,
-                enableColumnReorder: false,
-                multiColumnSort: true
-            };
-
+            data.splice(0, 1);
              for (let i = 0; i < data[0].length; i++) {
                 columns.push({
                     id: i,
                     name: columnsName[i],
                     field: i,
-                    sortable: true,
-                    header: {
-                        buttons: [
-                            {
-                                cssClass: "icon-filter-highlight-off",
-                                command: "toggle-filter-highlight",
-                                tooltip: "Highlight negative numbers."
-                            },
-                            {
-                                cssClass: "icon-value-highlight-off",
-                                command: "toggle-value-highlight",
-                                tooltip: "Highlight negative numbers."
-                            }
-                        ]
-                    }
+                    sortable: true
                 });
             }
             grid = new Slick.Grid("#csvGrid", data, columns, options);
@@ -1148,7 +1130,8 @@
               grid.invalidate();
               grid.render();
             });
-            */
+
+            $("#loading_modal").hide();
         }
 
         // 초기화 function

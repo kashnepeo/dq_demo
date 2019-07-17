@@ -75,18 +75,18 @@ class UploadFile(Resource):
             f = open(self._f_path + '/ml_rest/ml/' + request.form['model_category'] + '/resource/' + today.strftime(
                 '%Y%m%d') + '/' + secure_filename(f.filename))
             # CSV 데이터 파싱
-            arr = []
-            with f as csvFile:
-                csvReader = csv.DictReader(csvFile)
-                for csvRow in csvReader:
-                    arr.append(csvRow)
+            lists = csv.reader(f)
+            resultList = []
+            for list in lists:
+                resultList.append([except_fn(x) for x in list])
+            f.close
             # 업로드 CSV 데이터
             global csvTotRow
-            csvTotRow = len(arr)
+            csvTotRow = len(resultList)
 
             # 응답 헤더
             response_data = app.response_class(
-                response=json.dumps(arr),
+                response=json.dumps(resultList),
                 status=200,
                 mimetype='application/json'
             )
