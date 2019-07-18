@@ -12,7 +12,7 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 
 
 class Preprocessing():
-    def __init__(self, filename):
+    def __init__(self, filename, learning, prediction):
         self.cur_dir = os.getcwd()
 
         self._f_path = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), os.pardir))
@@ -28,8 +28,8 @@ class Preprocessing():
         self.df = pd.read_csv(self._f_path + '/classifier/resource/{}/'.format(today) + filename, sep=",", encoding="ms949")
 
         # 학습 및 레이블(정답) 데이터 분리
-        self._x = self.df["STT_CONT"]
-        self._y = self.df["CALL_L_CLASS_CD"]
+        self._x = self.df[learning]
+        self._y = self.df[prediction]
 
         self.vectorizer = TfidfVectorizer(
             # analyzer='word',
@@ -70,8 +70,10 @@ class Preprocessing():
             text = '.'
         url = 'http://localhost:8080/analysis'
         headers = {'Content-Type': 'application/json;charset=UTF-8', 'accept-charset': 'UTF-8'}
-        tag_info = 'ncn,nq_loc,ncp,pv,pa'
-        response = requests.post(url=url, data=json.dumps({'rawData': text, 'tagInfo': tag_info, 'wsNum': 3}), headers=headers)
+        # tag_info = 'ncn,nq_loc,ncp,pv,pa'
+        # tag_info = 'nc,ncn,ncp,nq,nq_per,nq_loc,nq_juso,nq_etc,pv,pa,ma'
+        tag_info = 'nc,ncn,ncp,nq'
+        response = requests.post(url=url, data=json.dumps({'rawData': text, 'tagInfo': tag_info, 'wsNum': 3}), headers=headers, timeout=5)
         response_str = json.loads(response.text)
 
         return [re.sub('[0-9]{1,4}([_])', ' ', element).replace('|', '').strip() for element in response_str['result'].strip("[]").split(", ")]

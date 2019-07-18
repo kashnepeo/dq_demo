@@ -931,7 +931,7 @@
                     formData.append("model_algorithm", $("#classifier_algorithm").val());
                     formData.append("model_cd", $('input[name="modelCd"]:checked').val());
                     formData.append("model_learning", getLearningColmun());
-                    formData.append("model_prediction", $('input[name="prediction-coloumn"]:checked').val());
+                    formData.append("model_prediction", $('input[name="prediction-column"]:checked').val());
                     $.ajax({
                         url: "/csvInfoCU",
                         processData: false,
@@ -947,8 +947,8 @@
                             $("#modelCategory_D").val($("input[name=modelCategory]:checked").val());
                             $("#learningColumn_D").val(getLearningColmun());
                             $("#train").val(getLearningColmun());
-                            $("#predictionColumn_D").val($('input[name="prediction-coloumn"]:checked').val());
-                            $("#prediction").val($('input[name="prediction-coloumn"]:checked').val());
+                            $("#predictionColumn_D").val($('input[name="prediction-column"]:checked').val());
+                            $("#prediction").val($('input[name="prediction-column"]:checked').val());
 
                             $('#dialog_simple').dialog({
                                 width: '40%',
@@ -981,10 +981,10 @@
         $("#executeAnalysis").click(function () {
             const model_category = $('input[name="modelCategory"]:checked').val();
             const model_save = $('input[name="modelCd"]:checked').val();
-            const learning_coloumn = $('input[name="learning-coloumn"]:checked').val();
-            const prediction_coloumn = $('input[name="prediction-coloumn"]:checked').val();
+            const learning_column = $('input[name="learning-column"]:checked').val();
+            const prediction_column = $('input[name="prediction-column"]:checked').val();
             const view_chart = $('input[name="viewChart"]:checked').val();
-            if(learning_coloumn != null || prediction_coloumn != null){
+            if(learning_column != null || prediction_column != null){
                 $("#executeAnalysis").attr("disabled",true);
                 let formData = new FormData($('#contact-form')[0]);
                 formData.append("fileObj", $("#file2")[0].files[0]);
@@ -992,8 +992,8 @@
                 formData.append($('input[name="modelCategory"]:checked').val() + "_algorithm", $("#" + $('input[name="modelCategory"]:checked').val() + "_algorithm").val())
                 {#formData.append("classifier_algorithm", $("#classifier_algorithm").val());#}
                 formData.append("model_save", model_save);
-                formData.append("learning_coloumn", learning_coloumn);
-                formData.append("prediction_coloumn", prediction_coloumn);
+                formData.append("learning_column", learning_column);
+                formData.append("prediction_column", prediction_column);
                 formData.append("view_chart", view_chart);
                 formData.append("model_seq", upload_csv_seq);
 
@@ -1002,8 +1002,8 @@
                 console.log("subject: ", $("#modelName").val());
                 console.log($('input[name="modelCategory"]:checked').val() + "_algorithm: ", $("#" + $('input[name="modelCategory"]:checked').val() + "_algorithm").val());
                 console.log("model_save: ", model_save);
-                console.log("learning_coloumn: ", learning_coloumn);
-                console.log("prediction_coloumn: ", prediction_coloumn);
+                console.log("learning_column: ", learning_column);
+                console.log("prediction_column: ", prediction_column);
                 console.log("view_chart: ", view_chart);
                 console.log("model_seq: ", upload_csv_seq);
 
@@ -1025,7 +1025,9 @@
                             // 업로드 CSV 전송
                             console.log("result: ", result)
                             $("#widget-grid").show();
-
+                            $("#bar-chart-test").empty();
+                            $("#line-chart-test").empty();
+                            $("#cloud-chart-test").empty();
                             if (view_chart == 'line_chart') {
                                 series_line_chart(result.recordkey, result.call_l_class_cd, result.predict);
                                 $("#line-grid").show();
@@ -1073,14 +1075,14 @@
             let learningAppenHtml = "";
             $.each(columnsName, function (index, item) {
                 learningAppenHtml += "<label class='checkbox'>" +
-                    "<input type='checkbox' value='" + item + "' name='learning-coloumn' onChange='changeLearning(\"" + item + "\");'>" +
+                    "<input type='checkbox' value='" + item + "' name='learning-column' onChange='changeLearning(\"" + item + "\");'>" +
                     "<i></i>" + item + "</label>";
             });
 
             let predictionAppenHtml = "";
             $.each(columnsName, function (index, item) {
                 predictionAppenHtml += "<label class='checkbox'>" +
-                    "<input type='checkbox' value='" + item + "' name='prediction-coloumn' onChange='changePrediction(\"" + item + "\");'>" +
+                    "<input type='checkbox' value='" + item + "' name='prediction-column' onChange='changePrediction(\"" + item + "\");'>" +
                     "<i></i>" + item + "</label>";
             });
             $("#learningArea").append(learningAppenHtml);
@@ -1176,8 +1178,8 @@
             $("#predictionColumn_D").val("");
             $("#prediction").val("");
             $("#train").val("");
-            $('input[name="learning-coloumn"]').prop("checked" , false);
-            $('input[name="prediction-coloumn"]').prop("checked" , false);
+            $('input[name="learning-column"]').prop("checked" , false);
+            $('input[name="prediction-column"]').prop("checked" , false);
 
         }
 
@@ -1188,11 +1190,11 @@
 
         let getLearningColmun = function () {
             let learningArray = "";
-            for (let i = 0; i < $('input[name="learning-coloumn"]:checked').length; i++) {
+            for (let i = 0; i < $('input[name="learning-column"]:checked').length; i++) {
                 if (i == 0) {
-                    learningArray = $('input[name="learning-coloumn"]:checked')[i].value;
+                    learningArray = $('input[name="learning-column"]:checked')[i].value;
                 } else {
-                    learningArray += "|" + $('input[name="learning-coloumn"]:checked')[i].value;
+                    learningArray += "|" + $('input[name="learning-column"]:checked')[i].value;
                 }
             }
 
@@ -1215,12 +1217,12 @@
     });
 
     function changeLearning(checkValue) {
-        let predictionCheckbox = $('input[name="prediction-coloumn"]:checked').val();
+        let predictionCheckbox = $('input[name="prediction-column"]:checked').val();
         if (predictionCheckbox === checkValue) {
             return false;
         }
 
-        predictionCheckbox = $('input[name="prediction-coloumn"]');
+        predictionCheckbox = $('input[name="prediction-column"]');
         for (let i = 0; i < predictionCheckbox.length; i++) {
             if (predictionCheckbox[i].value === checkValue) {
                 if (predictionCheckbox[i].disabled) {
@@ -1235,7 +1237,7 @@
     }
 
     function changePrediction(checkValue) {
-        let learningCheckbox = $('input[name="learning-coloumn"]');
+        let learningCheckbox = $('input[name="learning-column"]');
         for (let i = 0; i < learningCheckbox.length; i++) {
             if (learningCheckbox[i].value === checkValue) {
                 learningCheckbox[i].disabled = true;
@@ -1245,7 +1247,7 @@
         }
         ;
 
-        let predictionCheckbox = $('input[name="prediction-coloumn"]');
+        let predictionCheckbox = $('input[name="prediction-column"]');
         for (let i = 0; i < predictionCheckbox.length; i++) {
             if (predictionCheckbox[i].value === checkValue) {
                 predictionCheckbox[i].checked = true;

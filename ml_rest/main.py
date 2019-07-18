@@ -1,19 +1,18 @@
 import csv
+import datetime
 import json
+import math
 import os
 import os.path
 import time
-import pymysql
+import numpy as np
 import flask
-import math
-import datetime
-import pandas as pd
-from flask import Flask, request, jsonify
+import pymysql
+from flask import Flask, request
 from flask_restful import Resource, Api, abort
 from ml.classifier import *
 from ml.regression import *
 from werkzeug.utils import secure_filename
-from sklearn.externals import joblib
 
 # 환경 정보 로드
 with open('./system/config.json', 'rt', encoding='utf-8') as j:
@@ -190,9 +189,11 @@ class ClassifierHandler(Resource):
         # 스코어 리턴, 레포트 정보, 테스트셋 분석결과
         score, report_df, output, feature_data, category_list = cls.predict(app.config['cnslTypeLgcsfCd'])
 
-        recordkey = output['recordkey']
-        call_l_class_cd = output['call_l_class_cd']
-        predict = output['predict']
+        # csv 컬럼명 포맷을 지정해야함 문서아이디, 원본 카테고리
+        recordkey = np.array([1, 2, 3, 4, 5])  # output['RECORDKEY']
+        call_l_class_cd = np.array([1, 2, 3, 4, 5])  # output['CALL_L_CLASS_CD']
+
+        predict = output['PREDICT']
         print(type(predict))
 
         global csvTotRow
@@ -202,8 +203,14 @@ class ClassifierHandler(Resource):
         for (f, s, t, r, v) in report_df.values:
             sql = "INSERT INTO dev.classifier_model_view( model_seq, class_cd, class_cd_nm, lrn_count, vrfc_count, prec, recal, fonescore ) VALUES ("
             sql += str(request.form['model_seq']) + ","
-            sql += f + ",'"
-            sql += app.config['cnslTypeLgcsfCd'][f] + "',"
+            if isinstance(f, str):
+                sql += '0' + ",'"
+            else:
+                sql += f + ",'"
+            if f in app.config['cnslTypeLgcsfCd'].keys():
+                sql += app.config['cnslTypeLgcsfCd'][f] + "',"
+            else:
+                sql += f + "',"
             sql += str(lrn_count) + ","
             sql += str(vrfc_count) + ",'"
             sql += str(s) + "','"
@@ -213,6 +220,7 @@ class ClassifierHandler(Resource):
             db_class.execute(sql)
             db_class.commit()
         # 응답 데이터
+        print('report_df', report_df)
         data = dict(name=classifier_algorithm, category='classifier', success=True, score=score,
                     report_value=report_df['precision'].tolist(), report_lable=report_df['class'].tolist(),
                     cv_score=list(), gs_score=cls.predict_by_gs(), req_time=time.time(),
@@ -246,8 +254,8 @@ class RegressionHandler(Resource):
         print("subject: ", request.form['subject'])  # 모델명
         print("regression_algorithm: ", request.form['regression_algorithm'])  # 알고리즘명
         print("model_save: ", request.form['model_save'])  # 모델저장 선택 (가망고객분석, 고객반응분석, 이탈고객분석, 민원고객분석)
-        print("learning_coloumn: ", request.form['learning_coloumn'])  # 학습컬럼
-        print("prediction_coloumn: ", request.form['prediction_coloumn'])  # 예측컬럼
+        print("learning_column: ", request.form['learning_column'])  # 학습컬럼
+        print("prediction_column: ", request.form['prediction_column'])  # 예측컬럼
         print("view_chart: ", request.form['view_chart'])  # 차트 (라인차트)
         print("model_seq: ", request.form['model_seq'])  # 모델시퀀스번호
         print("fileObj: ", request.files['fileObj'])  # 업로드한 CSV파일정보
