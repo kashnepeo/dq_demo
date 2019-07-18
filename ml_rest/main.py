@@ -146,7 +146,7 @@ class SelectGridHandler(Resource):
                 sql = "SELECT class_cd AS '상품유형 코드' , class_cd_nm AS '카테고리 명' , lrn_count AS '트레이닝 건수' , vrfc_count AS '검증 건수' ," \
                       " prec AS 'Precision' , recal AS 'Recall' , fonescore AS 'F1Score' FROM classifier_model_view WHERE model_seq = %s" \
                       % (request.form['model_seq'])
-
+            print(sql)
             # 데이타 Fetch
             row = db_class.executeAll(sql)
             # 응답 헤더
@@ -203,10 +203,10 @@ class ClassifierHandler(Resource):
         for (f, s, t, r, v) in report_df.values:
             sql = "INSERT INTO dev.classifier_model_view( model_seq, class_cd, class_cd_nm, lrn_count, vrfc_count, prec, recal, fonescore ) VALUES ("
             sql += str(request.form['model_seq']) + ","
-            if isinstance(f, str):
-                sql += '0' + ",'"
-            else:
+            if f.isdigit():
                 sql += f + ",'"
+            else:
+                sql += '0' + ",'"
             if f in app.config['cnslTypeLgcsfCd'].keys():
                 sql += app.config['cnslTypeLgcsfCd'][f] + "',"
             else:
@@ -216,6 +216,10 @@ class ClassifierHandler(Resource):
             sql += str(s) + "','"
             sql += str(t) + "','"
             sql += str(r) + "') ON DUPLICATE KEY UPDATE model_seq = " + str(request.form['model_seq'])
+            if f.isdigit():
+                sql += " AND class_cd = " + f
+            else:
+                sql += " AND class_cd = 0"
             print(sql)
             db_class.execute(sql)
             db_class.commit()
