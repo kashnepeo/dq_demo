@@ -306,7 +306,7 @@ class RegressionHandler(Resource):
                                        secure_filename(regression_algorithm + '_predict_' + upload_csv_file.filename)),
                           index=False, mode='w')
 
-        # 6. 선택한 차트로 데이터 구성 (x축: 날짜, y축: 콜 예측인입량
+        # 6. 선택한 차트로 데이터 구성 (x축: 날짜, y축: 콜 예측인입량 (후처리 CSV)
         chart_info = dict(x=request.form['learning_column'], y=request.form['prediction_column'],
                           type=request.form['view_chart'], data=predict_df)
         chart_data = cls.chart_transform(chart_info)

@@ -139,6 +139,7 @@ class BaggingClass:
         categories = list(data[x])
         series_name = y
         series_data = round(data[y], 2).tolist()
+        print("data: ", data)
 
         # return 차트데이터, 차트옵션
         chart_data = dict(categories=categories, series_name=series_name, series_data=series_data)

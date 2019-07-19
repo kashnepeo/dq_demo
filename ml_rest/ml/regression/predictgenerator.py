@@ -44,7 +44,7 @@ class PredictGeneraotr():
 
         columns.remove(prediction_column)  # 정답(label) 컬럼 삭제
 
-        # 학습컬럼이 들어올 때 컬럼의 속성을 알 수 없어서 어떻게 처리해야할지 고민필요...
+        # TODO 학습컬럼이 들어올 때 컬럼의 속성을 알 수 없어서 어떻게 처리해야할지 고민필요...
         temp_list = []
         for day in range(days):  # days
             for hour in range(24):  # hour
