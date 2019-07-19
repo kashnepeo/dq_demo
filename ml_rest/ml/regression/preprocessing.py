@@ -10,9 +10,7 @@ class Preprocessing():
 
     # 초기 init 함수
     def __init__(self, name, filepath, filename):
-        print(
-            "============================================== preprocessing __init__ 전처리 Start ==============================================")
-
+        print("================ Regression Preprocessing __init__ Start =============")
         self._f_path = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), os.pardir))
 
         # 경고 메시지 삭제
@@ -34,8 +32,7 @@ class Preprocessing():
         # 추가df: self.addcolumn_df
         # 전처리df: self.preprocess_df
 
-        print(
-            "============================================== preprocessing __init__ 전처리 End ==============================================")
+        print("================ Regression Preprocessing __init__ End =============")
 
     # 날짜, 시간, 요일, 콜빈도수 구하는 함수
     """
@@ -48,8 +45,7 @@ class Preprocessing():
     """
 
     def date_split(self):
-        print(
-            "============================================== date_split 날짜, 시간, 요일, 콜빈도수 함수 Start ==============================================")
+        print("================ Regression Preprocessing date_split Start =============")
 
         # 1. original.csv STT_CMDTM 사용
         stt_cmdtm = self.original_df['STT_CMDTM']
@@ -70,14 +66,11 @@ class Preprocessing():
             {'RECORDKEY': self.original_df['RECORDKEY'], 'DATE': date, 'HOUR': hour,
              'DAYOFWEEK': dayofweek})
 
-        print(
-            "============================================== date_split 날짜, 시간, 요일, 콜빈도수 함수 End ==============================================")
-
+        print("================ Regression Preprocessing date_split End =============")
         return addcolumn_df
 
     def label_encoding(self):
-        print(
-            "============================================== label_encoding 센터, 콜타입 함수 Start ==============================================")
+        print("================ Regression Preprocessing label_encoding Start =============")
 
         le = LabelEncoder()
 
@@ -93,16 +86,12 @@ class Preprocessing():
             call_type = call_type / max(call_type)
         self.addcolumn_df['CALL_TYPE_LE'] = call_type.astype('int')
 
-        print(
-            "============================================== label_encoding 센터, 콜타입 함수 End ==============================================")
-
+        print("================ Regression Preprocessing label_encoding End =============")
         return self.addcolumn_df
 
     # 전처리 csv 생성
     def write_preprocessing(self, name, filepath):
-        print(
-            "============================================== write_preprocessing 전처리 csv생성 Start ==============================================")
-        # pre = self.original_df.append(self.preprocess_df)
+        print("================ Regression Preprocessing write_preprocessing Start =============")
 
         # 원본df, 추가df merge. 키값이 있어서 merge가능(key: RECORDKEY)
         preprocess_df = self.original_df.merge(self.addcolumn_df)
@@ -125,7 +114,5 @@ class Preprocessing():
 
         preprocess_df.to_csv(self.preprocess_filepath + self.preprocess_filename, index=False, mode='w')
 
-        print(
-            "============================================== write_preprocessing 전처리 csv생성 End ==============================================")
-
+        print("================ Regression Preprocessing write_preprocessing End =============")
         return preprocess_df

@@ -621,7 +621,6 @@
 
 <script>
 
-
     let upload_csv_seq = "";
     $(document).ready(function () {
         pageSetUp();
@@ -718,18 +717,6 @@
             line_chart = tui.chart.lineChart(chart_container, line_data, line_options);
             console.log("line_chart: ", line_chart);
         }
-
-
-        // 실시간 data shift (Toast 자체 error 있음..)
-        // var date = 6;
-        // chart.on('load', function() {
-
-        // 	setInterval(function() {
-        // 		date++;
-        // 		chart.addData(date + "월", [500, 200]);
-        // 	}, 1000);
-        // });
-
 
         let bar_width = $(chart_container).width();
         let bar_height = $(chart_container).height();
@@ -870,7 +857,7 @@
                     $('#dialog_simple').dialog({
                         width: '90%',
                         position: {
-                            of: "#ribbon",
+                            of: "#ribbon", executeAnalysis,
                             at: "left bottom",
                             my: "left top"
                         }
@@ -1030,26 +1017,72 @@
                         type: 'POST',
                         enctype: 'multipart/form-data',
                         success: function (result) {
-                            // 업로드 CSV 전송
-                            console.log("result: ", result)
-                            $("#chartArea").empty();
-                            if (view_chart == 'line_chart') {
-                                series_line_chart(result.recordkey, result.call_l_class_cd, result.predict);
-                                $("#line-grid").show();
-                            } else if (view_chart == 'cloud_chart') {
-                                word_cloud_cat(result.feature_data, result.category_list);
-                                $("#cloud-grid").show();
+                            if (model_category == "classifier") {
+                                // classifier
+                                // 업로드 CSV 전송
+                                console.log("result: ", result)
+                                $("#chartArea").empty();
+                                if (view_chart == 'line_chart') {
+                                    series_line_chart(result.recordkey, result.call_l_class_cd, result.predict);
+                                    $("#line-grid").show();
+                                } else if (view_chart == 'cloud_chart') {
+                                    word_cloud_cat(result.feature_data, result.category_list);
+                                    $("#cloud-grid").show();
+                                } else {
+                                    horizental_bar_chart(result.report_lable, result.report_value);
+                                    $("#pie-grid").show();
+                                }
+                                $("#loading_body").hide();
+                                $("#chart-grid").show();
+                                $("#chartArea").show();
+                                if ($('input[name="modelCategory"]:checked').val() === 'classifier') {
+                                    $(".div-chart").show();
+                                }
+                                {#formReset();#}
                             } else {
-                                horizental_bar_chart(result.report_lable, result.report_value);
-                                $("#pie-grid").show();
-                            }
-                            $("#loading_body").hide();
-                            $("#chart-grid").show();
-                            $("#chartArea").show();
-                            if($('input[name="modelCategory"]:checked').val() === 'classifier'){
+                                // regression
+                                console.log("result: ", result);
+                                $("#chartArea").empty();
+
+                                var regression_container = document.getElementById('chartArea');
+                                var regression_width = $(regression_container).width();
+                                var regression_height = $(regression_container).height();
+
+                                var regression_data = {
+                                    categories: result.categories,
+                                    series: [
+                                        {
+                                            name: result.series_name,
+                                            data: result.series_data
+                                        }
+                                    ]
+                                };
+                                var regression_options = {
+                                    chart: {
+                                        width: regression_width,
+                                        height: regression_height,
+                                        // title: '테스트',
+                                        // format: '1,000'
+                                    },
+                                    yAxis: {
+                                        // title: '건수'
+                                    },
+                                    xAxis: {
+                                        // title: '날짜',
+                                        // suffix: '건'
+                                    },
+                                    series: {
+                                        showLabel: false
+                                    }
+                                };
+
+                                tui.chart.lineChart(regression_container, regression_data, regression_options);
+                                $("#loading_body").hide();
+                                $("#chart-grid").show();
+                                $("#chartArea").show();
                                 $(".div-chart").show();
                             }
-                            {#formReset();#}
+
                         }
                     });
                 }, 100); //1000 = 1초

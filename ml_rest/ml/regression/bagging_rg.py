@@ -1,9 +1,6 @@
-import os
 import time
-import warnings
 
 import matplotlib.pyplot as plt
-import pandas as pd
 from sklearn.ensemble import BaggingRegressor
 from sklearn.externals import joblib
 from sklearn.metrics import r2_score
@@ -11,7 +8,6 @@ from sklearn.model_selection import GridSearchCV
 
 # from ml_rest.ml.regression.preprocessing import *
 # from ml_rest.ml.regression.predictgenerator import *
-from .preprocessing import *
 from .predictgenerator import *
 
 trainSet = 0.7
@@ -26,22 +22,15 @@ class BaggingClass:
     """
 
     def __init__(self, params, filename):
+        print("================ BaggingRegressor __init__ Start =============")
         # 알고리즘 이름
         self._name = 'bagging'
-        print("BaggingRegressor BaggingClass __init__ Start")
         # 기본 경로
         self._f_path = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), os.pardir))
-        print("_f_path: ", self._f_path)
-
-        print("params: ", params)
-        print("filename: ", filename)
-        # print("subject: ", params['subject'])
-        # print("regression_algorithm: ", params['regression_algorithm'])
-        # print("model_save: ", params['model_save'])
-        # print("learning_coloumn: ", params['learning_coloumn'])
-        # print("prediction_coloumn: ", params['prediction_coloumn'])
-        # print("view_chart: ", params['line_chart'])
-        # print("model_seq: ", params['model_seq'])
+        self.params = params
+        self.filename = filename
+        print("params: ", self.params)
+        print("filename: ", self.filename)
 
         # 경고 메시지 삭제
         warnings.filterwarnings('ignore')
@@ -52,10 +41,10 @@ class BaggingClass:
         print(self.data.info())
 
         # 학습 및 레이블(정답) 데이터
-        self.learning_coloumn = params['learning_coloumn']
-        self.prediction_coloumn = params['prediction_coloumn']
-        self._x = self.data[self.learning_coloumn].values
-        self._y = self.data[self.prediction_coloumn].values
+        self.learning_column = params['learning_column']
+        self.prediction_column = params['prediction_column']
+        self._x = self.data[self.learning_column].values
+        self._y = self.data[self.prediction_column].values
 
         # 학습 및 테스트 데이터 분리(7:3)
         n_of_train = int(round(len(self._x) * trainSet))
@@ -66,7 +55,7 @@ class BaggingClass:
         self._x_train = self._x[:n_of_train].reshape(-1, 1)
         self._y_train = self._y[:n_of_train].reshape(-1, 1)
         self._x_test = self._x[n_of_test:].reshape(-1, 1)
-        self._y_test = self._x[n_of_test:].reshape(-1, 1)
+        self._y_test = self._y[n_of_test:].reshape(-1, 1)
 
         # 모델 선언
         self._model = BaggingRegressor()
@@ -76,19 +65,14 @@ class BaggingClass:
 
         # 그리드 서치 모델
         # self._g_model = None
-
-        print("BaggingRegressor BaggingClass __init__ End")
+        print("================ BaggingRegressor __init__ End =============")
 
     # 일반 예측
     def predict(self, save_img=False, show_chart=False):
-        print("================ predict Start =============")
+        print("================ BaggingRegressor predict Start =============")
 
-        print("data.head(): ", self.data.head(5))
-        print("data.info(): ", self.data.info())
-
-        # 예측
+        # r2_score 전처리 데이터 예측
         y_pred = self._model.predict(self._x_test)
-        print("y_pred: ", y_pred, len(y_pred))
 
         # 스코어 정보
         score = r2_score(self._y_test, y_pred)
@@ -98,32 +82,30 @@ class BaggingClass:
             print(f'Coef = {self._model.coef_}')
             print(f'intercept = {self._model.intercept_}')
 
+        # 예측 값  & 스코어
         print(f'r2_Score = {score}')
 
         # 이미지 저장 여부
         if save_img:
             self.save_chart_image(y_pred, show_chart)
 
-        print("================ predict End =============")
-
-        # 예측 값  & 스코어
-        # return [list(y_pred), score]
+        print("================ BaggingRegressor predict End =============")
         return score
 
     # 후처리데이터 생성 및 예측
     def predict_generator(self):
+        print("================ BaggingRegressor predict_generator Start =============")
         columns = self.data.columns.tolist()  # 업로드 컬럼 리스트 (후처리시 동일한 컬럼으로 사용)
         maxdate = max(self.data['DATE'])  # 업로드 데이터 최대일자 (후처리시 그 다음날 기준으로 date 생성)
 
         # 후처리 데이터 생성
-        predictgenerator = PredictGeneraotr(name=self._name, learning_coloumn=self.learning_coloumn,
-                                            prediction_coloumn=self.prediction_coloumn, columns=columns,
+        predictgenerator = PredictGeneraotr(name=self._name, learning_column=self.learning_column,
+                                            prediction_column=self.prediction_column, columns=columns,
                                             maxdate=maxdate)
 
         # 학습모델 로드
         model_path = self._f_path + f'/model/{self._name}_rg.pkl'
         load_model = joblib.load(model_path)
-        print("load_model: ", load_model)
 
         # 후처리데이터 예측
         self._x_test = predictgenerator._x_test.reshape(-1, 1)
@@ -131,12 +113,38 @@ class BaggingClass:
         print("y_pred: ", y_pred, len(y_pred))
 
         # 후처리데이터 예측값 추가
-        predictgenerator.predict_df[self.prediction_coloumn] = y_pred
+        predictgenerator.predict_df[self.prediction_column] = y_pred
         # predict_df_filepath = self._f_path + "/regression/csv/"
         # predict_df_filename = self._name + "_predict.csv"
         # predictgenerator.predict_df.to_csv(predict_df_filepath + predict_df_filename, index=False, mode='w')
 
+        print("================ BaggingRegressor predict_generator End =============")
         return predictgenerator.predict_df
+
+    # 차트 데이터 변환
+    def chart_transform(self, chart_info):
+        print("================ BaggingRegressor chart_transform Start =============")
+        print("chart_info: ", chart_info)
+
+        # x축 컬럼, y축 컬럼, 차트종류
+        x = chart_info['x']
+        y = chart_info['y']
+        type = chart_info['type']
+
+        # 차트에서 사용할 DataFrame
+        data = chart_info['data']
+
+        # x컬럼으로 그룹핑하고 y컬럼 값 합침
+        data = data.groupby([x])[y].sum().reset_index()
+        categories = list(data[x])
+        series_name = y
+        series_data = round(data[y], 2).tolist()
+
+        # return 차트데이터, 차트옵션
+        chart_data = dict(categories=categories, series_name=series_name, series_data=series_data)
+
+        print("================ BaggingRegressor chart_transform End =============")
+        return chart_data
 
     #  CV 예측(Cross Validation)
     def predict_by_cv(self):

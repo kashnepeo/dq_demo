@@ -252,21 +252,21 @@ class ClassifierHandler(Resource):
 # Regression
 class RegressionHandler(Resource):
     def post(self):
+        print("================ RegressionHandler post Start =============")
         print("RegressionHandler post: ", request)
-
-        print("modelName: ", request.form['modelName'])  # 모델명
-        print("subject: ", request.form['subject'])  # 모델명
-        print("regression_algorithm: ", request.form['regression_algorithm'])  # 알고리즘명
-        print("model_save: ", request.form['model_save'])  # 모델저장 선택 (가망고객분석, 고객반응분석, 이탈고객분석, 민원고객분석)
-        print("learning_column: ", request.form['learning_column'])  # 학습컬럼
-        print("prediction_column: ", request.form['prediction_column'])  # 예측컬럼
-        print("view_chart: ", request.form['view_chart'])  # 차트 (라인차트)
-        print("model_seq: ", request.form['model_seq'])  # 모델시퀀스번호
-        print("fileObj: ", request.files['fileObj'])  # 업로드한 CSV파일정보
-        print("fileObj filename: ", request.files['fileObj'].filename)  # 업로드한 CSV파일정보
+        print("request: ", request.form)
+        # print("modelName: ", request.form['modelName'])  # 모델명
+        # print("subject: ", request.form['subject'])  # 모델명
+        # print("regression_algorithm: ", request.form['regression_algorithm'])  # 알고리즘명
+        # print("model_save: ", request.form['model_save'])  # 모델저장 선택 (가망고객분석, 고객반응분석, 이탈고객분석, 민원고객분석)
+        # print("learning_column: ", request.form['learning_column'])  # 학습컬럼
+        # print("prediction_column: ", request.form['prediction_column'])  # 예측컬럼
+        # print("view_chart: ", request.form['view_chart'])  # 차트 (라인차트)
+        # print("model_seq: ", request.form['model_seq'])  # 모델시퀀스번호
+        # print("fileObj: ", request.files['fileObj'])  # 업로드한 CSV파일정보
+        # print("fileObj filename: ", request.files['fileObj'].filename)  # 업로드한 CSV파일정보
 
         _f_path = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), os.pardir))
-        print("_f_path: ", _f_path)
 
         regression_algorithm = request.form['regression_algorithm']
 
@@ -287,7 +287,7 @@ class RegressionHandler(Resource):
 
         # 3. 선택한 알고리즘모델 예측 실행 (r2_score 및 다른 검증방식 CSV 저장)
         r2_score = cls.predict()
-        print("main.py r2_score: ", r2_score)
+        print("r2_score: ", r2_score)
 
         # 4. 학습모델 저장
         if os.path.isfile(f'./ml/model/{regression_algorithm}_rg.pkl'):
@@ -307,6 +307,21 @@ class RegressionHandler(Resource):
                           index=False, mode='w')
 
         # 6. 선택한 차트로 데이터 구성 (x축: 날짜, y축: 콜 예측인입량
+        chart_info = dict(x=request.form['learning_column'], y=request.form['prediction_column'],
+                          type=request.form['view_chart'], data=predict_df)
+        chart_data = cls.chart_transform(chart_info)
+
+        print("chart_data: ", chart_data, type(chart_data))
+
+        # 응답 헤더
+        response_data = app.response_class(
+            response=json.dumps(chart_data),
+            status=200,
+            mimetype='application/json'
+        )
+
+        print("================ RegressionHandler post End =============")
+        return response_data
 
     def get(self, element):
 
