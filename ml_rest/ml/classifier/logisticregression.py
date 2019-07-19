@@ -1,14 +1,15 @@
-import pandas as pd
-import time
 import os
+import time
 import warnings
-from sklearn.model_selection import train_test_split
+
+import pandas as pd
+from sklearn.externals import joblib
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import accuracy_score
+from sklearn.metrics import classification_report
 from sklearn.model_selection import KFold
 from sklearn.model_selection import cross_val_score
-from sklearn.metrics import classification_report
-from sklearn.externals import joblib
+
 # from ml_rest.ml.classifier.preprocessing import Preprocessing
 from .preprocessing import Preprocessing
 
@@ -32,23 +33,34 @@ class LogisticRegressionClass:
         subject = params['subject']
         classifier_algorithm = params['classifier_algorithm']
         model_save = params['model_save']
-        learning_coloumn = params['learning_coloumn']
-        prediction_coloumn = params['prediction_coloumn']
+        learning_column = params['learning_column']
+        prediction_column = params['prediction_column']
 
-        print(model_save, subject)
+        print(model_save, subject, learning_column, prediction_column)
 
         # 전처리 클래스 생성
-        preprocessor = Preprocessing(filename=filename)
+        preprocessor = Preprocessing(filename=filename, learning=learning_column, prediction=prediction_column)
 
         # 학습 및 레이블(정답) 데이터 분리
         self._x = preprocessor._x
         self._y = preprocessor._y
-        self.data = preprocessor.df
+        self.data = preprocessor.df.sample(frac=1).reset_index(drop=True)
 
-        self._x_train = self.data.loc[:78, learning_coloumn].values
-        self._y_train = self.data.loc[:78, prediction_coloumn].values
-        self._x_test = self.data.loc[34:, learning_coloumn].values
-        self._y_test = self.data.loc[34:, prediction_coloumn].values
+        row_count = self.data.shape[0]
+        train_size = int(self.data.shape[0] * 0.66)
+        test_size = row_count - train_size
+
+        train_set = self.data[:train_size]
+        self.test_set = self.data[test_size:]
+
+        # 전체 테스트용
+        # train_set = self.data
+        # self.test_set = self.data
+
+        self._x_train = train_set[learning_column].values.astype('U')
+        self._y_train = train_set[prediction_column].values.astype('U')
+        self._x_test = self.test_set[learning_column].values.astype('U')
+        self._y_test = self.test_set[prediction_column].values.astype('U')
 
         # 전처리 데이터 로드
         self.X_train_tfidf_vector, self.X_test_tfidf_vector, self.vocab, self.dist, self.result_a = preprocessor.keyword_vectorizer(x_train=self._x_train, x_test=self._x_test)
@@ -62,6 +74,7 @@ class LogisticRegressionClass:
         # 그리드 서치 모델
         self._g_model = None
         self.output = None
+        self.y_pred = None
 
     # 일반 예측
     def predict(self, config):
@@ -70,7 +83,7 @@ class LogisticRegressionClass:
 
         # 리포트 출력
         report_str = classification_report(self._y_test, self.y_pred)
-        print(report_str)
+        # print(report_str)
 
         score = accuracy_score(self._y_test, self.y_pred)
 
@@ -94,30 +107,18 @@ class LogisticRegressionClass:
         # print(report_df['f1-score'].values)
         # print(report_df['support'].values)
 
-        recordkey = self.data.loc[34:, "RECORDKEY"]
-        call_l_class_cd = self.data.loc[34:, "CALL_L_CLASS_CD"]
-        call_m_class_cd = self.data.loc[34:, "CALL_M_CLASS_CD"]
-        call_start_time = self.data.loc[34:, "CALL_START_TIME"]
-        call_end_time = self.data.loc[34:, "CALL_END_TIME"]
-
         feature_data, category_list = self.make_feature_data(config)
-        self.output = pd.DataFrame(
-            data={'recordkey': recordkey
-                , 'stt_cont': '', 'call_l_class_cd': call_l_class_cd
-                , 'call_m_class_cd': call_m_class_cd
-                , 'call_start_time': call_start_time
-                , 'call_end_time': call_end_time
-                , 'predict': self.y_pred
-                , 'keywords': self.result_a})
+        self.test_set['PREDICT'] = self.y_pred
+        self.test_set['KEYWORDS'] = self.result_a
 
         # 분류 결과 file write
-        self.output.to_csv(self._f_path + f'/classifier/csv/result_{self._name}.csv', index=False, quoting=3, escapechar='\\')
-        print('write')
+        self.test_set.to_csv(self._f_path + f'/classifier/csv/result_{self._name}.csv', index=False, quoting=3, escapechar='\\')
+
         # 분석 feature file write
-        pd.DataFrame(self.dist, columns=self.vocab).to_csv(self._f_path + f'/classifier/csv/features_{self._name}.csv', index=False, quoting=3)
+        pd.DataFrame(self.dist, columns=['None'] if len(self.vocab) == 1 and self.vocab[0] == '' else self.vocab).to_csv(self._f_path + f'/classifier/csv/features_{self._name}.csv', index=False, quoting=3)
 
         # 스코어 리턴, 레포트 정보, 테스트셋 분석결과
-        return score, report_df, self.output, feature_data, category_list
+        return score, report_df, self.test_set, feature_data, category_list
 
     #  CV 예측(Cross Validation)
     def predict_by_cv(self):
@@ -149,7 +150,7 @@ class LogisticRegressionClass:
             joblib.dump(self._model, self._f_path + f'/model/{self._name}.pkl')
 
     def __del__(self):
-        del self._x_train, self._x_test, self._y_train, self._y_test, self._x, self._y, self._model, self.X_train_tfidf_vector, self.X_test_tfidf_vector, self.vocab, self.dist, self.output
+        del self._x_train, self._x_test, self._y_train, self._y_test, self._x, self._y, self._model, self.X_train_tfidf_vector, self.X_test_tfidf_vector, self.vocab, self.dist, self.test_set
 
     def make_feature_data(self, config):
         cat_dict = {}
@@ -163,14 +164,14 @@ class LogisticRegressionClass:
         for key, value in cat_dict.items():
             cat_dict[key] = sorted(value.items(), key=(lambda x: x[1]), reverse=True)[:20]
 
-        category_list = [config[str(key)] for key in cat_dict.keys()]
+        category_list = [config[str(key)] if str(key) in config.keys() else key for key in cat_dict.keys()]
 
         # print(cat_dict)
         feature_data = []
         for key, value in cat_dict.items():
             for each_word in value:
                 feature_data.append(
-                    {"x": str(each_word[0]), "value": float(each_word[1]), "category": config[str(key)]}
+                    {"x": str(each_word[0]), "value": float(each_word[1]), "category": config[str(key)].replace(' ', '\n').replace('/', '\n') if str(key) in config.keys() else key.replace(' ', '\n').replace('/', '\n')}
                 )
         # print(feature_data)
         return feature_data, category_list
@@ -178,10 +179,12 @@ class LogisticRegressionClass:
 
 if __name__ == "__main__":
     # 클래스 선언
-    classifier = LogisticRegressionClass()
+    classifier = LogisticRegressionClass({'subject': 'a', 'classifier_algorithm': 'c', 'model_save': 'aaa', 'learning_column': 'TALK', 'prediction_column': 'NICKNAME'}, 'result_3000.csv')
 
+    config = {}
+    config['a'] = 1
     # 분류 실행
-    classifier.predict()
+    classifier.predict(config)
 
     # 분류 실행(Cross Validation)
     # classifier.predict_by_cv()
