@@ -200,13 +200,15 @@ class ClassifierHandler(Resource):
         lrn_count = math.floor(csvTotRow * 0.7)
         vrfc_count = csvTotRow - lrn_count
         db_class = Database()
+
+        temp_class_cd = 0
         for (f, s, t, r, v) in report_df.values:
             sql = "INSERT INTO dev.classifier_model_view( model_seq, class_cd, class_cd_nm, lrn_count, vrfc_count, prec, recal, fonescore ) VALUES ("
             sql += str(request.form['model_seq']) + ","
             if f.isdigit():
                 sql += f + ",'"
             else:
-                sql += '0' + ",'"
+                sql += str(temp_class_cd) + ",'"
             if f in app.config['cnslTypeLgcsfCd'].keys():
                 sql += app.config['cnslTypeLgcsfCd'][f] + "',"
             else:
@@ -219,7 +221,9 @@ class ClassifierHandler(Resource):
             if f.isdigit():
                 sql += " AND class_cd = " + f
             else:
-                sql += " AND class_cd = 0"
+                sql += " AND class_cd = " + str(temp_class_cd)
+
+            temp_class_cd += 1
             print(sql)
             db_class.execute(sql)
             db_class.commit()
