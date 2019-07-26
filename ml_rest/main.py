@@ -203,7 +203,7 @@ class ClassifierHandler(Resource):
 
         temp_class_cd = 0
         for (f, s, t, r, v) in report_df.values:
-            sql = "INSERT INTO dev.classifier_model_view( model_seq, class_cd, class_cd_nm, lrn_count, vrfc_count, prec, recal, fonescore ) VALUES ("
+            sql = "REPLACE INTO dev.classifier_model_view( model_seq, class_cd, class_cd_nm, lrn_count, vrfc_count, prec, recal, fonescore ) VALUES ("
             sql += str(request.form['model_seq']) + ","
             if f.isdigit():
                 sql += f + ",'"
@@ -217,12 +217,7 @@ class ClassifierHandler(Resource):
             sql += str(vrfc_count) + ",'"
             sql += str(s) + "','"
             sql += str(t) + "','"
-            sql += str(r) + "') ON DUPLICATE KEY UPDATE model_seq = " + str(request.form['model_seq'])
-            if f.isdigit():
-                sql += " AND class_cd = " + f
-            else:
-                sql += " AND class_cd = " + str(temp_class_cd)
-
+            sql += str(r) + "')"
             temp_class_cd += 1
             print(sql)
             db_class.execute(sql)
