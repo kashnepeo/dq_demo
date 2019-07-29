@@ -228,12 +228,11 @@
             <li>TA 분석 모델링</li>
         </ol>
     </div>
-    <div id="ribbon" class="filter">
+    <div id="ribbon" class="filter" id="popUpArea">
         <div class="smart-form">
             <div class="inline-group">
                 <div class="div-chart">
-                    <label><a href="#" id="popUpOpen"><i class="fa fa-signal fa-file-text-o"
-                                                         style="font-size:30px;margin-top:4px;"></i></a></label>
+                    <label><a href="#" id="popUpOpen"><i class="fa fa-signal fa-file-text-o" style="font-size:30px;margin-top:4px;"></i></a></label>
                 </div>
             </div>
         </div>
@@ -624,7 +623,7 @@
     let upload_csv_seq = "";
     $(document).ready(function () {
         pageSetUp();
-        $(".div-chart").hide();
+        $("#popUpArea").hide();
 
         // line chart
         // 차트가 담길 element
@@ -1036,7 +1035,7 @@
                                 $("#chart-grid").show();
                                 $("#chartArea").show();
                                 if ($('input[name="modelCategory"]:checked').val() === 'classifier') {
-                                    $(".div-chart").show();
+                                    $("#popUpArea").show();
                                 }
                                 {#formReset();#}
                             } else {
@@ -1080,7 +1079,6 @@
                                 $("#loading_body").hide();
                                 $("#chart-grid").show();
                                 $("#chartArea").show();
-                                $(".div-chart").show();
                             }
 
                         }
