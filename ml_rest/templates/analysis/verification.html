@@ -229,7 +229,7 @@
             $("#tabs-a").html("");
             switch ($(e.target).attr("id")) {
                 case "a" :
-                    verification.selectData(155 , "F1 score");
+                    verification.selectData( {{ model_seq }} , "F1 score");
                     break;
                 case "b" :
                     break;
