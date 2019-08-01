@@ -897,12 +897,12 @@
                     });
                     stepCheck(index);
                 } else if (index === 2) {
+                    $("#loading_modal").show();
                     const $valid = $("#contact-form").valid();
                     if (!$valid) {
                         $validator.focusInvalid();
                         return false;
                     }
-                    $("#loading_modal").show();
                     let formData = new FormData($('#order-form')[0]);
                     formData.append("fileObj", $("#file2")[0].files[0]);
                     formData.append("model_category", $("input[name=modelCategory]:checked").val());
@@ -914,17 +914,24 @@
                         type: 'POST',
                         async: false,
                         success: function (result) {
-                            // 업로드 CSV 전송
-                            fnGrid(result);
-                            stepCheck(index);
-                            $('#dialog_simple').dialog({
-                                width: '90%',
-                                position: {
-                                    of: "#ribbon",
-                                    at: "left bottom",
-                                    my: "left top"
-                                }
-                            });
+                            if(result.length == 0){
+                                alert("CSV 5000건 이상 업로드 불가합니다.");
+                                $("#loading_modal").hide();
+                                $('#dialog_simple').dialog('close');
+                                formReset();
+                            }else{
+                                // 업로드 CSV 전송
+                                fnGrid(result);
+                                stepCheck(index);
+                                $('#dialog_simple').dialog({
+                                    width: '90%',
+                                    position: {
+                                        of: "#ribbon",
+                                        at: "left bottom",
+                                        my: "left top"
+                                    }
+                                });
+                            }
                         }
                     });
                 } else if (index === 3) {

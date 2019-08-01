@@ -79,6 +79,10 @@ class UploadFile(Resource):
             for list in lists:
                 resultList.append([except_fn(x) for x in list])
             f.close
+
+            if len(resultList) > 5000:
+                resultList.clear()
+
             # 업로드 CSV 데이터
             global csvTotRow
             csvTotRow = len(resultList)
