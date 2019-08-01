@@ -190,11 +190,15 @@ class ClassifierHandler(Resource):
         score, report_df, output, feature_data, category_list = cls.predict(app.config['cnslTypeLgcsfCd'])
 
         # csv 컬럼명 포맷을 지정해야함 문서아이디, 원본 카테고리
-        recordkey = np.array([1, 2, 3, 4, 5])  # output['RECORDKEY']
-        call_l_class_cd = np.array([1, 2, 3, 4, 5])  # output['CALL_L_CLASS_CD']
+        prediction_column = request.form['prediction_column']
+        recordkey = output[output.columns.values[0]]
+        call_l_class_cd = output[prediction_column]
 
+        print('recordkey', recordkey)
+        print('prediction_column', prediction_column)
+        print('call_l_class_cd', call_l_class_cd)
         predict = output['PREDICT']
-        print(type(predict))
+        print(type(predict), predict)
 
         global csvTotRow
         lrn_count = math.floor(csvTotRow * 0.7)
@@ -227,8 +231,10 @@ class ClassifierHandler(Resource):
         data = dict(name=classifier_algorithm, category='classifier', success=True, score=score,
                     report_value=report_df['precision'].tolist(), report_lable=report_df['class'].tolist(),
                     cv_score=list(), gs_score=cls.predict_by_gs(), req_time=time.time(),
-                    recordkey=recordkey.tolist()[:10], call_l_class_cd=call_l_class_cd.tolist()[:10],
-                    predict=predict.tolist()[:10], feature_data=feature_data, category_list=category_list)
+                    recordkey=recordkey.tolist()  # [:10]
+                    , call_l_class_cd=call_l_class_cd.tolist()  # [:10],
+                    , predict=predict.tolist()  # [:10]
+                    , feature_data=feature_data, category_list=category_list)
 
         # 모델 Payload 확인
         if os.path.isfile(f'./ml/model/{classifier_algorithm}.pkl'):
@@ -398,4 +404,4 @@ api.add_resource(CsvInfoCU, '/csvInfoCU')
 api.add_resource(SelectGridHandler, '/selectGrid')
 if __name__ == '__main__':
     # Flask 서비스 스타트
-    app.run(host='0.0.0.0', port=8000, debug=True)
+    app.run(host='0.0.0.0', port=5000, debug=True)
