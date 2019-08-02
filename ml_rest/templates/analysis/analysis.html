@@ -718,7 +718,6 @@
             });
 
             line_chart = tui.chart.lineChart(chart_container, line_data, line_options);
-            console.log("line_chart: ", line_chart);
         }
 
         let bar_width = $(chart_container).width();
@@ -755,7 +754,6 @@
             };
 
             bar_chart = tui.chart.barChart(chart_container, bar_data, bar_options);
-            console.log("bar_chart: ", bar_chart);
         }
 
         /*
@@ -1002,16 +1000,6 @@
                 formData.append("view_chart", view_chart);
                 formData.append("model_seq", upload_csv_seq);
 
-                console.log("model_category: ", model_category);
-                console.log("fileObj: ", $("#file2")[0].files[0]);
-                console.log("subject: ", $("#modelName").val());
-                console.log($('input[name="modelCategory"]:checked').val() + "_algorithm: ", $("#" + $('input[name="modelCategory"]:checked').val() + "_algorithm").val());
-                console.log("model_save: ", model_save);
-                console.log("learning_column: ", learning_column);
-                console.log("prediction_column: ", prediction_column);
-                console.log("view_chart: ", view_chart);
-                console.log("model_seq: ", upload_csv_seq);
-
                 $("#loading_body").show();
                 const $valid = $("#contact-form").valid();
                 if (!$valid) {
@@ -1030,7 +1018,6 @@
                             if (model_category == "classifier") {
                                 // classifier
                                 // 업로드 CSV 전송
-                                console.log("result: ", result)
                                 $("#chartArea").empty();
                                 if (view_chart == 'line_chart') {
                                     series_line_chart(result.recordkey, result.call_l_class_cd, result.predict);
@@ -1052,7 +1039,6 @@
                                 {#formReset();#}
                             } else {
                                 // regression
-                                console.log("result: ", result);
                                 $("#chartArea").empty();
 08
                                 var regression_container = document.getElementById('chartArea');
