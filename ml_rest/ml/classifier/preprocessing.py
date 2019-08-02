@@ -68,7 +68,7 @@ class Preprocessing():
     def tokenizer_jiana(self, text):
         if not text:
             text = '.'
-        url = 'http://localhost:8080/analysis'
+        url = 'http://localhost:9090/analysis'
         headers = {'Content-Type': 'application/json;charset=UTF-8', 'accept-charset': 'UTF-8'}
         # tag_info = 'ncn,nq_loc,ncp,pv,pa'
         # tag_info = 'nc,ncn,ncp,nq,nq_per,nq_loc,nq_juso,nq_etc,pv,pa,ma'
