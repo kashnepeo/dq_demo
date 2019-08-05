@@ -779,9 +779,19 @@
         $("#loading_modal").hide();
         $("#loading_body").hide();
 
+        var flag = 0;
         $('.file-upload-btn').click(function () {
-            formReset();
-            $('#dialog_simple').dialog('open');
+            if(!flag){
+                $('#dialog_simple').dialog('open');
+                flag = 1;
+            }else{
+                var result = confirm("이전 결과 정보를 잃게 됩니다. 계속 진행하시겠습니까?");
+                if(result){
+                    formReset();
+                    $('#dialog_simple').dialog('open');
+                }
+            }
+
         });
 
         $("input[name='viewChart']").change(function () {
