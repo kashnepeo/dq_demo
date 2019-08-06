@@ -9,7 +9,7 @@ import numpy as np
 import pandas as pd
 import requests
 from sklearn.feature_extraction.text import TfidfVectorizer
-
+from werkzeug.utils import secure_filename
 
 class Preprocessing():
     def __init__(self, filename, learning, prediction):
@@ -25,7 +25,7 @@ class Preprocessing():
         # data = pd.read_csv(self._f_path + "/classifier/resource/classifier_sample.csv", sep=",", encoding="utf-8")
         today = date.today().strftime('%Y%m%d')
 
-        self.df = pd.read_csv(self._f_path + '/classifier/resource/{}/'.format(today) + filename, sep=",", encoding="ms949")
+        self.df = pd.read_csv(self._f_path + '/classifier/resource/{}/'.format(today) + secure_filename(filename), sep=",", encoding="ms949", engine='python')
 
         # 학습 및 레이블(정답) 데이터 분리
         self._x = self.df[learning]

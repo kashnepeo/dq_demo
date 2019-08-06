@@ -15,6 +15,7 @@ from flask_restful import Resource, Api, abort
 from ml.classifier import *
 from ml.regression import *
 from werkzeug.utils import secure_filename
+from datetime import datetime
 
 # 환경 정보 로드
 with open('./system/config.json', 'rt', encoding='utf-8') as j:
@@ -91,7 +92,7 @@ class UploadFile(Resource):
         if request.method == 'POST':
             # 기본 경로
             self._f_path = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), os.pardir))
-            today = datetime.datetime.today()
+            today = datetime.today()
             # 디렉토리 확인
             if not os.path.isdir(
                     self._f_path + '/ml_rest/ml/' + request.form['model_category'] + '/resource/' + today.strftime(
@@ -132,6 +133,7 @@ class UploadFile(Resource):
 class CsvInfoCU(Resource):
     def post(self):
         if request.method == 'POST':
+            reg_date = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
             db_class = Database()
             sql = "INSERT INTO dev.csv_dump_table("
             if request.form['model_name'] is not None:
@@ -146,6 +148,9 @@ class CsvInfoCU(Resource):
                 sql += ", model_learning"
             if request.form['model_prediction'] is not None:
                 sql += ", model_prediction"
+            if request.form['csv_filename'] is not None:
+                sql += ", csv_filename"
+            sql += ", reg_date"
             sql += ") VALUES ("
             if request.form['model_name'] is not None:
                 sql += "'%s'" % (request.form['model_name'])
@@ -159,6 +164,9 @@ class CsvInfoCU(Resource):
                 sql += ", '%s'" % (request.form['model_learning'])
             if request.form['model_prediction'] is not None:
                 sql += ", '%s'" % (request.form['model_prediction'])
+            if request.form['csv_filename'] is not None:
+                sql += ", '%s'" % (request.form['csv_filename'])
+            sql += ", '{}'".format(reg_date)
             sql += ")"
             db_class.execute(sql)
             db_class.commit()
@@ -244,7 +252,7 @@ class ClassifierHandler(Resource):
 
             temp_class_cd = 0
             for (f, s, t, r, v) in report_df.values:
-                sql = "REPLACE INTO dev.classifier_model_view( model_seq, class_cd, class_cd_nm, lrn_count, vrfc_count, prec, recal, fonescore ) VALUES ("
+                sql = "REPLACE INTO dev.classifier_model_view( model_seq, class_cd, class_cd_nm, lrn_count, vrfc_count, prec, recal, fonescore, reg_date ) VALUES ("
                 sql += str(request.form['model_seq']) + ","
                 if f.isdigit():
                     sql += f + ",'"
@@ -258,7 +266,8 @@ class ClassifierHandler(Resource):
                 sql += str(vrfc_count) + ",'"
                 sql += str(s) + "','"
                 sql += str(t) + "','"
-                sql += str(r) + "')"
+                sql += str(r) + "','"
+                sql += datetime.now().strftime('%Y-%m-%d %H:%M:%S') + "')"
                 temp_class_cd += 1
                 print(sql)
                 db_class.execute(sql)

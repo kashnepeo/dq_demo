@@ -950,6 +950,7 @@
                     formData.append("model_cd", $('input[name="modelCd"]:checked').val());
                     formData.append("model_learning", getLearningColmun());
                     formData.append("model_prediction", $('input[name="prediction-column"]:checked').val());
+                    formData.append("csv_filename", $("#file2")[0].files[0].name);
                     $.ajax({
                         url: "/csvInfoCU",
                         processData: false,
