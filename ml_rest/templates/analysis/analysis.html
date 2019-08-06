@@ -1024,6 +1024,15 @@
                         data: formData,
                         type: 'POST',
                         enctype: 'multipart/form-data',
+                        statusCode: {
+                          500: function(xhr) {
+                              alert("오류가 발생하였습니다. \n관리자에게 문의 바랍니다.");
+                              $("#loading_body").hide();
+                              formReset();
+                              $("#executeAnalysis").attr("disabled", false);
+                              flag = 0;
+                          }
+                        },
                         success: function (result) {
                             if (model_category == "classifier") {
                                 // classifier
@@ -1050,7 +1059,6 @@
                             } else {
                                 // regression
                                 $("#chartArea").empty();
-08
                                 var regression_container = document.getElementById('chartArea');
                                 var regression_width = $(regression_container).width();
                                 var regression_height = $(regression_container).height();
@@ -1089,7 +1097,6 @@
                                 $("#chartArea").show();
                                 $(".div-chart").show();
                             }
-
                         }
                     });
                 }, 100); //1000 = 1초

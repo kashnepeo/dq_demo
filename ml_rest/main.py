@@ -8,7 +8,9 @@ import time
 import numpy as np
 import flask
 import pymysql
-from flask import Flask, request
+import logging
+from logging.handlers import RotatingFileHandler, TimedRotatingFileHandler
+from flask import Flask, request, url_for
 from flask_restful import Resource, Api, abort
 from ml.classifier import *
 from ml.regression import *
@@ -17,17 +19,47 @@ from werkzeug.utils import secure_filename
 # 환경 정보 로드
 with open('./system/config.json', 'rt', encoding='utf-8') as j:
     config = json.loads(j.read())
-
 # 플라스크 객체 선언
 app = Flask(__name__)
-
 # Config Update
 app.config.update(config)
-
 # 서버 인스턴스
 api = Api(app)
-
+# csv 총 업로드 Row 수
 csvTotRow = 0
+
+# log 전체를 입력하기 위해
+root_logger = logging.getLogger()
+root_logger.setLevel(logging.DEBUG)  # or whatever
+handler = logging.FileHandler('log/main.log', 'w', 'utf8')
+handler.setFormatter(logging.Formatter('%(asctime)s %(levelname)-7s %(lineno)3s:%(funcName)-15s %(message)s'))
+root_logger.addHandler(handler)
+
+# terminal logging
+logger = logging.getLogger(__file__)
+logger.setLevel(logging.DEBUG)
+formatter = logging.Formatter(
+    '%(asctime)s %(levelname)-7s %(lineno)3s:%(funcName)-15s %(message)s'
+)
+handler = logging.StreamHandler()
+handler.setFormatter(formatter)
+logger.addHandler(handler)
+
+# directory logging
+current_dir = os.path.dirname(os.path.abspath(__file__))
+filename = current_dir + os.sep + "log" + os.sep + os.path.splitext(
+    os.path.basename(__file__)
+)[0] + ".log"
+handler = TimedRotatingFileHandler(
+    filename=filename, when='midnight', backupCount=7, encoding='utf8'
+)
+handler.suffix = '%Y%m%d'
+formatter = logging.Formatter(
+    '%(asctime)s %(levelname)-7s %(lineno)3s:%(funcName)-15s %(message)s'
+)
+handler.setFormatter(formatter)
+logger.setLevel(logging.DEBUG)
+logger.addHandler(handler)
 
 
 # 메인 페이지 라우팅
@@ -176,79 +208,84 @@ def abort_function():
 # Classifier
 class ClassifierHandler(Resource):
     def post(self):
-        csv_file = request.files['fileObj']
-        _f_path = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), os.pardir))
-        csv_file.save(
-            os.path.join(_f_path, 'ml_rest', 'ml', 'classifier', 'resource', secure_filename(csv_file.filename)))
-        classifier_algorithm = request.form['classifier_algorithm']
-        print(classifier_algorithm + '.' + app.config['algorithm']['classifier'][classifier_algorithm])
-
-        # 분류 객체 생성(Str -> Class)
         try:
-            cls = eval(classifier_algorithm + '.' + app.config['algorithm']['classifier'][classifier_algorithm])(
-                params=request.form, filename=csv_file.filename)
-        except KeyError:
-            abort_function()
+            csv_file = request.files['fileObj']
+            _f_path = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), os.pardir))
+            csv_file.save(
+                os.path.join(_f_path, 'ml_rest', 'ml', 'classifier', 'resource', secure_filename(csv_file.filename)))
+            classifier_algorithm = request.form['classifier_algorithm']
+            print(classifier_algorithm + '.' + app.config['algorithm']['classifier'][classifier_algorithm])
 
-        # 스코어 리턴, 레포트 정보, 테스트셋 분석결과
-        score, report_df, output, feature_data, category_list = cls.predict(app.config['cnslTypeLgcsfCd'])
+            # 분류 객체 생성(Str -> Class)
+            try:
+                cls = eval(classifier_algorithm + '.' + app.config['algorithm']['classifier'][classifier_algorithm])(
+                    params=request.form, filename=csv_file.filename)
+            except KeyError:
+                abort_function()
 
-        # csv 컬럼명 포맷을 지정해야함 문서아이디, 원본 카테고리
-        prediction_column = request.form['prediction_column']
-        recordkey = output[output.columns.values[0]]
-        call_l_class_cd = output[prediction_column]
+            # 스코어 리턴, 레포트 정보, 테스트셋 분석결과
+            score, report_df, output, feature_data, category_list = cls.predict(app.config['cnslTypeLgcsfCd'])
 
-        print('recordkey', recordkey)
-        print('prediction_column', prediction_column)
-        print('call_l_class_cd', call_l_class_cd)
-        predict = output['PREDICT']
-        print(type(predict), predict)
+            # csv 컬럼명 포맷을 지정해야함 문서아이디, 원본 카테고리
+            prediction_column = request.form['prediction_column']
+            recordkey = output[output.columns.values[0]]
+            call_l_class_cd = output[prediction_column]
 
-        global csvTotRow
-        lrn_count = math.floor(csvTotRow * 0.7)
-        vrfc_count = csvTotRow - lrn_count
-        db_class = Database()
+            print('recordkey', recordkey)
+            print('prediction_column', prediction_column)
+            print('call_l_class_cd', call_l_class_cd)
+            predict = output['PREDICT']
+            print(type(predict), predict)
 
-        temp_class_cd = 0
-        for (f, s, t, r, v) in report_df.values:
-            sql = "REPLACE INTO dev.classifier_model_view( model_seq, class_cd, class_cd_nm, lrn_count, vrfc_count, prec, recal, fonescore ) VALUES ("
-            sql += str(request.form['model_seq']) + ","
-            if f.isdigit():
-                sql += f + ",'"
+            global csvTotRow
+            lrn_count = math.floor(csvTotRow * 0.7)
+            vrfc_count = csvTotRow - lrn_count
+            db_class = Database()
+
+            temp_class_cd = 0
+            for (f, s, t, r, v) in report_df.values:
+                sql = "REPLACE INTO dev.classifier_model_view( model_seq, class_cd, class_cd_nm, lrn_count, vrfc_count, prec, recal, fonescore ) VALUES ("
+                sql += str(request.form['model_seq']) + ","
+                if f.isdigit():
+                    sql += f + ",'"
+                else:
+                    sql += str(temp_class_cd) + ",'"
+                if f in app.config['cnslTypeLgcsfCd'].keys():
+                    sql += app.config['cnslTypeLgcsfCd'][f] + "',"
+                else:
+                    sql += f + "',"
+                sql += str(lrn_count) + ","
+                sql += str(vrfc_count) + ",'"
+                sql += str(s) + "','"
+                sql += str(t) + "','"
+                sql += str(r) + "')"
+                temp_class_cd += 1
+                print(sql)
+                db_class.execute(sql)
+                db_class.commit()
+            # 응답 데이터
+            print('report_df', report_df)
+            data = dict(name=classifier_algorithm, category='classifier', success=True, score=score,
+                        report_value=report_df['precision'].tolist(), report_lable=report_df['class'].tolist(),
+                        cv_score=list(), gs_score=cls.predict_by_gs(), req_time=time.time(),
+                        recordkey=recordkey.tolist()  # [:10]
+                        , call_l_class_cd=call_l_class_cd.tolist()  # [:10],
+                        , predict=predict.tolist()  # [:10]
+                        , feature_data=feature_data, category_list=category_list)
+
+            # 모델 Payload 확인
+            if os.path.isfile(f'./ml/model/{classifier_algorithm}.pkl'):
+                print(f'{classifier_algorithm} Model Exist,')
             else:
-                sql += str(temp_class_cd) + ",'"
-            if f in app.config['cnslTypeLgcsfCd'].keys():
-                sql += app.config['cnslTypeLgcsfCd'][f] + "',"
-            else:
-                sql += f + "',"
-            sql += str(lrn_count) + ","
-            sql += str(vrfc_count) + ",'"
-            sql += str(s) + "','"
-            sql += str(t) + "','"
-            sql += str(r) + "')"
-            temp_class_cd += 1
-            print(sql)
-            db_class.execute(sql)
-            db_class.commit()
-        # 응답 데이터
-        print('report_df', report_df)
-        data = dict(name=classifier_algorithm, category='classifier', success=True, score=score,
-                    report_value=report_df['precision'].tolist(), report_lable=report_df['class'].tolist(),
-                    cv_score=list(), gs_score=cls.predict_by_gs(), req_time=time.time(),
-                    recordkey=recordkey.tolist()  # [:10]
-                    , call_l_class_cd=call_l_class_cd.tolist()  # [:10],
-                    , predict=predict.tolist()  # [:10]
-                    , feature_data=feature_data, category_list=category_list)
+                print(f'{classifier_algorithm} Model Not Exist,')
+                # 최초 모델 생성
+                cls.save_model()
 
-        # 모델 Payload 확인
-        if os.path.isfile(f'./ml/model/{classifier_algorithm}.pkl'):
-            print(f'{classifier_algorithm} Model Exist,')
-        else:
-            print(f'{classifier_algorithm} Model Not Exist,')
-            # 최초 모델 생성
-            cls.save_model()
+                # 응답 헤더
+        except Exception as ex:
+            logger.debug(ex)
+            abort(500)
 
-        # 응답 헤더
         response_data = app.response_class(
             response=json.dumps(data),
             status=200,
