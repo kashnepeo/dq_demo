@@ -90,6 +90,7 @@ def verification():
 class UploadFile(Resource):
     def post(self):
         if request.method == 'POST':
+            logger.info("CSV 업로드 시작 시간 = " + datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f'))
             file_encoding = request.form['file_encoding']
             # 기본 경로
             self._f_path = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), os.pardir))
@@ -113,7 +114,7 @@ class UploadFile(Resource):
             for list in lists:
                 resultList.append([except_fn(x) for x in list])
             f.close
-
+            logger.info("CSV 업로드 완료 시간 = " + datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f'))
             if len(resultList) > 5000:
                 resultList.clear()
 
@@ -218,6 +219,7 @@ def abort_function():
 class ClassifierHandler(Resource):
     def post(self):
         try:
+            logger.info("알고리즘 시작 시간 = " + datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f'))
             csv_file = request.files['fileObj']
             _f_path = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), os.pardir))
             csv_file.save(
@@ -247,7 +249,7 @@ class ClassifierHandler(Resource):
             print(type(predict), predict)
 
             global csvTotRow
-            lrn_count = math.floor(csvTotRow * 0.7)
+            lrn_count = math.floor(csvTotRow * 0.66)
             vrfc_count = csvTotRow - lrn_count
             db_class = Database()
 
@@ -291,11 +293,12 @@ class ClassifierHandler(Resource):
                 # 최초 모델 생성
                 cls.save_model()
 
-                # 응답 헤더
+            logger.info("알고리즘 종료 시간 = " + datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f'))
         except Exception as ex:
             logger.debug(ex)
             abort(500)
 
+        # 응답 헤더
         response_data = app.response_class(
             response=json.dumps(data),
             status=200,

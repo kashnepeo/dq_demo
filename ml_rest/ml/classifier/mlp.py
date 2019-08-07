@@ -35,11 +35,12 @@ class MlpClass:
         model_save = params['model_save']
         learning_column = params['learning_column']
         prediction_column = params['prediction_column']
+        file_encoding = params["file_encoding"]
 
         print(model_save, subject, learning_column, prediction_column)
 
         # 전처리 클래스 생성
-        preprocessor = Preprocessing(filename=filename, learning=learning_column, prediction=prediction_column)
+        preprocessor = Preprocessing(filename=filename, learning=learning_column, prediction=prediction_column, encoding=file_encoding)
 
         # 학습 및 레이블(정답) 데이터 분리
         self._x = preprocessor._x
