@@ -334,6 +334,19 @@
                             </div>
                         </div>
                     </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <!-- start -->
+                                <label class="select">파일 인코딩 설정</label>
+                                <select class="form-control" id="file_encoding">
+                                    <option value="utf8">UTF-8</option>
+                                    <option value="cp949">CP949</option>
+                                </select>
+                                <!--end-->
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="tab-pane" id="tab2">
                     <br>
@@ -914,6 +927,7 @@
                     let formData = new FormData($('#order-form')[0]);
                     formData.append("fileObj", $("#file2")[0].files[0]);
                     formData.append("model_category", $("input[name=modelCategory]:checked").val());
+                    formData.append("file_encoding" , $("#file_encoding").val());
                     $.ajax({
                         url: '/fileUpload',
                         processData: false,
@@ -1010,6 +1024,7 @@
                 formData.append("prediction_column", prediction_column);
                 formData.append("view_chart", view_chart);
                 formData.append("model_seq", upload_csv_seq);
+                formData.append("file_encoding" , $("#file_encoding").val());
 
                 $("#loading_body").show();
                 const $valid = $("#contact-form").valid();

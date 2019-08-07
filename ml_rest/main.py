@@ -90,6 +90,7 @@ def verification():
 class UploadFile(Resource):
     def post(self):
         if request.method == 'POST':
+            file_encoding = request.form['file_encoding']
             # 기본 경로
             self._f_path = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), os.pardir))
             today = datetime.today()
@@ -105,7 +106,7 @@ class UploadFile(Resource):
             f.save(self._f_path + '/ml_rest/ml/' + request.form['model_category'] + '/resource/' + today.strftime(
                 '%Y%m%d') + '/' + secure_filename(f.filename))
             f = open(self._f_path + '/ml_rest/ml/' + request.form['model_category'] + '/resource/' + today.strftime(
-                '%Y%m%d') + '/' + secure_filename(f.filename), encoding='ms949')
+                '%Y%m%d') + '/' + secure_filename(f.filename), encoding=file_encoding)
             # CSV 데이터 파싱
             lists = csv.reader(f)
             resultList = []

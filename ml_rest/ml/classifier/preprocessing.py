@@ -11,8 +11,9 @@ import requests
 from sklearn.feature_extraction.text import TfidfVectorizer
 from werkzeug.utils import secure_filename
 
+
 class Preprocessing():
-    def __init__(self, filename, learning, prediction):
+    def __init__(self, filename, learning, prediction, encoding):
         self.cur_dir = os.getcwd()
 
         self._f_path = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), os.pardir))
@@ -25,7 +26,8 @@ class Preprocessing():
         # data = pd.read_csv(self._f_path + "/classifier/resource/classifier_sample.csv", sep=",", encoding="utf-8")
         today = date.today().strftime('%Y%m%d')
 
-        self.df = pd.read_csv(self._f_path + '/classifier/resource/{}/'.format(today) + secure_filename(filename), sep=",", encoding="ms949", engine='python')
+        self.df = pd.read_csv(self._f_path + '/classifier/resource/{}/'.format(today) + secure_filename(filename),
+                              sep=",", encoding=encoding, engine='python')
 
         # 학습 및 레이블(정답) 데이터 분리
         self._x = self.df[learning]
@@ -51,7 +53,9 @@ class Preprocessing():
             stopword_list.append(stopword)
 
         # dest = os.path.join(cur_dir, '..\\..\\data', 'pklObject')
-        pickle.dump(stopword_list, open(os.path.join(self._f_path, 'classifier', 'data', 'pklObject', 'stopword.pkl'), 'wb'), protocol=4)
+        pickle.dump(stopword_list,
+                    open(os.path.join(self._f_path, 'classifier', 'data', 'pklObject', 'stopword.pkl'), 'wb'),
+                    protocol=4)
 
     # 공백으로 단어 분리
     def tokenizer(self, text):
@@ -61,7 +65,9 @@ class Preprocessing():
     def tokenizer_okt(self, text):
         if not text:
             text = '.'
-        return [token for (token, tag) in self.okt.pos(text, norm=True, stem=True) if (tag == 'Noun' or tag == 'Adjective' or tag == 'Adverb') and token not in self.read_stopword(self.cur_dir) and len(token) > 1]
+        return [token for (token, tag) in self.okt.pos(text, norm=True, stem=True) if
+                (tag == 'Noun' or tag == 'Adjective' or tag == 'Adverb') and token not in self.read_stopword(
+                    self.cur_dir) and len(token) > 1]
 
         # 형태소 분석기를 이용한 단어 분리
 
@@ -73,10 +79,12 @@ class Preprocessing():
         # tag_info = 'ncn,nq_loc,ncp,pv,pa'
         # tag_info = 'nc,ncn,ncp,nq,nq_per,nq_loc,nq_juso,nq_etc,pv,pa,ma'
         tag_info = 'nc,ncn,ncp,nq'
-        response = requests.post(url=url, data=json.dumps({'rawData': text, 'tagInfo': tag_info, 'wsNum': 3}), headers=headers, timeout=5)
+        response = requests.post(url=url, data=json.dumps({'rawData': text, 'tagInfo': tag_info, 'wsNum': 3}),
+                                 headers=headers, timeout=5)
         response_str = json.loads(response.text)
 
-        return [re.sub('[0-9]{1,4}([_])', ' ', element).replace('|', '').strip() for element in response_str['result'].strip("[]").split(", ")]
+        return [re.sub('[0-9]{1,4}([_])', ' ', element).replace('|', '').strip() for element in
+                response_str['result'].strip("[]").split(", ")]
 
     def keyword_vectorizer(self, x_train, x_test):
         X_train_tfidf_vector = self.vectorizer.fit_transform(x_train)

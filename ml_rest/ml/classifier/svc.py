@@ -35,11 +35,13 @@ class SvcClass:
         model_save = params['model_save']
         learning_column = params['learning_column']
         prediction_column = params['prediction_column']
+        file_encoding = params["file_encoding"]
 
         print(model_save, subject, learning_column, prediction_column)
 
         # 전처리 클래스 생성
-        preprocessor = Preprocessing(filename=filename, learning=learning_column, prediction=prediction_column)
+        preprocessor = Preprocessing(filename=filename, learning=learning_column, prediction=prediction_column,
+                                     encoding=file_encoding)
 
         # 학습 및 레이블(정답) 데이터 분리
         self._x = preprocessor._x
@@ -63,7 +65,8 @@ class SvcClass:
         self._y_test = self.test_set[prediction_column].values.astype('U')
 
         # 전처리 데이터 로드
-        self.X_train_tfidf_vector, self.X_test_tfidf_vector, self.vocab, self.dist, self.result_a = preprocessor.keyword_vectorizer(x_train=self._x_train, x_test=self._x_test)
+        self.X_train_tfidf_vector, self.X_test_tfidf_vector, self.vocab, self.dist, self.result_a = preprocessor.keyword_vectorizer(
+            x_train=self._x_train, x_test=self._x_test)
 
         # 모델 선언
         self._model = SVC()
@@ -112,10 +115,13 @@ class SvcClass:
         self.test_set['KEYWORDS'] = self.result_a
 
         # 분류 결과 file write
-        self.test_set.to_csv(self._f_path + f'/classifier/csv/result_{self._name}.csv', index=False, quoting=3, escapechar='\\')
+        self.test_set.to_csv(self._f_path + f'/classifier/csv/result_{self._name}.csv', index=False, quoting=3,
+                             escapechar='\\')
 
         # 분석 feature file write
-        pd.DataFrame(self.dist, columns=['None'] if len(self.vocab) == 1 and self.vocab[0] == '' else self.vocab).to_csv(self._f_path + f'/classifier/csv/features_{self._name}.csv', index=False, quoting=3)
+        pd.DataFrame(self.dist,
+                     columns=['None'] if len(self.vocab) == 1 and self.vocab[0] == '' else self.vocab).to_csv(
+            self._f_path + f'/classifier/csv/features_{self._name}.csv', index=False, quoting=3)
 
         # 스코어 리턴, 레포트 정보, 테스트셋 분석결과
         return score, report_df, self.test_set, feature_data, category_list
@@ -146,7 +152,8 @@ class SvcClass:
         else:
             # 기존 모델 대체
             if os.path.isfile(self._f_path + f'/model/{self._name}.pkl'):
-                os.rename(self._f_path + f'/model/{self._name}.pkl', self._f_path + f'/model/{str(self._name) + str(time.time())}.pkl')
+                os.rename(self._f_path + f'/model/{self._name}.pkl',
+                          self._f_path + f'/model/{str(self._name) + str(time.time())}.pkl')
             joblib.dump(self._model, self._f_path + f'/model/{self._name}.pkl')
 
     def __del__(self):
@@ -171,7 +178,9 @@ class SvcClass:
         for key, value in cat_dict.items():
             for each_word in value:
                 feature_data.append(
-                    {"x": str(each_word[0]), "value": float(each_word[1]), "category": config[str(key)].replace(' ', '\n').replace('/', '\n') if str(key) in config.keys() else key.replace(' ', '\n').replace('/', '\n')}
+                    {"x": str(each_word[0]), "value": float(each_word[1]),
+                     "category": config[str(key)].replace(' ', '\n').replace('/', '\n') if str(
+                         key) in config.keys() else key.replace(' ', '\n').replace('/', '\n')}
                 )
         # print(feature_data)
         return feature_data, category_list
@@ -179,7 +188,8 @@ class SvcClass:
 
 if __name__ == "__main__":
     # 클래스 선언
-    classifier = SvcClass({'subject': 'a', 'classifier_algorithm': 'c', 'model_save': 'aaa', 'learning_column': 'TALK', 'prediction_column': 'NICKNAME'}, 'result_3000.csv')
+    classifier = SvcClass({'subject': 'a', 'classifier_algorithm': 'c', 'model_save': 'aaa', 'learning_column': 'TALK',
+                           'prediction_column': 'NICKNAME'}, 'result_3000.csv')
 
     config = {}
     config['a'] = 1
