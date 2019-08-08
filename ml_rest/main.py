@@ -90,37 +90,42 @@ def verification():
 class UploadFile(Resource):
     def post(self):
         if request.method == 'POST':
-            logger.info("CSV 업로드 시작 시간 = " + datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f'))
-            file_encoding = request.form['file_encoding']
-            # 기본 경로
-            self._f_path = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), os.pardir))
-            today = datetime.today()
-            # 디렉토리 확인
-            if not os.path.isdir(
-                    self._f_path + '/ml_rest/ml/' + request.form['model_category'] + '/resource/' + today.strftime(
-                        '%Y%m%d')):
-                os.makedirs(
-                    self._f_path + '/ml_rest/ml/' + request.form['model_category'] + '/resource/' + today.strftime(
-                        '%Y%m%d'))
-            # CSV 업로드
-            f = request.files['file2']
-            f.save(self._f_path + '/ml_rest/ml/' + request.form['model_category'] + '/resource/' + today.strftime(
-                '%Y%m%d') + '/' + secure_filename(f.filename))
-            f = open(self._f_path + '/ml_rest/ml/' + request.form['model_category'] + '/resource/' + today.strftime(
-                '%Y%m%d') + '/' + secure_filename(f.filename), encoding=file_encoding)
-            # CSV 데이터 파싱
-            lists = csv.reader(f)
-            resultList = []
-            for list in lists:
-                resultList.append([except_fn(x) for x in list])
-            f.close
-            logger.info("CSV 업로드 완료 시간 = " + datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f'))
-            if len(resultList) > 5000:
-                resultList.clear()
+            try:
+                logger.info("CSV 업로드 시작 시간 = " + datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f'))
+                file_encoding = request.form['file_encoding']
+                # 기본 경로
+                self._f_path = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), os.pardir))
+                today = datetime.today()
+                # 디렉토리 확인
+                if not os.path.isdir(
+                        self._f_path + '/ml_rest/ml/' + request.form['model_category'] + '/resource/' + today.strftime(
+                            '%Y%m%d')):
+                    os.makedirs(
+                        self._f_path + '/ml_rest/ml/' + request.form['model_category'] + '/resource/' + today.strftime(
+                            '%Y%m%d'))
+                # CSV 업로드
+                f = request.files['file2']
+                f.save(self._f_path + '/ml_rest/ml/' + request.form['model_category'] + '/resource/' + today.strftime(
+                    '%Y%m%d') + '/' + secure_filename(f.filename))
+                f = open(self._f_path + '/ml_rest/ml/' + request.form['model_category'] + '/resource/' + today.strftime(
+                    '%Y%m%d') + '/' + secure_filename(f.filename), encoding=file_encoding)
+                # CSV 데이터 파싱
+                lists = csv.reader(f)
+                resultList = []
+                for list in lists:
+                    resultList.append([except_fn(x) for x in list])
+                f.close
+                logger.info("CSV 업로드 완료 시간 = " + datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f'))
+                # if len(resultList) > 5000:
+                #    resultList.clear()
 
-            # 업로드 CSV 데이터
-            global csvTotRow
-            csvTotRow = len(resultList)
+                # 업로드 CSV 데이터
+                global csvTotRow
+                csvTotRow = len(resultList)
+
+            except Exception as ex:
+                logger.debug(ex)
+                abort(500)
 
             # 응답 헤더
             response_data = app.response_class(
@@ -129,7 +134,7 @@ class UploadFile(Resource):
                 mimetype='application/json'
             )
 
-        return response_data
+            return response_data
 
 
 class CsvInfoCU(Resource):
@@ -189,7 +194,8 @@ class SelectGridHandler(Resource):
             db_class = Database()
             sql = ""
             if request.form['model_category'] == 'F1 score':
-                sql = "SELECT class_cd AS '상품유형 코드' , class_cd_nm AS '카테고리 명' , lrn_count AS '트레이닝 건수' , vrfc_count AS '검증 건수' ," \
+                # , lrn_count AS '트레이닝 건수', vrfc_count AS '검증 건수',
+                sql = "SELECT class_cd AS '상품유형 코드' , class_cd_nm AS '카테고리 명' ," \
                       " prec AS 'Precision' , recal AS 'Recall' , fonescore AS 'F1Score' FROM classifier_model_view WHERE model_seq = %s" \
                       % (request.form['model_seq'])
             print(sql)

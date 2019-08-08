@@ -89,16 +89,16 @@
                     class="fa fa-reorder"></i></a> </span>
         </div>
 
-        <form action="#" class="header-search pull-right">
-            <input id="search-fld" type="text" name="param" placeholder="Find reports and more" data-autocomplete='[
-					"test1",
-					"test2",
-					"test3",
-					]'>
-            <button type="submit">
-                <i class="fa fa-search"></i>
-            </button>
-        </form>
+{#        <form action="#" class="header-search pull-right">#}
+{#            <input id="search-fld" type="text" name="param" placeholder="Find reports and more" data-autocomplete='[#}
+{#					"test1",#}
+{#					"test2",#}
+{#					"test3",#}
+{#					]'>#}
+{#            <button type="submit">#}
+{#                <i class="fa fa-search"></i>#}
+{#            </button>#}
+{#        </form>#}
 
         <div id="fullscreen" class="btn-header transparent pull-right">
             <span> <a href="javascript:void(0);" data-action="launchFullscreen" title="Full Screen"><i
@@ -112,7 +112,7 @@
         <span>
             <a href="javascript:void(0);">
                 <span class="login-info-name">
-                    홍길동님 환영합니다.
+                    NHN Diquest
                 </span>
             </a>
         </span>
@@ -340,8 +340,8 @@
                                 <!-- start -->
                                 <label class="select">파일 인코딩 설정</label>
                                 <select class="form-control" id="file_encoding">
+                                    <option value="cp949">EUC-KR</option>
                                     <option value="utf8">UTF-8</option>
-                                    <option value="cp949">CP949</option>
                                 </select>
                                 <!--end-->
                             </div>
@@ -418,7 +418,7 @@
                         </div>
                     </div>
                     <br>
-                    <div class="row">
+                    <div class="row" style="display:none;">
                         <div class="col-sm-12">
                             <div class="smart-form">
                                 <section>
@@ -440,29 +440,29 @@
                 <div class="tab-pane" id="tab3">
                     <br>
                     <h3><strong>Step 3</strong> - CSV 설정</h3>
-                    <div class="row">
-                        <div class="col-sm-12">
-                            <div class="smart-form">
-                                <section>
-                                    <label class="label"><strong>모델 저장</strong></label>
-                                    <div class="inline-group">
-                                        <label class="radio">
-                                            <input type="radio" name="modelCd" value="가망 고객 분석" checked="checked">
-                                            <i></i>가망 고객 분석</label>
-                                        <label class="radio">
-                                            <input type="radio" value="고객 반응 분석" name="modelCd">
-                                            <i></i>고객 반응 분석</label>
-                                        <label class="radio">
-                                            <input type="radio" value="이탈 고객 분석" name="modelCd">
-                                            <i></i>이탈 고객 분석</label>
-                                        <label class="radio">
-                                            <input type="radio" value="민원 고객 분석" name="modelCd">
-                                            <i></i>민원 고객 분석</label>
-                                    </div>
-                                </section>
-                            </div>
-                        </div>
-                    </div>
+{#                    <div class="row">#}
+{#                        <div class="col-sm-12">#}
+{#                            <div class="smart-form">#}
+{#                                <section>#}
+{#                                    <label class="label"><strong>모델 저장</strong></label>#}
+{#                                    <div class="inline-group">#}
+{#                                        <label class="radio">#}
+{#                                            <input type="radio" name="modelCd" value="가망 고객 분석" checked="checked">#}
+{#                                            <i></i>가망 고객 분석</label>#}
+{#                                        <label class="radio">#}
+{#                                            <input type="radio" value="고객 반응 분석" name="modelCd">#}
+{#                                            <i></i>고객 반응 분석</label>#}
+{#                                        <label class="radio">#}
+{#                                            <input type="radio" value="이탈 고객 분석" name="modelCd">#}
+{#                                            <i></i>이탈 고객 분석</label>#}
+{#                                        <label class="radio">#}
+{#                                            <input type="radio" value="민원 고객 분석" name="modelCd">#}
+{#                                            <i></i>민원 고객 분석</label>#}
+{#                                    </div>#}
+{#                                </section>#}
+{#                            </div>#}
+{#                        </div>#}
+{#                    </div>#}
                     <div class="row">
                         <div class="col-sm-12">
                             <div class="smart-form">
@@ -501,7 +501,6 @@
                             <div class="smart-form">
                                 <label class="label">FILE NAME</label>
                                 <label class="input">
-                                    <i class="icon-append fa fa-tag"></i>
                                     <input type="text" name="filePath_D" id="filePath_D" disabled="disabled">
                                 </label>
                             </div>
@@ -513,19 +512,16 @@
                             <div class="smart-form">
                                 <label class="label">모델명</label>
                                 <label class="input">
-                                    <i class="icon-append fa fa-tag"></i>
                                     <input type="text" name="modelName_D" id="modelName_D" disabled="disabled">
                                 </label>
                             </div>
                         </div>
                     </div>
-                    <br>
-                    <div class="row">
+                    <div class="row" style="display:none;">
                         <div class="col-sm-12">
                             <div class="smart-form">
                                 <label class="label">모델 유형</label>
                                 <label class="input">
-                                    <i class="icon-append fa fa-tag"></i>
                                     <input type="text" name="modelCategory_D" id="modelCategory_D" disabled="disabled">
                                 </label>
                             </div>
@@ -537,7 +533,6 @@
                             <div class="smart-form">
                                 <label class="label">학습 컬럼</label>
                                 <label class="input">
-                                    <i class="icon-append fa fa-tag"></i>
                                     <input type="text" name="learningColumn_D" id="learningColumn_D"
                                            disabled="disabled">
                                 </label>
@@ -550,7 +545,6 @@
                             <div class="smart-form">
                                 <label class="label">예측 컬럼</label>
                                 <label class="input">
-                                    <i class="icon-append fa fa-tag"></i>
                                     <input type="text" name="predictionColumn_D" id="predictionColumn_D"
                                            disabled="disabled">
                                 </label>
@@ -794,17 +788,16 @@
 
         var flag = 0;
         $('.file-upload-btn').click(function () {
-            if(!flag){
-                $('#dialog_simple').dialog('open');
-                flag = 1;
-            }else{
+            if(flag && $("#file2").val() != ""){
                 var result = confirm("이전 결과 정보를 잃게 됩니다. 계속 진행하시겠습니까?");
                 if(result){
                     formReset();
                     $('#dialog_simple').dialog('open');
                 }
+            }else{
+                $('#dialog_simple').dialog('open');
+                flag = 1;
             }
-
         });
 
         $("input[name='viewChart']").change(function () {
@@ -935,6 +928,15 @@
                         data: formData,
                         type: 'POST',
                         async: false,
+                        statusCode: {
+                          500: function(xhr) {
+                              alert("파일 인코딩이 맞지 않습니다.");
+                              setTimeout(function() {
+                                  $("#loading_modal").hide();
+                                  $('#bootstrap-wizard-1').bootstrapWizard('first');
+                              }, 1);
+                          }
+                        },
                         success: function (result) {
                             if(result.length == 0){
                                 alert("CSV 5000건 이상 업로드 불가합니다.");
@@ -954,6 +956,9 @@
                                     }
                                 });
                             }
+                        },
+                        fail:function(){
+
                         }
                     });
                 } else if (index === 3) {
@@ -1017,8 +1022,8 @@
                 let formData = new FormData($('#contact-form')[0]);
                 formData.append("fileObj", $("#file2")[0].files[0]);
                 formData.append("subject", $("#modelName").val());
-                formData.append($('input[name="modelCategory"]:checked').val() + "_algorithm", $("#" + $('input[name="modelCategory"]:checked').val() + "_algorithm").val())
-                {#formData.append("classifier_algorithm", $("#classifier_algorithm").val());#}
+                {#formData.append($('input[name="modelCategory"]:checked').val() + "_algorithm", $("#" + $('input[name="modelCategory"]:checked').val() + "_algorithm").val())#}
+                formData.append("classifier_algorithm", $("#classifier_algorithm").val());
                 formData.append("model_save", model_save);
                 formData.append("learning_column", learning_column);
                 formData.append("prediction_column", prediction_column);
@@ -1044,9 +1049,7 @@
                           500: function(xhr) {
                               alert("오류가 발생하였습니다. \n관리자에게 문의 바랍니다.");
                               $("#loading_body").hide();
-                              formReset();
                               $("#executeAnalysis").attr("disabled", false);
-                              flag = 0;
                           }
                         },
                         success: function (result) {
