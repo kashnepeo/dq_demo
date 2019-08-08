@@ -65,14 +65,14 @@ logger.addHandler(handler)
 
 # 메인 페이지 라우팅
 @app.route("/")
-@app.route("/index")
-def index():
-    return flask.render_template('index.html')
-
-
 @app.route("/analysis")
 def analysis():
     return flask.render_template("analysis/analysis.html")
+
+
+@app.route("/hiddenPage")
+def index():
+    return flask.render_template('index.html')
 
 
 @app.route("/example")
